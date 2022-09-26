@@ -105,5 +105,15 @@ lazy val docs = project
             // IconLink.external("https://twitter.com/typelevel", HeliumIcon.twitter)
           )
         )
-    }
+    },
+    Laika / sourceDirectories +=
+      (code.js / Compile / fastOptJS / artifactPath).value
+        .getParentFile() / s"${(code.js / moduleName).value}-fastopt",
+    tlSite := Def
+      .sequential(
+        (code.js / Compile / fastOptJS),
+        mdoc.toTask(""),
+        laikaSite
+      )
+      .value
   )
