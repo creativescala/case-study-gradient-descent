@@ -45,7 +45,7 @@ lazy val code = crossProject(JSPlatform)
   )
 
 lazy val docs = project
-  .in(file("docs"))
+  .in(file("site"))
   .enablePlugins(TypelevelSitePlugin)
   .settings(
     tlSiteRelatedProjects := Seq(
