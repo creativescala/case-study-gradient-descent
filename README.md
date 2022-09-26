@@ -1,5 +1,3 @@
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
 # Case Study: Machine Learning by Gradient Descent
 
 ## Introduction
@@ -19,7 +17,7 @@ At it's core, Stable Diffusion and similar programs such as Midjourney, are func
 
 An example will help make this clearer. Consider the function below.
 
-\\[ f(x, a) = a \sin(x) \\]
+$$f(x, a) = a \sin(x)$$
 
 In Scala we'd write
 
@@ -48,7 +46,7 @@ Now the final piece of the puzzle is to tell the computer how to adjust the para
 
 To really formalize this we need to be a bit more precise about about the error function. For one particular data point, the loss is
 
-\\[ pointLoss(f, a, x, y) = (f(x, a) - y)^2 \\]
+$$ pointLoss(f, a, x, y) = (f(x, a) - y)^2 $$
 
 In Scala, we'd write
 
@@ -65,7 +63,7 @@ This means the point loss is always non-negative.
 
 Now we just have to sum up the loss over all the data points to get the total loss, or what we commonly call just the loss.
 
-\\[ loss(data, f, a) = \sum_{pt \in data}pointLoss(f, a, pt.x, pt.y)\\]
+$$ loss(data, f, a) = \sum_{pt \in data}pointLoss(f, a, pt.x, pt.y)$$
 
 You might not be familiar with this mathematical notation. It's not important. The Scala code is:
 
