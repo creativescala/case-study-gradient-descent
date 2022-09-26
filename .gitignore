@@ -1,0 +1,16 @@
+.DS_Store
+.idea
+*.log
+tmp/
+
+*.class
+build
+.metals
+target/
+metals.sbt
+.bloop
+
+.bsp/
+
+slinky/
+doodle-svg/
