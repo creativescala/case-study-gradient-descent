@@ -150,8 +150,7 @@
     </span><span class="identifier">data</span><span>.</span><span class="identifier">foldLeft</span><span>(</span><span class="number-literal">0.0</span><span>){ (</span><span class="identifier">accum</span><span>, </span><span class="identifier">pt</span><span>) =&gt; </span><span class="identifier">pointLoss</span><span>(</span><span class="identifier">f</span><span>, </span><span class="identifier">a</span><span>, </span><span class="identifier">pt</span><span>.</span><span class="identifier">x</span><span>, </span><span class="identifier">pt</span><span>.</span><span class="identifier">y</span><span>) }</span></code></pre>
         <p>Because we&#39;re taking the sum of the point less, the loss is also always non-negative. This means finding the smallest loss is always the best choice.</p>
         <p>To recap, our goal is to make the loss as small as possible. In technical jargon we&#39;d say we&#39;re minimizing the loss function. We&#39;re going to do this by calculating the gradient of the loss function with respect to <code>a</code>, and then move <code>a</code> a small amount in the direction that reduces the loss. We then repeat this process, until we can&#39;t reduce the loss any more or we get bored.</p>
-        <p>Notice at this point I&#39;m not giving details. As you&#39;ve probably guessed, you&#39;re going to implement this and our first approach will be numerical differentiation.
-        Document Title</p>
+        <p>Notice at this point I&#39;m not giving details. As you&#39;ve probably guessed, you&#39;re going to implement this and our first approach will be numerical differentiation.</p>
 
         <hr style="margin-top: 30px"/>
         <footer style="font-size: 90%; text-align: center">
