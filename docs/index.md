@@ -34,9 +34,9 @@ This is a function with two parameters:
 
 You can play with the demo below, to see how changing the value of `a` changes the function.
 
-@:doodle("draw-basic-plot", "Sine.drawBasicPlot")
+@:doodle(draw-basic-plot, Sine.drawBasicPlot)
 
-Now imagine we have some data, which are pairs of `x` and `y` values. For each `x` value we have the `y` value we'd like the function to produce. We can adjust the value of `a` to bring the function closer or further away from the output. To quantify how good a choice we've made for `a`, we can look at the distance between the function output and the `y` value for each data point in our data set. We'll call this the *loss function* or just the *loss*. The demo below allows you to adjust `a` and see how the the loss changes for some randomly choosen data. You should not that you can increase and decrease the loss by changing `a`.
+Now imagine we have some data, which are pairs of `x` and `y` values. For each `x` value we have the `y` value we'd like the function to produce. We can adjust the value of `a` to bring the function closer or further away from the output. To quantify how good a choice we've made for `a`, we can look at the distance between the function output and the `y` value for each data point in our data set. We'll call this the *loss function* or just the *loss*. The demo below allows you to adjust `a` and see how the the loss changes for some randomly choosen data. You should note that you can increase and decrease the loss by changing `a`.
 
 So we have:
 

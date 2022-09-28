@@ -32,15 +32,15 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val root = tlCrossRootProject.aggregate(code)
 
-lazy val code = crossProject(JSPlatform)
-  .crossType(CrossType.Pure)
-  .in(file("code"))
+lazy val code = project
   .enablePlugins(ScalaJSPlugin)
+  .in(file("code"))
   .settings(
     libraryDependencies ++= Seq(
       "org.creativescala" %%% "doodle" % "0.11.2",
-      "org.creativescala" %%% "doodle-svg" % "0.11.2",
-      "org.creativescala" %%% "doodle-explore" % "0.11.0"
+      "org.creativescala" %%% "doodle-svg" % "0.11.3",
+      "org.creativescala" %%% "doodle-explore-core" % "0.14.0",
+      "org.creativescala" %%% "doodle-explore-laminar" % "0.14.0"
     )
   )
 
@@ -107,11 +107,11 @@ lazy val docs = project
         )
     },
     Laika / sourceDirectories +=
-      (code.js / Compile / fastOptJS / artifactPath).value
-        .getParentFile() / s"${(code.js / moduleName).value}-fastopt",
+      (code / Compile / fastOptJS / artifactPath).value
+        .getParentFile() / s"${(code / moduleName).value}-fastopt",
     tlSite := Def
       .sequential(
-        (code.js / Compile / fastOptJS),
+        (code / Compile / fastOptJS),
         mdoc.toTask(""),
         laikaSite
       )
