@@ -82,5 +82,5 @@ Because we're taking the sum of the point less, the loss is also always non-nega
 To recap, our goal is to make the loss as small as possible. In technical jargon we'd say we're minimizing the loss function. We're going to do this by calculating the gradient of the loss function with respect to `a`, and then move `a` a small amount in the direction that reduces the loss. We then repeat this process, until we can't reduce the loss any more or we get bored.
 
 Notice at this point I'm not giving details. As you've probably guessed, you're going to implement this and our first approach will be numerical differentiation.
-Document Title
+
 
