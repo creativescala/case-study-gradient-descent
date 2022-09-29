@@ -89,6 +89,8 @@
         <p class="header"><a href="#">Numerical Differentiation</a></p>
 
         <ul class="nav-list">
+          <li class="level1"><a href="#calculating-the-gradient-of-the-loss-function">Calculating the Gradient of the Loss Function</a></li>
+          <li class="level1"><a href="#gradient-descent">Gradient Descent</a></li>
         </ul>
 
         <p class="footer"></p>
@@ -103,6 +105,35 @@
         <p>We can estimate the gradient of <code>f</code> at a point <code>x</code> using the equation</p>
         <p>$$ gradient \approx \frac{f(x + h) - f(x)}{h} $$</p>
         <p>where <code>h</code> is a small number. This is the essential idea behind numerical differentiation.</p>
+        <p>It&#39;s time to write some code. Let&#39;s implement numerical differentiation. Now you might think that you should implement a method that takes all of</p>
+        <ul>
+          <li>the function we&#39;re differentiating;</li>
+          <li>the step <code>h</code>; and</li>
+          <li>the point <code>x</code> at which we&#39;re differentiating.</li>
+        </ul>
+        <p>Instead, however, I want you to implement a method with following signature:</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">numericalDifferentiation</span><span>(</span><span class="identifier">h</span><span>: </span><span class="type-name">Double</span><span>)(</span><span class="identifier">f</span><span>: </span><span class="type-name">Double</span><span> =&gt; </span><span class="type-name">Double</span><span>): </span><span class="type-name">Double</span><span> =&gt; </span><span class="type-name">Double</span></code></pre>
+        <p>So the method is taking a function, and returns a function. The returned function takes in a point <code>x</code> and returns an approximation of the gradient at that point.</p>
+        <p>This is how differentiation is treated in mathematics: the derivative of a function is itself a function. If you&#39;ve studied calculus, this is what the $\frac{d}{dx}$ operator is doing.</p>
+        
+        <h2 id="calculating-the-gradient-of-the-loss-function" class="section">Calculating the Gradient of the Loss Function<a class="anchor-link right" href="#calculating-the-gradient-of-the-loss-function"><i class="icofont-laika">&#xef71;</i></a></h2>
+        <p>Now we have a way to calculate the gradient of a function, we can calculate the gradient of the loss function. However, we need to get the loss function into a form that we can use with our <code>numerical Differentiation</code> method. In other words, we need to turn <code>loss</code>, a function of 3 parameters, into a function of a single parameter. (That single parameter would be <code>a</code>, as that&#39;s what we  can vary to reduce the loss and hence what we want to calculate the derivate with respect to.)</p>
+        <p>The secret to doing this is called <em>currying</em>, which is not the delicious dish you probably think of when you hear the word, but instead the idea that a function of two parameters can become a function of a single parameter returning another function of a single parameter. For example, if we have the function</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">sum</span><span>: (</span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span> = (</span><span class="identifier">x</span><span>, </span><span class="identifier">y</span><span>) =&gt; </span><span class="identifier">x</span><span> + </span><span class="identifier">y</span></code></pre>
+        <p>we can curry it to obtain</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">curriedSum</span><span>: </span><span class="type-name">Double</span><span> =&gt; </span><span class="type-name">Double</span><span> =&gt; </span><span class="type-name">Double</span><span> = </span><span class="identifier">x</span><span> =&gt; </span><span class="identifier">y</span><span> =&gt; </span><span class="identifier">x</span><span> + </span><span class="identifier">y</span></code></pre>
+        <p>This is especially useful when parameter vary at different rates. For example, the data we&#39;re using doesn&#39;t change at any time, whereas we&#39;ve constantly the parameter <code>a</code> to try to find the best value. I don&#39;t want to write any more as this is the main challenge here: implement a curried form of <code>loss</code> so that we can use it with <code>numericalDifferentation</code>.</p>
+        
+        <h2 id="gradient-descent" class="section">Gradient Descent<a class="anchor-link right" href="#gradient-descent"><i class="icofont-laika">&#xef71;</i></a></h2>
+        <p>Now we&#39;re ready to put it all together. Here&#39;s a sketch of how gradient descent works:</p>
+        <ul>
+          <li>Start by choosing an initial value for the parameter <code>a</code>.</li>
+          <li>Calculate the gradient of the loss given <code>a</code>. </li>
+          <li>Move <code>a</code> a small amount (the so called <em>step size</em>) in the direction that decreases the gradient.</li>
+          <li>Repeat this process until the loss is very small, the loss is not decreasing quickly, or the process has gone on long enough.</li>
+        </ul>
+        <p>I&#39;m a bit vague on the details above. You can choose reasonable value for the step size and other values I have omitted, and thinking about what is reasonable will force you to get a better understanding of what&#39;s going on.</p>
+        <p>Implement gradient descent, and show that you can find a good value for <code>a</code> by using it.</p>
 
         <hr style="margin-top: 30px"/>
         <footer style="font-size: 90%; text-align: center">
