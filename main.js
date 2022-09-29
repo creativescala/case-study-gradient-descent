@@ -9273,13 +9273,13 @@ $c_Lgradientdescent_examples_Sine$.prototype.$js$exported$meth$drawBasicPlot__T_
 $c_Lgradientdescent_examples_Sine$.prototype.$js$exported$meth$drawErrorPlot__T__O = (function(id) {
   this.drawErrorPlot__T__V(id)
 });
-$c_Lgradientdescent_examples_Sine$.prototype.drawBasicPlot = (function(arg) {
-  var prep0 = $as_T(arg);
-  return this.$js$exported$meth$drawBasicPlot__T__O(prep0)
-});
 $c_Lgradientdescent_examples_Sine$.prototype.drawErrorPlot = (function(arg) {
   var prep0 = $as_T(arg);
   return this.$js$exported$meth$drawErrorPlot__T__O(prep0)
+});
+$c_Lgradientdescent_examples_Sine$.prototype.drawBasicPlot = (function(arg) {
+  var prep0 = $as_T(arg);
+  return this.$js$exported$meth$drawBasicPlot__T__O(prep0)
 });
 var $d_Lgradientdescent_examples_Sine$ = new $TypeData().initClass({
   Lgradientdescent_examples_Sine$: 0
