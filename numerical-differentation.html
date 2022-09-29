@@ -98,11 +98,11 @@
 
         <h1 id="numerical-differentiation" class="title">Numerical Differentiation</h1>
         <p>Numerical differentiation is perhaps the most obvious approach to finding a function&#39;s gradient (that is, differentiating it) if you&#39;re a programmer.</p>
-        <p>The gradient is just a fancy name for the slope</p>
-        <p>To find the gradient of a function <code>f</code> at a point <code>x</code> using numerical differentiation we can:</p>
-        <ol class="arabic">
-          <li>Calculate</li>
-        </ol>
+        <p>The gradient is just a fancy name for the slope, and the slope is &quot;rise over run&quot;.</p>
+        <p>$$ gradient = \frac{rise}{run} $$</p>
+        <p>We can estimate the gradient of <code>f</code> at a point <code>x</code> using the equation</p>
+        <p>$$ gradient \approx \frac{f(x + h) - f(x)}{h} $$</p>
+        <p>where <code>h</code> is a small number. This is the essential idea behind numerical differentiation.</p>
 
         <hr style="margin-top: 30px"/>
         <footer style="font-size: 90%; text-align: center">
