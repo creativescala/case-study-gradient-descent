@@ -62,10 +62,10 @@ val pointLoss: ((Double, Double) => Double, Double, Double, Double) => Double =
   }
 ```
 
-This means the point loss is always non-negative.
+This means the loss for a single point is always non-negative.
 
 
-Now we just have to sum up the loss over all the data points to get the total loss, or what we commonly call just the loss.
+Now we just have to sum up the loss over all the data points to get what we commonly call the loss.
 
 $$ loss(data, f, a) = \sum_{pt \in data}pointLoss(f, a, pt.x, pt.y)$$
 
@@ -77,10 +77,8 @@ val loss: (List[Point], (Double, Double) => Double, Double) => Double =
     data.foldLeft(0.0){ (accum, pt) => pointLoss(f, a, pt.x, pt.y) }
 ```
 
-Because we're taking the sum of the point less, the loss is also always non-negative. This means finding the smallest loss is always the best choice.
+Because we're taking the sum of the point loss, the loss is also always non-negative. This means finding the smallest loss is always the best choice.
 
 To recap, our goal is to make the loss as small as possible. In technical jargon we'd say we're minimizing the loss function. We're going to do this by calculating the gradient of the loss function with respect to `a`, and then move `a` a small amount in the direction that reduces the loss. We then repeat this process, until we can't reduce the loss any more or we get bored.
 
 Notice at this point I'm not giving details. As you've probably guessed, you're going to implement this and our first approach will be numerical differentiation.
-
-
