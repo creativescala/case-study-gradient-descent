@@ -46,7 +46,12 @@ So we have:
 - a function with a parameter (`a`) that we want to learn in response to data; and
 - a way of measuring the quality of our current choice of parameter (the loss);
 
-Now the final piece of the puzzle is to tell the computer how to adjust the parameter to reduce the loss. This gets us to gradient descent. The *gradient* of a function is just a fancy word for the function's slope. So what we need to do is calculate the gradient of the loss function with respect to `a`, meaning find how changes in `a` relate to changes in loss, and move `a` in the direction that reduces the loss.
+Now the final piece of the puzzle is to tell the computer how to adjust the parameter to reduce the loss. This gets us to gradient descent. The *gradient* of a function is just a fancy word for the function's slope. So what we need to do is calculate the gradient of the loss function with respect to `a`, meaning:
+
+1. find how changes in `a` relate to changes in loss, and
+2. move `a` in the direction that reduces the loss.
+
+We use the term *differentiation* for finding the gradient of a function.
 
 To really formalize this we need to be a bit more precise about about the error function. For one particular data point, the loss is
 
