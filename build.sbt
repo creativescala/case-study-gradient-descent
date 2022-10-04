@@ -30,20 +30,25 @@ ThisBuild / useSuperShell := false
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-lazy val root = tlCrossRootProject.aggregate(code)
+lazy val root = tlCrossRootProject.aggregate(code, examples)
 
+// Student code goes in here
 lazy val code = project
-  .enablePlugins(ScalaJSPlugin)
   .in(file("code"))
+
+// Code for examples used in the website
+lazy val examples = project
+  .enablePlugins(ScalaJSPlugin)
+  .in(file("examples"))
   .settings(
     libraryDependencies ++= Seq(
       "org.creativescala" %%% "doodle" % "0.11.2",
       "org.creativescala" %%% "doodle-svg" % "0.11.3",
-      "org.creativescala" %%% "doodle-explore-core" % "0.14.0",
-      "org.creativescala" %%% "doodle-explore-laminar" % "0.14.0"
+      "org.creativescala" %%% "doodle-explore" % "0.14.0"
     )
   )
 
+// The website
 lazy val docs = project
   .in(file("site"))
   .enablePlugins(TypelevelSitePlugin)
@@ -107,11 +112,11 @@ lazy val docs = project
         )
     },
     Laika / sourceDirectories +=
-      (code / Compile / fastOptJS / artifactPath).value
-        .getParentFile() / s"${(code / moduleName).value}-fastopt",
+      (examples / Compile / fastOptJS / artifactPath).value
+        .getParentFile() / s"${(examples / moduleName).value}-fastopt",
     tlSite := Def
       .sequential(
-        (code / Compile / fastOptJS),
+        (examples / Compile / fastOptJS),
         mdoc.toTask(""),
         laikaSite
       )

@@ -26,7 +26,7 @@ def numericalDifferentiation(h: Double)(f: Double => Double): Double => Double
 
 So the method is taking a function, and returns a function. The returned function takes in a point `x` and returns an approximation of the gradient at that point.
 
-This is how differentiation is treated in mathematics: the derivative of a function is itself a function. If you've studied calculus, this is what the \(\frac{d}{dx}\) operator is doing.
+This is how differentiation is treated in mathematics: the derivative of a function is itself a function. If you've studied calculus, this is what the \\(\frac{d}{dx}\\) operator is doing.
 
 
 ## Calculating the Gradient of the Loss Function
