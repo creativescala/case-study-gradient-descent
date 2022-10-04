@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.18.1 + Helium Theme" />
+    <title>Symbolic Differentiation</title>
+    
+    <meta name="author" content="Noel Welsh"/>
+    
+    
+    <meta name="description" content="docs"/>
+    
+    
+    <link rel="icon" sizes="32x32" type="image/png" href="https://typelevel.org/img/favicon.png"/>
+    
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css">
+    
+    <link rel="stylesheet" type="text/css" href="helium/icofont.min.css" />
+    <link rel="stylesheet" type="text/css" href="helium/laika-helium.css" />
+    <link rel="stylesheet" type="text/css" href="site/styles.css" />
+    <script src="helium/laika-helium.js"></script>
+    <script src="helium/laika-helium.js"></script>
+    
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script> /* for avoiding page load transitions */ </script>
+  </head>
+
+  <body>
+
+    <header id="top-bar">
+
+      <div class="row">
+        <a id="nav-icon">
+          <i class="icofont-laika" title="Navigation">&#xefa2;</i>
+        </a>
+        
+      </div>
+
+      <a class="icon-link" href="https://creativescala.org"><i class="icofont-laika" title="Home">&#xef47;</i></a>
+
+      <span class="row links"><a class="icon-link svg-link" href="https://github.com/creativescala/case-study-gradient-descent"><span title="Source Code"><svg class="svg-icon" width="100%" height="100%" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+  <g class="svg-shape">
+    <path d="M49.995,1c-27.609,-0 -49.995,22.386 -49.995,50.002c-0,22.09 14.325,40.83 34.194,47.444c2.501,0.458 3.413,-1.086 3.413,-2.412c0,-1.185 -0.043,-4.331 -0.067,-8.503c-13.908,3.021 -16.843,-6.704 -16.843,-6.704c-2.274,-5.773 -5.552,-7.311 -5.552,-7.311c-4.54,-3.103 0.344,-3.042 0.344,-3.042c5.018,0.356 7.658,5.154 7.658,5.154c4.46,7.64 11.704,5.433 14.552,4.156c0.454,-3.232 1.744,-5.436 3.174,-6.685c-11.102,-1.262 -22.775,-5.553 -22.775,-24.713c-0,-5.457 1.949,-9.92 5.147,-13.416c-0.516,-1.265 -2.231,-6.348 0.488,-13.233c0,0 4.199,-1.344 13.751,5.126c3.988,-1.108 8.266,-1.663 12.518,-1.682c4.245,0.019 8.523,0.574 12.517,1.682c9.546,-6.47 13.736,-5.126 13.736,-5.126c2.728,6.885 1.013,11.968 0.497,13.233c3.204,3.496 5.141,7.959 5.141,13.416c0,19.209 -11.691,23.436 -22.83,24.673c1.795,1.544 3.394,4.595 3.394,9.26c0,6.682 -0.061,12.076 -0.061,13.715c0,1.338 0.899,2.894 3.438,2.406c19.853,-6.627 34.166,-25.354 34.166,-47.438c-0,-27.616 -22.389,-50.002 -50.005,-50.002"/>
+  </g>
+</svg></span></a></span>
+
+    </header>
+
+    <nav id="sidebar">
+
+      <div class="row">
+        <a class="icon-link svg-link" href="https://github.com/creativescala/case-study-gradient-descent"><span title="Source Code"><svg class="svg-icon" width="100%" height="100%" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+  <g class="svg-shape">
+    <path d="M49.995,1c-27.609,-0 -49.995,22.386 -49.995,50.002c-0,22.09 14.325,40.83 34.194,47.444c2.501,0.458 3.413,-1.086 3.413,-2.412c0,-1.185 -0.043,-4.331 -0.067,-8.503c-13.908,3.021 -16.843,-6.704 -16.843,-6.704c-2.274,-5.773 -5.552,-7.311 -5.552,-7.311c-4.54,-3.103 0.344,-3.042 0.344,-3.042c5.018,0.356 7.658,5.154 7.658,5.154c4.46,7.64 11.704,5.433 14.552,4.156c0.454,-3.232 1.744,-5.436 3.174,-6.685c-11.102,-1.262 -22.775,-5.553 -22.775,-24.713c-0,-5.457 1.949,-9.92 5.147,-13.416c-0.516,-1.265 -2.231,-6.348 0.488,-13.233c0,0 4.199,-1.344 13.751,5.126c3.988,-1.108 8.266,-1.663 12.518,-1.682c4.245,0.019 8.523,0.574 12.517,1.682c9.546,-6.47 13.736,-5.126 13.736,-5.126c2.728,6.885 1.013,11.968 0.497,13.233c3.204,3.496 5.141,7.959 5.141,13.416c0,19.209 -11.691,23.436 -22.83,24.673c1.795,1.544 3.394,4.595 3.394,9.26c0,6.682 -0.061,12.076 -0.061,13.715c0,1.338 0.899,2.894 3.438,2.406c19.853,-6.627 34.166,-25.354 34.166,-47.438c-0,-27.616 -22.389,-50.002 -50.005,-50.002"/>
+  </g>
+</svg></span></a>
+      </div>
+
+      <ul class="nav-list">
+        <li class="level1"><a href="index.html">Case Study: Machine Learning by Gradient Descent</a></li>
+        <li class="level1"><a href="numerical-differentiation.html">Numerical Differentiation</a></li>
+        <li class="level1 active"><a href="#">Symbolic Differentiation</a></li>
+      </ul>
+
+      <ul class="nav-list">
+        <li class="level1 nav-header">Related Projects</li>
+        
+          <li class="level2"><a href="https://creativescala.org/doodle">Doodle</a></li>
+        
+          <li class="level2"><a href="https://creativescala.github.io/doodle-svg">Doodle SVG</a></li>
+        
+          <li class="level2"><a href="https://creativescala.org">Creative Scala</a></li>
+        
+      </ul>
+
+    </nav>
+
+    <div id="container">
+
+      <nav id="page-nav">
+        <p class="header"><a href="#">Symbolic Differentiation</a></p>
+
+        <ul class="nav-list">
+          <li class="level1"><a href="#implementation">Implementation</a></li>
+          <li class="level2"><a href="#representing-expressions">Representing Expressions</a></li>
+          <li class="level2"><a href="#simplifying-expressions">Simplifying Expressions</a></li>
+        </ul>
+
+        <p class="footer"></p>
+      </nav>
+
+      <main class="content">
+
+        <h1 id="symbolic-differentiation" class="title">Symbolic Differentiation</h1>
+        <p>The second technique that we&#39;ll look at for differentiation is symbolic differentiation. This is the technique you&#39;ll have learned if you have studied calculus. </p>
+        <p>In symbolic differentiation we work directly on the expression that represents the function of interest, and create a new expression that represents the derivative of the function. For example, if we have a function</p>
+        <p>$$ f(x) = 4x^2 + 8x + 16 $$</p>
+        <p>we can symbolically differentiate it to obtain the derivative, itself a function and written as \( \frac{df(x)}{dx} \)</p>
+        <p>$$ \frac{df(x)}{dx} = 8x + 8 $$</p>
+        <p>Note that the derivative of a function is a function, in this case with a single parameter \( x \).</p>
+        <p>To compute the derivative we can apply the following rules:</p>
+        <ul>
+          <li><strong>The power rule:</strong> the derivative of \( x \) to the power of \( n \) is \(x \) to the power of \( n - 1 \) multiplied by \( n \). </li>
+        </ul>
+        <p>$$ \textrm{If} \; f(x) = x^n \; \textrm{then} \; \frac{df(x)}{dx} = nx^{n-1} $$</p>
+        <ul>
+          <li><strong>The constant rule:</strong> the derivative of a constant is zero. </li>
+        </ul>
+        <p>$$ \textrm{If}\;  f(x) = k \; \textrm{then}\; \frac{df(x)}{dx} = 0 $$</p>
+        <ul>
+          <li><strong>The sum rule:</strong> the derivative of the sum of two functions is the sum of the derivatives.</li>
+        </ul>
+        <p>$$ \textrm{If}\; f(x) = g(x) + h(x) \; \textrm{then}\; \frac{df(x)}{dx} = \frac{dg(x)}{dx} + \frac{dh(x)}{dx} $$</p>
+        <ul>
+          <li><strong>The product fule:</strong> The derivative of the product of two functions is the derivative of the first multiplied by the second plus the derivative of the second multiplied by the first.</li>
+        </ul>
+        <p>$$ \textrm{If}\; f(x) = g(x)h(x) \; \textrm{then}\; \frac{df(x)}{dx} = \frac{dg(x)}{dx}h(x) + g(x)\frac{dh(x)}{dx} $$</p>
+        <p>We can apply these rules to calculate the derivative of</p>
+        <p>$$ f(x) = 4x^2 + 8x + 16 $$</p>
+        <p>The sum rule tells us we can separately compute the derivatives of \( 4x^2 \), \( 8x \) and \( 16 \) and then add together the results. Going from back to front:</p>
+        <ul>
+          <li>The constant rule tells us the derivative of \( 16 \) is \( 0 \)</li>
+          <li>The power rule tells us the derivative of \( x \) is \( 1 \). The product rule tells us the derivative of \( 8x \) is \( 0x + 8 \), which is \( 8 \).</li>
+          <li>Applying the same reasoning as above tells us the derivative of \( 4x^2 \) is \( 8x \)</li>
+        </ul>
+        <p>Summing them all together gives us \( 8x + 8 \) as expected.</p>
+        
+        <h2 id="implementation" class="section">Implementation<a class="anchor-link right" href="#implementation"><i class="icofont-laika">&#xef71;</i></a></h2>
+        <p>Now we&#39;re ready to implement symbolic differentiation. We need:</p>
+        <ol class="arabic">
+          <li>a representation of expressions that we can manipulate; and</li>
+          <li>a way to implement the rules of differentiation.</li>
+        </ol>
+        
+        <h3 id="representing-expressions" class="section">Representing Expressions<a class="anchor-link right" href="#representing-expressions"><i class="icofont-laika">&#xef71;</i></a></h3>
+        <p>We&#39;re going to represent expressions as follows. An <code>Expression</code> one of:</p>
+        <ul>
+          <li>A literal number, containing a <code>Double</code> value.</li>
+          <li>A variable, which represents the parameter \( x \) in an expression. We&#39;re only considering functions of a single variable, so we only need one of these.</li>
+          <li>The addition of two <code>Expressions</code>.</li>
+          <li>The multiplication of two <code>Expressions</code>.</li>
+          <li>A power, which has a variable and an exponent, representing expressions such as \( x^3 \).</li>
+        </ul>
+        <p>Note we don&#39;t want to represent powers of general expressions, such as \( (4x + 3)^3 \), as dealing with them will quickly get messy. We also don&#39;t have a representation for division and subtraction, because they a bit more complexity than we want for this part of the case study. You can add them back in if you want.</p>
+        <p>By now you should know how to represent this structure in code, so go ahead and implement it.</p>
+        <p>In <a href="numerical-differentiation.html">numerical differentiation</a> we represented mathematical functions as Scala functions. In this section we&#39;re representing mathematical functions as Scala data structures. This is an example of a general implementation strategy called <em>reification</em>. The abstract meaning of reification is to turn something abstract into something concrete. The concrete meaning, in our case, is to turn functions (or equivalently, methods) into data structures. Reification connects the functional programming world to the object oriented world. We&#39;ll see more of this in future.</p>
+        
+        <h3 id="simplifying-expressions" class="section">Simplifying Expressions<a class="anchor-link right" href="#simplifying-expressions"><i class="icofont-laika">&#xef71;</i></a></h3>
+        <p>Now we have a representation of expressions we want to simplify them. Instead of, say, \( x^2 + x^2 \) we want to have \( 2x^2 \). This makes it easier to implement differentiation, which will be our next step.</p>
+        <p>Conventionally, the types of expressions we&#39;re working with are always written from highest power to lowest. So we&#39;d write \( 4x^2 + 8x + 16 \), not \( 8x + 4x^2 + 16 \). This conventional format is called a <em>normal form</em>. Our simplification will convert any expression to its normal form.</p>
+        <p>To do this we can use various rules of algebra, such as:</p>
+        <ul>
+          <li><strong>Associativity:</strong> \( x + y + z = x + (y + z) \) and \( x \times y \times z = x \times (y \times z) \)</li>
+          <li><strong>Commutivity:</strong> \( x + y = y + x \) and \( x \times y = y \times x \)</li>
+          <li><strong>Distributivity:</strong> \( x \times (y + z) = (x \times y) + (y \times z) \)</li>
+        </ul>
+        <p>Whenever we have an expression involving literals, we can evaluate that expression. This is known as <em>constant folding</em> in the compiler literature.</p>
+        <p>This allows us to transform expressions to find common terms that we can group together. Here are some examples:</p>
+        <ul>
+          <li>If we have \( 4 + x \) we can use commutivity to transform it to \( x + 4 \).</li>
+          <li>If we have \( x + 3 + 4 \) we can use associativity to transform it to \( x + (4 + 3) \) and then use constant folding to \( x + 7 \)</li>
+        </ul>
+        <p>How should we implement this? Our fundamental tool will be pattern matching, which allows us to look for particular shapes of expressions. For example, we might write a constant folding transform as</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">constantFold</span><span>(</span><span class="identifier">expr</span><span>: </span><span class="type-name">Expression</span><span>): </span><span class="type-name">Expression</span><span> =
+  </span><span class="identifier">expr</span><span> </span><span class="keyword">match</span><span> {
+    </span><span class="keyword">case</span><span> </span><span class="type-name">Addition</span><span>(</span><span class="type-name">Literal</span><span>(</span><span class="identifier">x</span><span>), </span><span class="type-name">Literal</span><span>(</span><span class="identifier">y</span><span>)) =&gt; </span><span class="type-name">Literal</span><span>(</span><span class="identifier">x</span><span> + </span><span class="identifier">y</span><span>)
+    </span><span class="keyword">case</span><span> </span><span class="type-name">Multiplication</span><span>(</span><span class="type-name">Literal</span><span>(</span><span class="identifier">x</span><span>), </span><span class="type-name">Literal</span><span>(</span><span class="identifier">y</span><span>)) =&gt; </span><span class="type-name">Literal</span><span>(</span><span class="identifier">x</span><span> * </span><span class="identifier">y</span><span>)
+    </span><span class="keyword">case</span><span> </span><span class="identifier">other</span><span> =&gt; </span><span class="identifier">other</span><span>
+  }</span></code></pre>
+
+        <hr style="margin-top: 30px"/>
+        <footer style="font-size: 90%; text-align: center">
+          Doodle Explore is a <a href="https://creativescala.org/">Creative Scala</a> project.</footer>
+
+      </main>
+
+    </div>
+  </body>
+</html>
