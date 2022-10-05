@@ -78,14 +78,9 @@ where \\( r \\) is a small value (such as 0.01) known as the *learning rate*.
 
 Go ahead and implement this!
 
+Now we can implement the full gradient descent algorithm, in the method `gradientDescent`. The only thing you need to do here is iterate for the given number of iterations. (There are other stopping conditions we can use, such as stopping when the loss doesn't decrease from one iteration to the next, but we're keeping things simple here.)
 
-Here's a sketch of how gradient descent works:
 
-- Start by choosing an initial value for the parameter `a`.
-- Calculate the gradient of the loss given `a`. 
-- Move `a` a small amount (the so called *step size*) in the direction that decreases the gradient.
-- Repeat this process until the loss is very small, the loss is not decreasing quickly, or the process has gone on long enough.
+### Animate It!
 
-I'm a bit vague on the details above. You can choose reasonable value for the step size and other values I have omitted, and thinking about what is reasonable will force you to get a better understanding of what's going on.
-
-Implement gradient descent, and show that you can find a good value for `a` by using it.
+Finally, complete the implementation in `Animation.scala` and draw an animation showing gradient descent at work!
