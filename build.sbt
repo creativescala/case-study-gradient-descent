@@ -35,6 +35,11 @@ lazy val root = tlCrossRootProject.aggregate(code, examples)
 // Student code goes in here
 lazy val code = project
   .in(file("code"))
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.creativescala" %%% "doodle" % "0.11.2"
+    )
+  )
 
 // Code for examples used in the website
 lazy val examples = project
