@@ -17,7 +17,7 @@
 package gradientdescent.examples
 
 import gradientdescent.utils.Plot
-import doodle.core.{Color, Point}
+import doodle.core._
 import doodle.svg._
 import doodle.syntax.all._
 import doodle.explore.laminar.Explore
@@ -28,7 +28,6 @@ import scala.util.Random
 @JSExportTopLevel("Sine")
 object Sine {
   import Explore.given
-  // a = 100
   val basicSine: Double => Double => Double = a => x => a * Math.sin(x)
 
   def basicPlot(f: Double => Double): Picture[Unit] =
@@ -46,7 +45,7 @@ object Sine {
 
   @JSExport
   def drawBasicPlot(id: String): Unit = {
-    val frame = Frame(id).size(600, 200)
+    val frame = Frame(id).size(640, 240)
 
     Explore
       .int("a")
@@ -57,18 +56,55 @@ object Sine {
 
   @JSExport
   def drawErrorPlot(id: String): Unit = {
-    val trueF = basicSine(100)
+    val trueF = basicSine(75)
     val data = (1.to(40)).map { _ =>
       val x = Random.between(-6.0, 6.0)
       val y = trueF(x) + (5.0 * Random.nextGaussian())
       Point(x * 50.0, y)
     }
 
-    val frame = Frame(id).size(600, 200)
+    val frame = Frame(id).size(640, 240)
     Explore
       .int("a")
       .within(-100, 100)
       .withDefault(50)
-      .explore(frame)(a => basicPlot(basicSine(a.toDouble)).on(dataPlot(data)))
+      .explore(frame)(a => dataPlot(data).on(basicPlot(basicSine(a.toDouble))))
+  }
+
+  @JSExport
+  def drawNumericalDifferentiationPlot(id: String): Unit = {
+    val f = basicSine(75)
+    def gradient(h: Double): Double =
+      (f(0) + f(h)) / h
+
+    val frame = Frame(id).size(640, 240)
+    Explore
+      .int("h")
+      .within(-100, 100)
+      .withDefault(10)
+      .explore(frame) { h =>
+        val x = h.toDouble / 50.0
+        val g = gradient(x)
+        val y = f(x)
+        val zeroY = f(0)
+        val hPt = Picture.circle(10).fillColor(Color.blue).at(h, y)
+        val zeroPt = Picture.circle(10).fillColor(Color.black).at(0, zeroY)
+        val pt = zeroPt.on(hPt)
+
+        val line = Picture
+          .path(
+            ClosedPath.empty
+              .moveTo(
+                if h < -50 then h else -50,
+                if h < -50 then zeroY + (g * x) else zeroY - g
+              )
+              .lineTo(
+                if h > 50 then h else 50,
+                if h > 50 then zeroY + (g * x) else zeroY + g
+              )
+          )
+          .strokeWidth(2.0)
+        pt.on(line).on(basicPlot(f))
+      }
   }
 }

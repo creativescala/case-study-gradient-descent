@@ -6,11 +6,15 @@ The gradient is just a fancy name for the slope, and the slope is "rise over run
 
 $$ gradient = \frac{rise}{run} $$
 
-We can estimate the gradient of `f` at a point `x` using the equation
+Using this we can estimate the gradient of `f` at a point `x` using the equation
 
 $$ gradient \approx \frac{f(x + h) - f(x)}{h} $$
 
-where `h` is a small number. This is the essential idea behind numerical differentiation.
+where \\( h \\) is a small number. In this equation \\( h \\) is the run, and \\( f(x+h) - f(x) \\) is the rise. This is the essential idea behind numerical differentiation.
+
+The example below shows how the estimate of the gradient changes as we change \\( h \\) to be closer or further away from a given point (the point in black).
+
+@:doodle(draw-numerical-differentiation-plot, Sine.drawNumericalDifferentiationPlot)
 
 It's time to write some code. Let's implement numerical differentiation. Now you might think that you should implement a method that takes all of
 
