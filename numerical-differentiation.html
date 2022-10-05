@@ -90,8 +90,9 @@
         <p class="header"><a href="#">Numerical Differentiation</a></p>
 
         <ul class="nav-list">
-          <li class="level1"><a href="#calculating-the-gradient-of-the-loss-function">Calculating the Gradient of the Loss Function</a></li>
-          <li class="level1"><a href="#gradient-descent">Gradient Descent</a></li>
+          <li class="level1"><a href="#implementation">Implementation</a></li>
+          <li class="level2"><a href="#calculating-the-gradient-of-the-loss-function">Calculating the Gradient of the Loss Function</a></li>
+          <li class="level2"><a href="#gradient-descent">Gradient Descent</a></li>
         </ul>
 
         <p class="footer"></p>
@@ -109,7 +110,10 @@
         <p>The example below shows how the estimate of the gradient changes as we change \( h \) to be closer or further away from a given point (the point in black).</p>
         <div id="draw-numerical-differentiation-plot"></div>
         <script>Sine.drawNumericalDifferentiationPlot("draw-numerical-differentiation-plot")</script>
-        <p>It&#39;s time to write some code. Let&#39;s implement numerical differentiation. Now you might think that you should implement a method that takes all of</p>
+        
+        <h2 id="implementation" class="section">Implementation<a class="anchor-link right" href="#implementation"><i class="icofont-laika">&#xef71;</i></a></h2>
+        <p>It&#39;s time to write some code. There is a <a href="https://github.com/creativescala/case-study-gradient-descent">repository</a> that accompanies this case study. You should download it. Your code goes into the <code>code</code> subdirectory. Within that subdirectory you&#39;ll find some existing code to calculate loss, create data sets, and so other useful utilities. Make sure you take a look at it before you start creating your own code.</p>
+        <p>Let&#39;s implement numerical differentiation. Now you might think that you should implement a method that takes all of</p>
         <ul>
           <li>the function we&#39;re differentiating;</li>
           <li>the step <code>h</code>; and</li>
@@ -119,17 +123,29 @@
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">numericalDifferentiation</span><span>(</span><span class="identifier">h</span><span>: </span><span class="type-name">Double</span><span>)(</span><span class="identifier">f</span><span>: </span><span class="type-name">Double</span><span> =&gt; </span><span class="type-name">Double</span><span>): </span><span class="type-name">Double</span><span> =&gt; </span><span class="type-name">Double</span></code></pre>
         <p>So the method is taking a function, and returns a function. The returned function takes in a point <code>x</code> and returns an approximation of the gradient at that point.</p>
         <p>This is how differentiation is treated in mathematics: the derivative of a function is itself a function. If you&#39;ve studied calculus, this is what the \(\frac{d}{dx}\) operator is doing.</p>
+        <p>There is a code stub for you to work with in the file <code>NumericalDifferentiation.scala</code> within the <code>numerical</code> subdirectory. All your code should go within the <code>numerical</code> subdirectory.</p>
         
-        <h2 id="calculating-the-gradient-of-the-loss-function" class="section">Calculating the Gradient of the Loss Function<a class="anchor-link right" href="#calculating-the-gradient-of-the-loss-function"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>Now we have a way to calculate the gradient of a function, we can calculate the gradient of the loss function. However, we need to get the loss function into a form that we can use with our <code>numerical Differentiation</code> method. In other words, we need to turn <code>loss</code>, a function of 3 parameters, into a function of a single parameter. (That single parameter would be <code>a</code>, as that&#39;s what we  can vary to reduce the loss and hence what we want to calculate the derivate with respect to.)</p>
+        <h3 id="calculating-the-gradient-of-the-loss-function" class="section">Calculating the Gradient of the Loss Function<a class="anchor-link right" href="#calculating-the-gradient-of-the-loss-function"><i class="icofont-laika">&#xef71;</i></a></h3>
+        <p>Now we have a way to calculate the gradient of a function, we can calculate the gradient of the loss function. However, we need to get the loss function into a form that we can use with our <code>numericalDifferentiation</code> method. In other words, we need to turn <code>loss</code>, a function of 3 parameters, into a function of a single parameter. (That single parameter would be <code>a</code>, as that&#39;s what we can vary to reduce the loss and hence what we want to calculate the derivate with respect to.)</p>
         <p>The secret to doing this is called <em>currying</em>, which is not the delicious dish you probably think of when you hear the word, but instead the idea that a function of two parameters can become a function of a single parameter returning another function of a single parameter. For example, if we have the function</p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">sum</span><span>: (</span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span> = (</span><span class="identifier">x</span><span>, </span><span class="identifier">y</span><span>) =&gt; </span><span class="identifier">x</span><span> + </span><span class="identifier">y</span></code></pre>
         <p>we can curry it to obtain</p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">curriedSum</span><span>: </span><span class="type-name">Double</span><span> =&gt; </span><span class="type-name">Double</span><span> =&gt; </span><span class="type-name">Double</span><span> = </span><span class="identifier">x</span><span> =&gt; </span><span class="identifier">y</span><span> =&gt; </span><span class="identifier">x</span><span> + </span><span class="identifier">y</span></code></pre>
         <p>This is especially useful when parameter vary at different rates. For example, the data we&#39;re using doesn&#39;t change at any time, whereas we&#39;ve constantly the parameter <code>a</code> to try to find the best value. I don&#39;t want to write any more as this is the main challenge here: implement a curried form of <code>loss</code> so that we can use it with <code>numericalDifferentation</code>.</p>
+        <p>There is a stub in <code>Loss.scala</code> that you can work with.</p>
         
-        <h2 id="gradient-descent" class="section">Gradient Descent<a class="anchor-link right" href="#gradient-descent"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>Now we&#39;re ready to put it all together. Here&#39;s a sketch of how gradient descent works:</p>
+        <h3 id="gradient-descent" class="section">Gradient Descent<a class="anchor-link right" href="#gradient-descent"><i class="icofont-laika">&#xef71;</i></a></h3>
+        <p>Now we&#39;re ready to put it all together and implement gradient descent. We&#39;re going to start by implementing a method that performs a single iteration of gradient descent. This method with take in the current value of the parameter we&#39;re optimizing, and the function we&#39;re optimizing, and return an updated value for the parameter. See the <code>iterate</code> method on <code>GradientDescent.scala</code>.</p>
+        <p>In the body of the method we want to:</p>
+        <ol class="arabic">
+          <li>Calculate the gradient of the function at the value of the parameter, using the numerical differentiation method we have already implemented.</li>
+          <li>Calculate the updated value of the parameter.</li>
+        </ol>
+        <p>How do we calculate the updated value? We want to adjust the parameter to reduce the loss, which means moving it a little bit in the direction of <em>negative</em> gradient. So if \( x \) is the current value of the parameter we want</p>
+        <p>$$ updatedX = x - (r \times gradient) $$</p>
+        <p>where \( r \) is a small value (such as 0.01) known as the <em>learning rate</em>.</p>
+        <p>Go ahead and implement this!</p>
+        <p>Here&#39;s a sketch of how gradient descent works:</p>
         <ul>
           <li>Start by choosing an initial value for the parameter <code>a</code>.</li>
           <li>Calculate the gradient of the loss given <code>a</code>. </li>
