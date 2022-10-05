@@ -103,9 +103,12 @@
         <p>Numerical differentiation is perhaps the most obvious approach to finding a function&#39;s gradient (that is, differentiating it) if you&#39;re a programmer.</p>
         <p>The gradient is just a fancy name for the slope, and the slope is &quot;rise over run&quot;.</p>
         <p>$$ gradient = \frac{rise}{run} $$</p>
-        <p>We can estimate the gradient of <code>f</code> at a point <code>x</code> using the equation</p>
+        <p>Using this we can estimate the gradient of <code>f</code> at a point <code>x</code> using the equation</p>
         <p>$$ gradient \approx \frac{f(x + h) - f(x)}{h} $$</p>
-        <p>where <code>h</code> is a small number. This is the essential idea behind numerical differentiation.</p>
+        <p>where \( h \) is a small number. In this equation \( h \) is the run, and \( f(x+h) - f(x) \) is the rise. This is the essential idea behind numerical differentiation.</p>
+        <p>The example below shows how the estimate of the gradient changes as we change \( h \) to be closer or further away from a given point (the point in black).</p>
+        <div id="draw-numerical-differentiation-plot"></div>
+        <script>Sine.drawNumericalDifferentiationPlot("draw-numerical-differentiation-plot")</script>
         <p>It&#39;s time to write some code. Let&#39;s implement numerical differentiation. Now you might think that you should implement a method that takes all of</p>
         <ul>
           <li>the function we&#39;re differentiating;</li>
