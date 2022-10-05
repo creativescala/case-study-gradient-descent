@@ -93,6 +93,7 @@
           <li class="level1"><a href="#implementation">Implementation</a></li>
           <li class="level2"><a href="#calculating-the-gradient-of-the-loss-function">Calculating the Gradient of the Loss Function</a></li>
           <li class="level2"><a href="#gradient-descent">Gradient Descent</a></li>
+          <li class="level2"><a href="#animate-it">Animate It!</a></li>
         </ul>
 
         <p class="footer"></p>
@@ -145,15 +146,10 @@
         <p>$$ updatedX = x - (r \times gradient) $$</p>
         <p>where \( r \) is a small value (such as 0.01) known as the <em>learning rate</em>.</p>
         <p>Go ahead and implement this!</p>
-        <p>Here&#39;s a sketch of how gradient descent works:</p>
-        <ul>
-          <li>Start by choosing an initial value for the parameter <code>a</code>.</li>
-          <li>Calculate the gradient of the loss given <code>a</code>. </li>
-          <li>Move <code>a</code> a small amount (the so called <em>step size</em>) in the direction that decreases the gradient.</li>
-          <li>Repeat this process until the loss is very small, the loss is not decreasing quickly, or the process has gone on long enough.</li>
-        </ul>
-        <p>I&#39;m a bit vague on the details above. You can choose reasonable value for the step size and other values I have omitted, and thinking about what is reasonable will force you to get a better understanding of what&#39;s going on.</p>
-        <p>Implement gradient descent, and show that you can find a good value for <code>a</code> by using it.</p>
+        <p>Now we can implement the full gradient descent algorithm, in the method <code>gradientDescent</code>. The only thing you need to do here is iterate for the given number of iterations. (There are other stopping conditions we can use, such as stopping when the loss doesn&#39;t decrease from one iteration to the next, but we&#39;re keeping things simple here.)</p>
+        
+        <h3 id="animate-it" class="section">Animate It!<a class="anchor-link right" href="#animate-it"><i class="icofont-laika">&#xef71;</i></a></h3>
+        <p>Finally, complete the implementation in <code>Animation.scala</code> and draw an animation showing gradient descent at work!</p>
 
         <hr style="margin-top: 30px"/>
         <footer style="font-size: 90%; text-align: center">
