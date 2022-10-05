@@ -1,4 +1,4 @@
-package gradientdescent.numerical
+package gradientdescent
 
 import doodle.core.Point
 

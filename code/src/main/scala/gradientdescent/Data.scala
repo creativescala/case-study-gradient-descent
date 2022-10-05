@@ -1,4 +1,4 @@
-package gradientdescent.numerical
+package gradientdescent
 
 import doodle.core.Point
 import scala.util.Random
@@ -20,7 +20,7 @@ object Data {
       Point(x, y)
     }
 
-  /** Example data set for f(x) = 50 sin(x) */
+  /** Example data set for f(x) = 75 sin(x) */
   val sineData =
-    create(40, -6.0, 6.0, 5.0)(x => 50 * Math.sin(x))
+    create(40, -6.0, 6.0, 5.0)(x => 75 * Math.sin(x))
 }
