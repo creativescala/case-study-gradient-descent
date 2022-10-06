@@ -21,6 +21,7 @@ import doodle.syntax.all._
 import doodle.interact.animation._
 import doodle.interact.syntax.all._
 import doodle.java2d._
+import cats.effect.unsafe.implicits.global
 
 import gradientdescent.Plot
 
@@ -31,11 +32,11 @@ object Animation {
   val loss: Double => Double =
     ??? // Create the loss function here, given f and data above
 
-  def animate(initial: Double, iterations: Int) = {
+  def animation(initial: Double, iterations: Int): Transducer[Picture[Unit]] = {
     Transducer
       .fromList(List.range(0, iterations))
       .scanLeft(initial) { (a, _) =>
-        val updatedX = GradientDescent.iterate(initial)(loss)
+        val updatedX = GradientDescent.iterate(a)(loss)
         updatedX
       }
       .map { a =>
@@ -44,4 +45,6 @@ object Animation {
           .on(Plot.function(-6.0, 6.0, scale)(x => f(a, x)))
       }
   }
+
+  animation(10.0, 1000).animate(Frame.size(600, 600))
 }
