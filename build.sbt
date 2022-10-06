@@ -37,7 +37,8 @@ lazy val code = project
   .in(file("code"))
   .settings(
     libraryDependencies ++= Seq(
-      "org.creativescala" %%% "doodle" % "0.11.2"
+      "org.creativescala" %%% "doodle" % "0.11.2",
+      "org.scalameta" %% "munit" % "0.7.29" % Test
     )
   )
 

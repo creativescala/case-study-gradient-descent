@@ -30,14 +30,14 @@ Let's implement numerical differentiation. Now you might think that you should i
 Instead, however, I want you to implement a method with following signature:
 
 ```scala
-def numericalDifferentiation(h: Double)(f: Double => Double): Double => Double
+def differentiate(h: Double)(f: Double => Double): Double => Double
 ```
 
 So the method is taking a function, and returns a function. The returned function takes in a point `x` and returns an approximation of the gradient at that point.
 
 This is how differentiation is treated in mathematics: the derivative of a function is itself a function. If you've studied calculus, this is what the \\(\frac{d}{dx}\\) operator is doing.
 
-There is a code stub for you to work with in the file `NumericalDifferentiation.scala` within the `numerical` subdirectory. All your code should go within the `numerical` subdirectory.
+There is a code stub for you to work with in the file `NumericalDifferentiation.scala` within the `numerical` subdirectory. All your code should go within the `numerical` subdirectory. There are also a few tests you can use to check your implementation. You may want to add more tests.
 
 
 ### Calculating the Gradient of the Loss Function
