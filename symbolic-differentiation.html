@@ -92,7 +92,8 @@
         <ul class="nav-list">
           <li class="level1"><a href="#implementation">Implementation</a></li>
           <li class="level2"><a href="#representing-expressions">Representing Expressions</a></li>
-          <li class="level2"><a href="#simplifying-expressions">Simplifying Expressions</a></li>
+          <li class="level1"><a href="#applying-arguments">Applying Arguments</a></li>
+          <li class="level1"><a href="#differentiating-expressions">Differentiating Expressions</a></li>
         </ul>
 
         <p class="footer"></p>
@@ -121,7 +122,7 @@
         </ul>
         <p>$$ \textrm{If}\; f(x) = g(x) + h(x) \; \textrm{then}\; \frac{df(x)}{dx} = \frac{dg(x)}{dx} + \frac{dh(x)}{dx} $$</p>
         <ul>
-          <li><strong>The product fule:</strong> The derivative of the product of two functions is the derivative of the first multiplied by the second plus the derivative of the second multiplied by the first.</li>
+          <li><strong>The product rule:</strong> The derivative of the product of two functions is the derivative of the first multiplied by the second plus the derivative of the second multiplied by the first.</li>
         </ul>
         <p>$$ \textrm{If}\; f(x) = g(x)h(x) \; \textrm{then}\; \frac{df(x)}{dx} = \frac{dg(x)}{dx}h(x) + g(x)\frac{dh(x)}{dx} $$</p>
         <p>We can apply these rules to calculate the derivative of</p>
@@ -133,6 +134,7 @@
           <li>Applying the same reasoning as above tells us the derivative of \( 4x^2 \) is \( 8x \)</li>
         </ul>
         <p>Summing them all together gives us \( 8x + 8 \) as expected.</p>
+        <p>Note that we don&#39;t really need the power rule! \( x^2 \) is the same as \( x * x \), and we can correctly calculate the derivative using the product rule. It&#39;s a useful shortcut, but we&#39;re going to work without in our code below.</p>
         
         <h2 id="implementation" class="section">Implementation<a class="anchor-link right" href="#implementation"><i class="icofont-laika">&#xef71;</i></a></h2>
         <p>Now we&#39;re ready to implement symbolic differentiation. We need:</p>
@@ -145,37 +147,19 @@
         <p>We&#39;re going to represent expressions as follows. An <code>Expression</code> one of:</p>
         <ul>
           <li>A literal number, containing a <code>Double</code> value.</li>
-          <li>A variable, which represents the parameter \( x \) in an expression. We&#39;re only considering functions of a single variable, so we only need one of these.</li>
+          <li>A parameter, containing a <code>String</code> name, which represents a variable such as \( x \) or \( a \) in our function. </li>
           <li>The addition of two <code>Expressions</code>.</li>
           <li>The multiplication of two <code>Expressions</code>.</li>
-          <li>A power, which has a variable and an exponent, representing expressions such as \( x^3 \).</li>
         </ul>
-        <p>Note we don&#39;t want to represent powers of general expressions, such as \( (4x + 3)^3 \), as dealing with them will quickly get messy. We also don&#39;t have a representation for division and subtraction, because they a bit more complexity than we want for this part of the case study. You can add them back in if you want.</p>
-        <p>By now you should know how to represent this structure in code, so go ahead and implement it.</p>
-        <p>In <a href="numerical-differentiation.html">numerical differentiation</a> we represented mathematical functions as Scala functions. In this section we&#39;re representing mathematical functions as Scala data structures. This is an example of a general implementation strategy called <em>reification</em>. The abstract meaning of reification is to turn something abstract into something concrete. The concrete meaning, in our case, is to turn functions (or equivalently, methods) into data structures. Reification connects the functional programming world to the object oriented world. We&#39;ll see more of this in future.</p>
+        <p>By now you should know how to represent this structure in code, so go ahead and implement it. There is a skeleton in <code>Expression.scala</code> to get you started.</p>
+        <p>In <a href="numerical-differentiation.html">numerical differentiation</a> we represented mathematical functions as Scala functions. In this section we&#39;re representing mathematical functions as Scala data structures. This is an example of a general implementation strategy called <em>reification</em>. The abstract meaning of reification is to turn something abstract into something concrete. The concrete meaning, in our case, is to turn functions (or equivalently, methods) into data structures. Reification connects the functional programming world to the object oriented world. We&#39;ll see more of this in the future.</p>
         
-        <h3 id="simplifying-expressions" class="section">Simplifying Expressions<a class="anchor-link right" href="#simplifying-expressions"><i class="icofont-laika">&#xef71;</i></a></h3>
-        <p>Now we have a representation of expressions we want to simplify them. Instead of, say, \( x^2 + x^2 \) we want to have \( 2x^2 \). This makes it easier to implement differentiation, which will be our next step.</p>
-        <p>Conventionally, the types of expressions we&#39;re working with are always written from highest power to lowest. So we&#39;d write \( 4x^2 + 8x + 16 \), not \( 8x + 4x^2 + 16 \). This conventional format is called a <em>normal form</em>. Our simplification will convert any expression to its normal form.</p>
-        <p>To do this we can use various rules of algebra, such as:</p>
-        <ul>
-          <li><strong>Associativity:</strong> \( x + y + z = x + (y + z) \) and \( x \times y \times z = x \times (y \times z) \)</li>
-          <li><strong>Commutivity:</strong> \( x + y = y + x \) and \( x \times y = y \times x \)</li>
-          <li><strong>Distributivity:</strong> \( x \times (y + z) = (x \times y) + (y \times z) \)</li>
-        </ul>
-        <p>Whenever we have an expression involving literals, we can evaluate that expression. This is known as <em>constant folding</em> in the compiler literature.</p>
-        <p>This allows us to transform expressions to find common terms that we can group together. Here are some examples:</p>
-        <ul>
-          <li>If we have \( 4 + x \) we can use commutivity to transform it to \( x + 4 \).</li>
-          <li>If we have \( x + 3 + 4 \) we can use associativity to transform it to \( x + (4 + 3) \) and then use constant folding to \( x + 7 \)</li>
-        </ul>
-        <p>How should we implement this? Our fundamental tool will be pattern matching, which allows us to look for particular shapes of expressions. For example, we might write a constant folding transform as</p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">constantFold</span><span>(</span><span class="identifier">expr</span><span>: </span><span class="type-name">Expression</span><span>): </span><span class="type-name">Expression</span><span> =
-  </span><span class="identifier">expr</span><span> </span><span class="keyword">match</span><span> {
-    </span><span class="keyword">case</span><span> </span><span class="type-name">Addition</span><span>(</span><span class="type-name">Literal</span><span>(</span><span class="identifier">x</span><span>), </span><span class="type-name">Literal</span><span>(</span><span class="identifier">y</span><span>)) =&gt; </span><span class="type-name">Literal</span><span>(</span><span class="identifier">x</span><span> + </span><span class="identifier">y</span><span>)
-    </span><span class="keyword">case</span><span> </span><span class="type-name">Multiplication</span><span>(</span><span class="type-name">Literal</span><span>(</span><span class="identifier">x</span><span>), </span><span class="type-name">Literal</span><span>(</span><span class="identifier">y</span><span>)) =&gt; </span><span class="type-name">Literal</span><span>(</span><span class="identifier">x</span><span> * </span><span class="identifier">y</span><span>)
-    </span><span class="keyword">case</span><span> </span><span class="identifier">other</span><span> =&gt; </span><span class="identifier">other</span><span>
-  }</span></code></pre>
+        <h2 id="applying-arguments" class="section">Applying Arguments<a class="anchor-link right" href="#applying-arguments"><i class="icofont-laika">&#xef71;</i></a></h2>
+        <p>We need to be able to apply arguments to our functions. Implement a method <code>apply</code> that accepts both a parameter name (a <code>String</code>) and a value for that parameter (a <code>Double</code>), and substitutes the value for all occurrences of the parameter within the method.</p>
+        <p>This is a good first step, but after applying we can end up with an <code>Expression</code> that has many constant expressions: additions or multiplications where both parts of the expression are literals. Implement a method <code>simplify</code> that gets rid of as many of these as you can.</p>
+        
+        <h2 id="differentiating-expressions" class="section">Differentiating Expressions<a class="anchor-link right" href="#differentiating-expressions"><i class="icofont-laika">&#xef71;</i></a></h2>
+        <p>Now we&#39;re ready to implement differentiation. </p>
 
         <hr style="margin-top: 30px"/>
         <footer style="font-size: 90%; text-align: center">
