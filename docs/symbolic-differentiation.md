@@ -26,7 +26,7 @@ $$ \textrm{If}\;  f(x) = k \; \textrm{then}\; \frac{df(x)}{dx} = 0 $$
 
 $$ \textrm{If}\; f(x) = g(x) + h(x) \; \textrm{then}\; \frac{df(x)}{dx} = \frac{dg(x)}{dx} + \frac{dh(x)}{dx} $$
 
-- **The product fule:** The derivative of the product of two functions is the derivative of the first multiplied by the second plus the derivative of the second multiplied by the first.
+- **The product rule:** The derivative of the product of two functions is the derivative of the first multiplied by the second plus the derivative of the second multiplied by the first.
 
 $$ \textrm{If}\; f(x) = g(x)h(x) \; \textrm{then}\; \frac{df(x)}{dx} = \frac{dg(x)}{dx}h(x) + g(x)\frac{dh(x)}{dx} $$
 
@@ -43,6 +43,7 @@ The sum rule tells us we can separately compute the derivatives of \\( 4x^2 \\),
 
 Summing them all together gives us \\( 8x + 8 \\) as expected.
 
+Note that we don't really need the power rule! \\( x^2 \\) is the same as \\( x * x \\), and we can correctly calculate the derivative using the product rule. It's a useful shortcut, but we're going to work without in our code below.
 
 ## Implementation 
 
@@ -57,45 +58,22 @@ Now we're ready to implement symbolic differentiation. We need:
 We're going to represent expressions as follows. An `Expression` one of:
 
 - A literal number, containing a `Double` value.
-- A variable, which represents the parameter \\( x \\) in an expression. We're only considering functions of a single variable, so we only need one of these.
+- A parameter, containing a `String` name, which represents a variable such as \\( x \\) or \\( a \\) in our function. 
 - The addition of two `Expressions`.
 - The multiplication of two `Expressions`.
-- A power, which has a variable and an exponent, representing expressions such as \\( x^3 \\).
 
-Note we don't want to represent powers of general expressions, such as \\( (4x + 3)^3 \\), as dealing with them will quickly get messy. We also don't have a representation for division and subtraction, because they a bit more complexity than we want for this part of the case study. You can add them back in if you want.
+By now you should know how to represent this structure in code, so go ahead and implement it. There is a skeleton in `Expression.scala` to get you started.
 
-By now you should know how to represent this structure in code, so go ahead and implement it.
-
-In [numerical differentiation](numerical-differentiation.md) we represented mathematical functions as Scala functions. In this section we're representing mathematical functions as Scala data structures. This is an example of a general implementation strategy called *reification*. The abstract meaning of reification is to turn something abstract into something concrete. The concrete meaning, in our case, is to turn functions (or equivalently, methods) into data structures. Reification connects the functional programming world to the object oriented world. We'll see more of this in future.
+In [numerical differentiation](numerical-differentiation.md) we represented mathematical functions as Scala functions. In this section we're representing mathematical functions as Scala data structures. This is an example of a general implementation strategy called *reification*. The abstract meaning of reification is to turn something abstract into something concrete. The concrete meaning, in our case, is to turn functions (or equivalently, methods) into data structures. Reification connects the functional programming world to the object oriented world. We'll see more of this in the future.
 
 
-### Simplifying Expressions
+## Applying Arguments
 
-Now we have a representation of expressions we want to simplify them. Instead of, say, \\( x^2 + x^2 \\) we want to have \\( 2x^2 \\). This makes it easier to implement differentiation, which will be our next step.
+We need to be able to apply arguments to our functions. Implement a method `apply` that accepts both a parameter name (a `String`) and a value for that parameter (a `Double`), and substitutes the value for all occurrences of the parameter within the method.
 
-Conventionally, the types of expressions we're working with are always written from highest power to lowest. So we'd write \\( 4x^2 + 8x + 16 \\), not \\( 8x + 4x^2 + 16 \\). This conventional format is called a *normal form*. Our simplification will convert any expression to its normal form.
+This is a good first step, but after applying we can end up with an `Expression` that has many constant expressions: additions or multiplications where both parts of the expression are literals. Implement a method `simplify` that gets rid of as many of these as you can.
 
-To do this we can use various rules of algebra, such as:
 
-- **Associativity:** \\( x + y + z = x + (y + z) \\) and \\( x \times y \times z = x \times (y \times z) \\)
-- **Commutivity:** \\( x + y = y + x \\) and \\( x \times y = y \times x \\)
-- **Distributivity:** \\( x \times (y + z) = (x \times y) + (y \times z) \\)
+## Differentiating Expressions
 
-Whenever we have an expression involving literals, we can evaluate that expression. This is known as *constant folding* in the compiler literature.
-
-This allows us to transform expressions to find common terms that we can group together. Here are some examples:
-
-- If we have \\( 4 + x \\) we can use commutivity to transform it to \\( x + 4 \\).
-- If we have \\( x + 3 + 4 \\) we can use associativity to transform it to \\( x + (4 + 3) \\) and then use constant folding to \\( x + 7 \\)
-
-How should we implement this? Our fundamental tool will be pattern matching, which allows us to look for particular shapes of expressions. For example, we might write a constant folding transform as
-
-```scala
-def constantFold(expr: Expression): Expression =
-  expr match {
-    case Addition(Literal(x), Literal(y)) => Literal(x + y)
-    case Multiplication(Literal(x), Literal(y)) => Literal(x * y)
-    case other => other
-  }
-
-```
+Now we're ready to implement differentiation. 
