@@ -12,7 +12,7 @@ $$ gradient \approx \frac{f(x + h) - f(x)}{h} $$
 
 where \\( h \\) is a small number. In this equation \\( h \\) is the run, and \\( f(x+h) - f(x) \\) is the rise. This is the essential idea behind numerical differentiation.
 
-The example below shows how the estimate of the gradient changes as we change \\( h \\) to be closer or further away from a given point (the point in black).
+The example below shows how the estimate of the gradient changes as we change \\( h \\) (the point in blue) to be closer or further away from a given point (the point in black).
 
 @:doodle(draw-numerical-differentiation-plot, Sine.drawNumericalDifferentiationPlot)
 
@@ -42,7 +42,7 @@ There is a code stub for you to work with in the file `NumericalDifferentiation.
 
 ### Calculating the Gradient of the Loss Function
 
-Now we have a way to calculate the gradient of a function, we can calculate the gradient of the loss function. However, we need to get the loss function into a form that we can use with our `numericalDifferentiation` method. In other words, we need to turn `loss`, a function of 3 parameters, into a function of a single parameter. (That single parameter would be `a`, as that's what we can vary to reduce the loss and hence what we want to calculate the derivate with respect to.)
+Now we have a way to calculate the gradient of a function, we can calculate the gradient of the loss function. However, we need to get the loss function into a form that we can use with our `differentiate` method. In other words, we need to turn `loss`, a function of 3 parameters, into a function of a single parameter. (That single parameter would be `a`, as that's what we can vary to reduce the loss and hence what we want to calculate the derivate with respect to.)
 
 The secret to doing this is called *currying*, which is not the delicious dish you probably think of when you hear the word, but instead the idea that a function of two parameters can become a function of a single parameter returning another function of a single parameter. For example, if we have the function
 
@@ -56,7 +56,7 @@ we can curry it to obtain
 val curriedSum: Double => Double => Double = x => y => x + y
 ```
 
-This is especially useful when parameter vary at different rates. For example, the data we're using doesn't change at any time, whereas we've constantly the parameter `a` to try to find the best value. I don't want to write any more as this is the main challenge here: implement a curried form of `loss` so that we can use it with `numericalDifferentation`.
+This is especially useful when parameter vary at different rates. For example, the data we're using doesn't change at any time, whereas we've constantly the parameter `a` to try to find the best value. I don't want to write any more as this is the main challenge here: implement a curried form of `loss` so that we can use it with `differentiate`.
 
 There is a stub in `Loss.scala` that you can work with.
 
