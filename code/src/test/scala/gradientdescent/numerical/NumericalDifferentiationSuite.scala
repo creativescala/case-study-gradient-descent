@@ -45,8 +45,8 @@ class NumericalDifferentiationSuite extends FunSuite {
     val f: Double => Double = x => Math.sin(x)
     val df = differentiate(0.01)(f)
 
-    assertEquals(df(0.0), Math.cos(0.0))
-    assertEquals(df(1.0), Math.cos(1.0))
+    within(df(0.0), Math.cos(0.0))
+    within(df(1.0), Math.cos(1.0))
   }
 
 }
