@@ -111,51 +111,65 @@
         
         <h2 id="gradient-descent-for-function-fitting" class="section">Gradient Descent for Function Fitting<a class="anchor-link right" href="#gradient-descent-for-function-fitting"><i class="icofont-laika">&#xef71;</i></a></h2>
         <p>At the time of writing (September 2022), <a href="https://stablediffusionweb.com/">Stable Diffusion</a> is one of the newest, and best, text-to-image programs. Give it a try! Enter some text and see what image yous can get it to produce. It&#39;s certainly impressive, though the results are still sometimes a little bit odd.</p>
-        <p>At it&#39;s core, Stable Diffusion and similar programs such as Midjourney, are functions. Remember the core idea of a function is that you put something and get something back. In this case you put in text and get back an image. What makes these functions particularly interesting is that parts of the function are learned from data. The data consists of example of text and images associated with them. The general shape of the function is fixed but many parts of it, called weights, are adjusted so that, given input, the output becomes closer to that in data used for learning.</p>
+        <p>At it&#39;s core, Stable Diffusion and similar programs such as Midjourney, are functions. Remember the core idea of a function is that you put something and get something back. In this case you put in text and get back an image. </p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">stableDiffusion</span><span>(</span><span class="identifier">prompt</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">Image</span><span> = ??? </span><span class="comment">// Magic goes here</span></code></pre>
+        <p>What makes these functions particularly interesting is that parts of the function are learned from data. The data consists of example of text and images associated with them. The general shape of the function is fixed but many parts of it, called weights, are adjusted so that, given input, the output becomes closer to that in data used for learning.</p>
         <p>An example will help make this clearer. Consider the function below.</p>
         <p>$$f(x, a) = a \sin(x)$$</p>
         <p>In Scala we&#39;d write</p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">f</span><span>: (</span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span> = (</span><span class="identifier">x</span><span>, </span><span class="identifier">a</span><span>) =&gt; </span><span class="identifier">a</span><span> * </span><span class="type-name">Math</span><span>.</span><span class="identifier">sin</span><span>(</span><span class="identifier">x</span><span>)</span></code></pre>
-        <p>This is a function with two parameters:</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">f</span><span>(</span><span class="identifier">x</span><span>: </span><span class="type-name">Double</span><span>, </span><span class="identifier">a</span><span>: </span><span class="type-name">Double</span><span>): </span><span class="type-name">Double</span><span> = </span><span class="identifier">a</span><span> * </span><span class="type-name">Math</span><span>.</span><span class="identifier">sin</span><span>(</span><span class="identifier">x</span><span>)</span></code></pre>
+        <p>This is a method with two parameters:</p>
         <ol class="arabic">
           <li><code>x</code>, which is the usual <code>x</code> value; and</li>
           <li><code>a</code>, which is the amplitude (height) of the sine wave.</li>
         </ol>
-        <p>(Note that I&#39;m defining functions so that the code is closer to the mathematics, but we could equally use a Scala method.)</p>
-        <p>You can play with the demo below, to see how changing the value of <code>a</code> changes the function.</p>
+        <p>(Note that I&#39;m defining Scala methods but using the term function. In mathematics we usually only deal with functions, but in Scala it&#39;s more idiomatic to write methods most of the time.)</p>
+        <p>Play with the demo below and see how changing the value of <code>a</code> changes the function.</p>
         <div id="draw-basic-plot"></div>
         <script>Sine.drawBasicPlot("draw-basic-plot")</script>
-        <p>Now imagine we have some data, which are pairs of <code>x</code> and <code>y</code> values. For each <code>x</code> value we have the <code>y</code> value we&#39;d like the function to produce. We can adjust the value of <code>a</code> to bring the function closer or further away from the output. To quantify how good a choice we&#39;ve made for <code>a</code>, we can look at the distance between the function output and the <code>y</code> value for each data point in our data set. We&#39;ll call this the <em>loss function</em> or just the <em>loss</em>. The demo below allows you to adjust <code>a</code> and see how the the loss changes for some randomly choosen data. You should note that you can increase and decrease the loss by changing <code>a</code>.</p>
+        <p>Now we&#39;re going to assume we have some data, and our task will be to find the value of <code>a</code> that gives the function that best fits the data. We&#39;re going to make this concrete in just a moment, but a bit more terminology before we move on:</p>
+        <ul>
+          <li>the function is the <em>model</em>;</li>
+          <li>the parameter <code>x</code> is the <em>input parameter</em>; and</li>
+          <li>the parameter <code>a</code> is the <em>weight</em> or <em>learned parameter</em>.</li>
+        </ul>
+        <p>Back to the problem. Let&#39;s assume we have some <em>training data</em>, shown as the blue points below. We want to find a function that fits the data. This, informally, means that we want a function that is close to the data points. If we have a data point with an <code>x</code> and <code>y</code> value we want <code>f(x)</code> to be close to <code>y</code>. In our case, we&#39;re going to assume that the model will be a good fit for the data if we can just find the right value of the learned parameter. So our task reduces to finding the value of the learned parameter that gives the best fit to the data. You can try this yourself in the example below.</p>
         <div id="draw-error-plot"></div>
         <script>Sine.drawErrorPlot("draw-error-plot")</script>
+        <p>So our task is to find the value of the learned parameter that gives a good fit to the data. To do this we need to</p>
+        <ol class="arabic">
+          <li>formalize what we mean by a good fit; and</li>
+          <li>define an algorithm that find a value for the learned parameter that gives a good fit.</li>
+        </ol>
+        <p>We&#39;ll tackle each in turn. </p>
+        <p>To quantify how good a choice we&#39;ve made for <code>a</code>, we will use the sum of the square of the distance between the function output and the <code>y</code> value of each data point in our data set. We&#39;ll call this quantity the <em>loss</em>, and the <em>loss function</em> the function that calculates the loss given a choice of <code>a</code>. </p>
+        <p>This will become clearer with some code. For a single data point we can calculate the loss as</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">pointLoss</span><span>(</span><span class="identifier">a</span><span>: </span><span class="type-name">Double</span><span>, </span><span class="identifier">point</span><span>: </span><span class="type-name">Point</span><span>)(</span><span class="identifier">model</span><span>: (</span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span>): </span><span class="type-name">Double</span><span> = {
+  </span><span class="keyword">val</span><span> </span><span class="identifier">error</span><span> = </span><span class="identifier">f</span><span>(</span><span class="identifier">point</span><span>.</span><span class="identifier">x</span><span>, </span><span class="identifier">a</span><span>) - </span><span class="identifier">point</span><span>.</span><span class="identifier">y</span><span>
+  </span><span class="identifier">error</span><span> * </span><span class="identifier">error</span><span>
+}</span></code></pre>
+        <p>In mathematical notation we write</p>
+        <p>$$pointLoss(a, point, model) = || model(point.x, a) - point.y ||^2$$</p>
+        <p>Now to calculate the full loss we sum over all the data.</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">loss</span><span>(</span><span class="identifier">a</span><span>: </span><span class="type-name">Double</span><span>, </span><span class="identifier">data</span><span>: </span><span class="type-name">List</span><span>[</span><span class="type-name">Data</span><span>])(</span><span class="identifier">model</span><span>: (</span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span>): </span><span class="type-name">Double</span><span> = {
+  </span><span class="identifier">data</span><span>.</span><span class="identifier">map</span><span>(</span><span class="identifier">pt</span><span> =&gt; </span><span class="identifier">pointLoss</span><span>(</span><span class="identifier">a</span><span>, </span><span class="identifier">pt</span><span>)(</span><span class="identifier">model</span><span>)).</span><span class="identifier">sum</span><span>
+}</span></code></pre>
+        <p>In mathematical notation</p>
+        <p>$$ loss(a, data, model) = \sum_{pt \in data}pointLoss(a, pt, model)$$</p>
+        <p>The demo below allows you to adjust <code>a</code> and see how the the loss changes for some randomly choosen data. You should note that you can increase and decrease the loss by changing <code>a</code>.</p>
+        <div id="draw-loss-plot"></div>
+        <script>Sine.drawLossPlot("draw-loss-plot")</script>
         <p>So we have:</p>
         <ul>
           <li>some <em>training data</em> that gives us example inputs and outputs;</li>
-          <li>a function with a parameter (<code>a</code>) that we want to learn in response to data; and</li>
-          <li>a way of measuring the quality of our current choice of parameter (the loss);</li>
+          <li>a model with a parameter (<code>a</code>) that we want to learn in response to the data; and</li>
+          <li>a way of measuring the quality of our current choice of parameter via the loss.</li>
         </ul>
-        <p>Now the final piece of the puzzle is to tell the computer how to adjust the parameter to reduce the loss. This gets us to gradient descent. The <em>gradient</em> of a function is just a fancy word for the function&#39;s slope. So what we need to do is calculate the gradient of the loss function with respect to <code>a</code>, meaning:</p>
+        <p>Now the final piece of the puzzle is to come up with an algorithm to adjust the parameter to reduce the loss. This gets us to gradient descent. The <em>gradient</em> of a function is just a fancy word for the function&#39;s slope. The basic idea of gradient descent is:</p>
         <ol class="arabic">
-          <li>find how changes in <code>a</code> relate to changes in loss, and</li>
-          <li>move <code>a</code> in the direction that reduces the loss.</li>
+          <li>Find the gradient of the loss with respect to the parameter <code>a</code>. This tells us how changes in <code>a</code> relate to changes in loss.</li>
+          <li>Move <code>a</code> in the direction that reduces the loss.</li>
         </ol>
-        <p>We use the term <em>differentiation</em> for finding the gradient of a function.</p>
-        <p>To really formalize this we need to be a bit more precise about about the error function. For one particular data point, the loss is</p>
-        <p>$$ pointLoss(f, a, x, y) = (f(x, a) - y)^2 $$</p>
-        <p>In Scala, we&#39;d write</p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">pointLoss</span><span>: ((</span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span> = 
-  (</span><span class="identifier">f</span><span>, </span><span class="identifier">a</span><span>, </span><span class="identifier">x</span><span>, </span><span class="identifier">y</span><span>) =&gt; {
-    </span><span class="keyword">val</span><span> </span><span class="identifier">error</span><span> = </span><span class="identifier">f</span><span>(</span><span class="identifier">x</span><span>, </span><span class="identifier">a</span><span>) - </span><span class="identifier">y</span><span>
-    </span><span class="identifier">error</span><span> * </span><span class="identifier">error</span><span>
-  }</span></code></pre>
-        <p>This means the loss for a single point is always non-negative.</p>
-        <p>Now we just have to sum up the loss over all the data points to get what we commonly call the loss.</p>
-        <p>$$ loss(data, f, a) = \sum_{pt \in data}pointLoss(f, a, pt.x, pt.y)$$</p>
-        <p>You might not be familiar with this mathematical notation. It&#39;s not important. The Scala code is:</p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">loss</span><span>: (</span><span class="type-name">List</span><span>[</span><span class="type-name">Point</span><span>], (</span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span> =
-  (</span><span class="identifier">data</span><span>, </span><span class="identifier">f</span><span>, </span><span class="identifier">a</span><span>) =&gt; 
-    </span><span class="identifier">data</span><span>.</span><span class="identifier">foldLeft</span><span>(</span><span class="number-literal">0.0</span><span>){ (</span><span class="identifier">accum</span><span>, </span><span class="identifier">pt</span><span>) =&gt; </span><span class="identifier">pointLoss</span><span>(</span><span class="identifier">f</span><span>, </span><span class="identifier">a</span><span>, </span><span class="identifier">pt</span><span>.</span><span class="identifier">x</span><span>, </span><span class="identifier">pt</span><span>.</span><span class="identifier">y</span><span>) }</span></code></pre>
-        <p>Because we&#39;re taking the sum of the point loss, the loss is also always non-negative. This means finding the smallest loss is always the best choice.</p>
         <p>To recap, our goal is to make the loss as small as possible. In technical jargon we&#39;d say we&#39;re minimizing the loss function. We&#39;re going to do this by calculating the gradient of the loss function with respect to <code>a</code>, and then move <code>a</code> a small amount in the direction that reduces the loss. We then repeat this process, until we can&#39;t reduce the loss any more or we get bored.</p>
         <p>Notice at this point I&#39;m not giving details. As you&#39;ve probably guessed, you&#39;re going to implement this and our first approach will be numerical differentiation.</p>
 
