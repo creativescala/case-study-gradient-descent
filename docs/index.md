@@ -21,23 +21,31 @@ def stableDiffusion(prompt: String): Image = ??? // Magic goes here
 
 What makes these functions particularly interesting is that parts of the function are learned from data. The data consists of example of text and images associated with them. The general shape of the function is fixed but many parts of it, called weights, are adjusted so that, given input, the output becomes closer to that in data used for learning.
 
-An example will help make this clearer. Consider the function below.
+An example will help make this clearer. Consider the function below. We'll call this function the *model*.
 
 $$f(x, a) = a \sin(x)$$
 
 In Scala we'd write
 
 ```scala
+<<<<<<< Updated upstream
 def f(x: Double, a: Double): Double = a * Math.sin(x)
 ```
 
 This is a method with two parameters:
+=======
+val model: (Double, Double) => Double = (x, a) => a * Math.sin(x)
+```
+
+The model is a function with two parameters:
+>>>>>>> Stashed changes
 
 1. `x`, which is the usual `x` value; and
 2. `a`, which is the amplitude (height) of the sine wave.
 
 (Note that I'm defining Scala methods but using the term function. In mathematics we usually only deal with functions, but in Scala it's more idiomatic to write methods most of the time.)
 
+<<<<<<< Updated upstream
 Play with the demo below and see how changing the value of `a` changes the function.
 
 @:doodle(draw-basic-plot, Sine.drawBasicPlot)
@@ -49,6 +57,13 @@ Now we're going to assume we have some data, and our task will be to find the va
 - the parameter `a` is the *weight* or *learned parameter*.
 
 Back to the problem. Let's assume we have some *training data*, shown as the blue points below. We want to find a function that fits the data. This, informally, means that we want a function that is close to the data points. If we have a data point with an `x` and `y` value we want `f(x)` to be close to `y`. In our case, we're going to assume that the model will be a good fit for the data if we can just find the right value of the learned parameter. So our task reduces to finding the value of the learned parameter that gives the best fit to the data. You can try this yourself in the example below.
+=======
+You can play with the demo below, to see how changing the value of `a` changes the model.
+
+@:doodle(draw-basic-plot, Sine.drawBasicPlot)
+
+Now imagine we have some data, which are pairs of `x` and `y` values. For each `x` value we have the `y` value we'd like the model to produce. We can adjust the value of `a` to bring the model closer or further away from the output. To quantify how good a choice we've made for `a`, we can look at the distance between the model output and the `y` value for each data point in our data set. We'll call this the *loss function* or just the *loss*. The demo below allows you to adjust `a` and see how the the loss changes for some randomly choosen data. You should note that you can increase and decrease the loss by changing `a`.
+>>>>>>> Stashed changes
 
 @:doodle(draw-error-plot, Sine.drawErrorPlot)
 

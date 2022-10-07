@@ -16,16 +16,14 @@
 
 package gradientdescent.numerical
 
-object GradientDescent {
+final case class GradientDescent(learningRate: Double)(df: Double => Double) {
 
   /** Perform one iteration of gradient descent, using numerical
     * differentiation.
     */
-  def iterate(x: Double)(f: Double => Double): Double =
+  def iterate(a: Double): Double =
     ???
 
-  def gradientDescent(start: Double, iterations: Int)(
-      f: Double => Double
-  ): Double =
+  def gradientDescent(start: Double, iterations: Int): Double =
     ???
 }
