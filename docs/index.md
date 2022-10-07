@@ -15,28 +15,28 @@ At the time of writing (September 2022), [Stable Diffusion](https://stablediffus
 
 At it's core, Stable Diffusion and similar programs such as Midjourney, are functions. Remember the core idea of a function is that you put something and get something back. In this case you put in text and get back an image. What makes these functions particularly interesting is that parts of the function are learned from data. The data consists of example of text and images associated with them. The general shape of the function is fixed but many parts of it, called weights, are adjusted so that, given input, the output becomes closer to that in data used for learning.
 
-An example will help make this clearer. Consider the function below.
+An example will help make this clearer. Consider the function below. We'll call this function the *model*.
 
 $$f(x, a) = a \sin(x)$$
 
 In Scala we'd write
 
 ```scala
-val f: (Double, Double) => Double = (x, a) => a * Math.sin(x)
+val model: (Double, Double) => Double = (x, a) => a * Math.sin(x)
 ```
 
-This is a function with two parameters:
+The model is a function with two parameters:
 
 1. `x`, which is the usual `x` value; and
 2. `a`, which is the amplitude (height) of the sine wave.
 
 (Note that I'm defining functions so that the code is closer to the mathematics, but we could equally use a Scala method.)
 
-You can play with the demo below, to see how changing the value of `a` changes the function.
+You can play with the demo below, to see how changing the value of `a` changes the model.
 
 @:doodle(draw-basic-plot, Sine.drawBasicPlot)
 
-Now imagine we have some data, which are pairs of `x` and `y` values. For each `x` value we have the `y` value we'd like the function to produce. We can adjust the value of `a` to bring the function closer or further away from the output. To quantify how good a choice we've made for `a`, we can look at the distance between the function output and the `y` value for each data point in our data set. We'll call this the *loss function* or just the *loss*. The demo below allows you to adjust `a` and see how the the loss changes for some randomly choosen data. You should note that you can increase and decrease the loss by changing `a`.
+Now imagine we have some data, which are pairs of `x` and `y` values. For each `x` value we have the `y` value we'd like the model to produce. We can adjust the value of `a` to bring the model closer or further away from the output. To quantify how good a choice we've made for `a`, we can look at the distance between the model output and the `y` value for each data point in our data set. We'll call this the *loss function* or just the *loss*. The demo below allows you to adjust `a` and see how the the loss changes for some randomly choosen data. You should note that you can increase and decrease the loss by changing `a`.
 
 @:doodle(draw-error-plot, Sine.drawErrorPlot)
 

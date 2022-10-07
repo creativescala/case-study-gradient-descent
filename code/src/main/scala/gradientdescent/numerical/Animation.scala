@@ -25,24 +25,25 @@ import cats.effect.unsafe.implicits.global
 
 import gradientdescent.Plot
 
-object Animation {
+object Animation extends App {
   val data = gradientdescent.Data.sineData
-  val f: (Double, Double) => Double = (a, x) => a * Math.sin(x)
+  val f: (Double, Double) => Double = (x, a) => a * Math.sin(x)
   val scale = Plot.linearInterpolation(50.0, 1.0)
-  val loss: Double => Double =
-    ??? // Create the loss function here, given f and data above
+  val loss: Double => Double = Loss.loss(data)(f)
+  val gd =
+    GradientDescent(0.01, NumericalDifferentiation.differentiate(0.01)(loss))
 
   def animation(initial: Double, iterations: Int): Transducer[Picture[Unit]] = {
     Transducer
       .fromList(List.range(0, iterations))
       .scanLeft(initial) { (a, _) =>
-        val updatedX = GradientDescent.iterate(a)(loss)
+        val updatedX = gd.iterate(a)
         updatedX
       }
       .map { a =>
         Plot
           .data(scale)(data)
-          .on(Plot.function(-6.0, 6.0, scale)(x => f(a, x)))
+          .on(Plot.function(-6.0, 6.0, scale)(x => f(x, a)))
       }
   }
 

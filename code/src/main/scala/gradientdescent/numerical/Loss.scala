@@ -16,4 +16,17 @@
 
 package gradientdescent.numerical
 
-object Loss {}
+import doodle.core.Point
+
+object Loss {
+
+  /** Given data and a function of two parameters, create the loss function. The
+    * first parameter is x, the data location. The second parameter is the
+    * parameter being optimized. we're optimizing.
+    */
+  def loss(
+      data: List[Point]
+  )(f: (Double, Double) => Double): Double => Double = { (a: Double) =>
+    gradientdescent.Loss.loss(data)(x => f(x, a))
+  }
+}
