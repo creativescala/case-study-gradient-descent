@@ -16,7 +16,7 @@
 
 package gradientdescent.examples
 
-import gradientdescent.utils.Plot
+import gradientdescent.utils._
 import doodle.core._
 import doodle.svg._
 import doodle.syntax.all._
@@ -42,6 +42,16 @@ object Sine {
     data
       .map(pt => Picture.circle(5.0).fillColor(Color.blue).noStroke.at(pt))
       .allOn
+
+  def lossBarsPlot(data: Seq[Point])(f: Double => Double): Picture[Unit] = {
+    Picture
+      .path(
+        data
+          .map(pt => OpenPath.empty.moveTo(pt).lineTo(pt.x, f(pt.x / 50.0)))
+          .fold(OpenPath.empty)(_.append(_))
+      )
+      .strokeColor(Color.blue)
+  }
 
   @JSExport
   def drawBasicPlot(id: String): Unit = {
@@ -69,6 +79,31 @@ object Sine {
       .within(-100, 100)
       .withDefault(50)
       .explore(frame)(a => dataPlot(data).on(basicPlot(basicSine(a.toDouble))))
+  }
+
+  @JSExport
+  def drawLossPlot(id: String): Unit = {
+    val trueF = basicSine(75)
+    val data = (1.to(40)).map { _ =>
+      val x = Random.between(-6.0, 6.0)
+      val y = trueF(x) + (5.0 * Random.nextGaussian())
+      Point(x * 50.0, y)
+    }
+
+    val frame = Frame(id).size(640, 240)
+    Explore
+      .int("a")
+      .within(-100, 100)
+      .withDefault(50)
+      .explore(frame) { a =>
+        val model = basicSine(a.toDouble)
+        val loss = Loss.loss(data.toList)(x => model(x / 50.0))
+
+        dataPlot(data)
+          .on(lossBarsPlot(data)(model))
+          .on(basicPlot(model))
+          .on(text("Loss: %.2f".format(loss)).fillColor(Color.black))
+      }
   }
 
   @JSExport
