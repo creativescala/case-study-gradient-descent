@@ -27,7 +27,7 @@ import gradientdescent.Plot
 
 object Animation {
   val data = gradientdescent.Data.sineData
-  val f: (Double, Double) => Double = (a, x) => a * Math.sin(x)
+  val f: (Double, Double) => Double = (x, a) => a * Math.sin(x)
   val scale = Plot.linearInterpolation(50.0, 1.0)
   val loss: Double => Double =
     ??? // Create the loss function here, given f and data above
@@ -42,7 +42,7 @@ object Animation {
       .map { a =>
         Plot
           .data(scale)(data)
-          .on(Plot.function(-6.0, 6.0, scale)(x => f(a, x)))
+          .on(Plot.function(-6.0, 6.0, scale)(x => f(x, a)))
       }
   }
 
