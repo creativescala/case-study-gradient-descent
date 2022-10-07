@@ -28,49 +28,33 @@ $$f(x, a) = a \sin(x)$$
 In Scala we'd write
 
 ```scala
-<<<<<<< Updated upstream
 def f(x: Double, a: Double): Double = a * Math.sin(x)
 ```
 
 This is a method with two parameters:
-=======
-val model: (Double, Double) => Double = (x, a) => a * Math.sin(x)
-```
-
-The model is a function with two parameters:
->>>>>>> Stashed changes
 
 1. `x`, which is the usual `x` value; and
 2. `a`, which is the amplitude (height) of the sine wave.
 
-(Note that I'm defining Scala methods but using the term function. In mathematics we usually only deal with functions, but in Scala it's more idiomatic to write methods most of the time.)
+(Note that I'm defining Scala methods but using the term function. In mathematics we usually only deal with functions, but in Scala most of the time it's more idiomatic to write methods.)
 
-<<<<<<< Updated upstream
-Play with the demo below and see how changing the value of `a` changes the function.
+We can see the effect of changinge `a` in the demonstration below.
 
 @:doodle(draw-basic-plot, Sine.drawBasicPlot)
 
 Now we're going to assume we have some data, and our task will be to find the value of `a` that gives the function that best fits the data. We're going to make this concrete in just a moment, but a bit more terminology before we move on:
 
-- the function is the *model*;
 - the parameter `x` is the *input parameter*; and
 - the parameter `a` is the *weight* or *learned parameter*.
 
 Back to the problem. Let's assume we have some *training data*, shown as the blue points below. We want to find a function that fits the data. This, informally, means that we want a function that is close to the data points. If we have a data point with an `x` and `y` value we want `f(x)` to be close to `y`. In our case, we're going to assume that the model will be a good fit for the data if we can just find the right value of the learned parameter. So our task reduces to finding the value of the learned parameter that gives the best fit to the data. You can try this yourself in the example below.
-=======
-You can play with the demo below, to see how changing the value of `a` changes the model.
-
-@:doodle(draw-basic-plot, Sine.drawBasicPlot)
-
-Now imagine we have some data, which are pairs of `x` and `y` values. For each `x` value we have the `y` value we'd like the model to produce. We can adjust the value of `a` to bring the model closer or further away from the output. To quantify how good a choice we've made for `a`, we can look at the distance between the model output and the `y` value for each data point in our data set. We'll call this the *loss function* or just the *loss*. The demo below allows you to adjust `a` and see how the the loss changes for some randomly choosen data. You should note that you can increase and decrease the loss by changing `a`.
->>>>>>> Stashed changes
 
 @:doodle(draw-error-plot, Sine.drawErrorPlot)
 
 So our task is to find the value of the learned parameter that gives a good fit to the data. To do this we need to
 
 1. formalize what we mean by a good fit; and
-2. define an algorithm that find a value for the learned parameter that gives a good fit.
+2. define an algorithm that finds a value for the learned parameter that gives a good fit.
 
 We'll tackle each in turn. 
 
