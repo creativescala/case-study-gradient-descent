@@ -9515,6 +9515,10 @@ $c_Lgradientdescent_examples_Sine$.prototype.$js$exported$meth$drawLossPlot__T__
 $c_Lgradientdescent_examples_Sine$.prototype.$js$exported$meth$drawNumericalDifferentiationPlot__T__O = (function(id) {
   this.drawNumericalDifferentiationPlot__T__V(id)
 });
+$c_Lgradientdescent_examples_Sine$.prototype.drawErrorPlot = (function(arg) {
+  var prep0 = $as_T(arg);
+  return this.$js$exported$meth$drawErrorPlot__T__O(prep0)
+});
 $c_Lgradientdescent_examples_Sine$.prototype.drawLossPlot = (function(arg) {
   var prep0 = $as_T(arg);
   return this.$js$exported$meth$drawLossPlot__T__O(prep0)
@@ -9526,10 +9530,6 @@ $c_Lgradientdescent_examples_Sine$.prototype.drawNumericalDifferentiationPlot = 
 $c_Lgradientdescent_examples_Sine$.prototype.drawBasicPlot = (function(arg) {
   var prep0 = $as_T(arg);
   return this.$js$exported$meth$drawBasicPlot__T__O(prep0)
-});
-$c_Lgradientdescent_examples_Sine$.prototype.drawErrorPlot = (function(arg) {
-  var prep0 = $as_T(arg);
-  return this.$js$exported$meth$drawErrorPlot__T__O(prep0)
 });
 var $d_Lgradientdescent_examples_Sine$ = new $TypeData().initClass({
   Lgradientdescent_examples_Sine$: 0
