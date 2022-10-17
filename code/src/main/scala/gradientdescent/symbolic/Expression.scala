@@ -21,9 +21,17 @@ sealed trait Expression {
 
   def *(that: Expression): Expression = ???
 
-  def apply(parameterName: String, value: Double): Expression = ???
+  def bind(variableName: String, value: Double): Expression = ???
 
   def simplify: Expression = ???
 
-  def differentiate(parameterName: String): Expression = ???
+  def differentiate(variableName: String): Expression = ???
+}
+object Expression {
+
+  /** Create a literal given it's value. */
+  def literal(value: Double): Expression = ???
+
+  /** Create a variable given it's name. */
+  def variable(name: String): Expression = ???
 }
