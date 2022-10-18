@@ -97,19 +97,59 @@ To do this we want to implement a method to *simplify* expressions. This, like b
 
 Using our very simple approach to simplification means it may be possible to simplify an expression a multiple times. For example, if we have the expression \\( (1 + 2) + 3 \\), the first simplification should give us \\( 3 + 3 \\), which we can then simplify again to reach \\( 6 \\). Once we have reached \\( 6 \\) no further simplifications are possible.
 
-Our simple simplification algorithm misses many opportunities for simplification. For example, it won't simplify \\( (3 + x) + 5 \\) to \\( x + 8 \\). However it does have one very nice property, which is that performing simplification either returns a simpler, shorter, expression or we make no change and the result is the expression we started with. This means our simplification is guaranteed to eventually reach a point where no further simplification can occur. In formal terms we can say simplification is *terminating*, and that the simplification method has a *fixed point*. (A fixed point of a function \\( f \\) is a value \\( x \\) such that \\(f(x) = x \\). For example \\(sin(0) = 0\\), so \\(0\\) is a fixed point of \\(sin\\))
+Our simple simplification algorithm misses many opportunities for simplification. For example, it won't simplify \\( (3 + x) + 5 \\) to \\( x + 8 \\). However it does have one very nice property, which is that performing simplification either returns a simpler, shorter, expression or we make no change and the result is the expression we started with. This means our simplification is guaranteed to eventually reach a point where no further simplification can occur. In formal terms we can say repeated application of simplification always converges to a *fixed point*. A fixed point of a function \\( f \\) is a value \\( x \\) such that \\(f(x) = x \\). For example \\(\\sin(0) = 0\\), so \\(0\\) is a fixed point of \\(\\sin\\).
 
 Now go ahead an implement `simplify`. You may choose to implement the basic simplification we described above, or to iterate the basic algorithm until you reach a fixed point.
 
 
-## Finishing Up
+## Gradient Descent
 
 With all the above in place we have everything we need to differentiate an expression and calculate the gradient at a particular point. This in turn means we can implement gradient descent.
 
+We don't have the \\(\sin\\) function (and it's derivative, \\(\\cos\\)) in `Expression`. You could add it, if you wanted, but it's simpler to use a different function that we can represent in `Expression`. For example, we could use a cubic function \\(f(x, a) = ax^3 \\). There is cubic data in `Data.scala`. The example below shows 40 points randomly sampled from a cubic function, with added noise, and plots it against a cubic for which you can vary the parameter \\(a\\).
 
-## Extension
+@:doodle(draw-cubic-plot, Cubic.drawCubicPlot)
+
+It can also be interesting to try gradient descent on the \\(\sin\\) data, where the model is cubic. Here the model cannot make a good approximation of the data, but gradient descent will still find something.
 
 
-## Context
+## Complex Simplification
 
-In [numerical differentiation](numerical-differentiation.md) we represented mathematical functions as Scala functions. In this section we're representing mathematical functions as Scala data structures. This is an example of a general implementation strategy called *reification*. The abstract meaning of reification is to turn something abstract into something concrete. The concrete meaning, in our case, is to turn functions (or equivalently, methods) into data structures. Reification connects the functional programming world to the object oriented world. We'll see more of this in the future.
+As an extension, you could look at more complex rules for simplification. These rules allow more simplifications to occur, at the cost of turning the problem into one of searching amongst multiple possible solutions. Let's look at a few examples to see what patterns emerge.
+
+If we have \\( (x + 3) + 2 \\) we may want to simplify it to \\( x + 5 \\). To get there we need an intermediate step, which is to rewrite \\( (x + 3) + 2 \\) to \\( x + (3 + 2) \\).
+
+If we have \\( (3 + x) + 2 \\), and our goal is \\( x + 5 \\), we can use the following two transformations:
+
+1. transform \\( (3 + x) + 2 \\) to \\( (x + 3) + 2 \\); and
+2. transform \\( (x + 3) + 2 \\) to \\( x + (3 + 2) \\).
+
+If we have \\( 2 (3 + x) + x \\), we may want to simplify to \\( 3x + 6 \\). To achieve this we can:
+
+1. multiply out to arrive at \\( 6 + 2x + x \\); and
+2. simplify to 6 + 3x.
+
+The above examples made use of rules known as associativity, commutivity, and distributivity. They are:
+
+1. *Associativity*: \\( (x + y) + z = x + (y + z) \\), and similarly for expressions involving multiplication.
+2. *Commutivity*: \\( x + y = y + x \\), and similarly for expressions involving multiplication.
+3. *Distributivity*: \\( a (x + y) = ax + ay \\).
+
+We can use these rules to generate new expressions that we can then attempt to simplify, and we can keep the result that is the shortest. For example, if we have an expression \\( x + y \\), we can use commutivity to create \\( y + x \\). We can then simplify both \\( x + y \\) and \\( y + x \\) and see which result is shorter.
+
+
+## Summary and Context
+
+There is a lot going on in this part of the case study. Here are some the main ideas, and connections to other areas in computer science.
+
+The main programming tools we're using are algebraic data types and structural recursion. You'll probably have seen some pattern matches that go a bit beyond what you might have seen before. Learning a bit more about what you can do with pattern matching is a good exercise; it's a powerful tool!
+
+Moving beyond pattern matching, the idea of manipulating a data structure that represents a program (in our case, an arithmetic expression) is a very powerful one. The key idea of a compiler, like the Scala compiler, is to represent programs as a data structure, and then manipulate that data structure to achieve various goals so as improving performance (which is equivalent to simplification) or producing a different kind of program (such as compiling Scala code into JVM bytecode.) Working compilers are a lot more complex than `Expression`, but the core ideas are exactly the same.
+
+We can also view `Expression` as a *rewrite system*. Rewrite systems consist of rules that match input and convert them into output. A simple example of a rewrite is the power rule for differentiation. Recall, it is
+
+$$ \textrm{If} \; f(x) = x^n \; \textrm{then} \; \frac{df(x)}{dx} = nx^{n-1} $$
+
+We can view this as a rewrite. It says that whenever the input is \\(x^n\\) we write \\(nx^{n-1}\\) as the output.
+
+Rewrite rules are closely connected to the theory of programing languages, and to programs that reason about symbolic systems, such as computer algebra systems that help people do mathematics.
