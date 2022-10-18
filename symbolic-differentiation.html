@@ -97,6 +97,7 @@
           <li class="level1"><a href="#simplifying-expressions">Simplifying Expressions</a></li>
           <li class="level1"><a href="#finishing-up">Finishing Up</a></li>
           <li class="level1"><a href="#extension">Extension</a></li>
+          <li class="level1"><a href="#context">Context</a></li>
         </ul>
 
         <p class="footer"></p>
@@ -147,15 +148,12 @@
         </ol>
         
         <h3 id="representing-expressions" class="section">Representing Expressions<a class="anchor-link right" href="#representing-expressions"><i class="icofont-laika">&#xef71;</i></a></h3>
-        <p>We&#39;re going to work with fairly simple expressions, like</p>
-        <p>$$ x^2 + 4 $$</p>
-        <p>and</p>
-        <p>$$ ax + 2x + 8 $$</p>
+        <p>We&#39;re going to work with fairly simple expressions, like \( x^2 + 4 \) and \( ax + 2x + 8 \).</p>
         <p>These expressions consist of</p>
         <ul>
-          <li>numbers, like <code>2</code> and <code>8</code>;</li>
-          <li>variables, like <code>a</code> and <code>x</code>;</li>
-          <li>additions and multiplication.</li>
+          <li>numbers, like \(2\) and \(8\);</li>
+          <li>variables, like \(a\) and \(x\);</li>
+          <li>addition and multiplication.</li>
         </ul>
         <p>We&#39;re going to represent expressions as follows. An <code>Expression</code> is one of:</p>
         <ul>
@@ -165,28 +163,30 @@
           <li>The multiplication of two <code>Expressions</code>.</li>
         </ul>
         <p>By now you should know how to represent this structure in code, so go ahead and implement it. There is a skeleton in <code>Expression.scala</code> to get you started.</p>
-        <p>In <a href="numerical-differentiation.html">numerical differentiation</a> we represented mathematical functions as Scala functions. In this section we&#39;re representing mathematical functions as Scala data structures. This is an example of a general implementation strategy called <em>reification</em>. The abstract meaning of reification is to turn something abstract into something concrete. The concrete meaning, in our case, is to turn functions (or equivalently, methods) into data structures. Reification connects the functional programming world to the object oriented world. We&#39;ll see more of this in the future.</p>
         
         <h2 id="differentiating-expressions" class="section">Differentiating Expressions<a class="anchor-link right" href="#differentiating-expressions"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>With a representation of expressions we can go ahead and implement differentiation. Implement the method <code>differentiate</code> on <code>Expression</code>. This is perhaps the most complex task here, so you might choose to tackle the problems below before you get to differentiation.</p>
+        <p>With a representation of expressions we can go ahead and implement differentiation. Implement the method <code>differentiate</code> on <code>Expression</code>. This is perhaps the most complex task here, so you might choose to tackle the tasks below before returning to differentiation.</p>
         
         <h2 id="binding-variables" class="section">Binding Variables<a class="anchor-link right" href="#binding-variables"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>Our expressions contains variables, such as <code>a</code> and <code>x</code> in \( ax + 2x + 8 \). When a variable hasn&#39;t taken on a particular value we call it a <em>free variable</em>. It&#39;s free in that it can take on any value.</p>
-        <p>We need to be able to give values to variables. For example, we might want to say that <code>x</code> is <code>1</code> in \( ax + 2x + 8 \). We&#39;ll want to do this when we come to evaluate the derivative at a particular point. Variables that have taken on a fixed value are called <em>bound variables</em>, and hence we say we bind a variable to a value.</p>
-        <p>Note that binding a variable to a value in an expression still leaves us with an expression, not just a number as you may expect. Considering binding <code>x</code> to <code>1</code> in \( ax + 2x + 8 \). We&#39;re left with \( (a \times 1) + (2 \times 1) + 8 \).</p>
-        <p>Implement a method <code>bind</code> that accepts both a variable name (a <code>String</code>) and a value for that variable (a <code>Double</code>), and substitutes the value for all occurrences of the variable within the <code>Expression</code>.</p>
+        <p>Our expressions contains variables, such as \(a\) and \(x\) in \( ax + 2x + 8 \). When a variable hasn&#39;t taken on a particular value we call it a <em>free variable</em>. It&#39;s free in that it can take on any value.</p>
+        <p>We need to be able to give values to variables. For example, when evaluating a derivative at a particular point we might want to say that \(x\) is \(1\) in \( 8x + 8 \). Variables that have taken on a fixed value are called <em>bound variables</em>, and hence we say we bind a variable to a value.</p>
+        <p>Note that binding a variable to a value in an expression still leaves us with an expression, not necessarily a number as you may expect. Considering binding \(x\) to \(1\) in \( ax + 2x + 8 \). We&#39;re left with \( (a \times 1) + (2 \times 1) + 8 \).</p>
+        <p>Binding is a form of substitution. We substitute a value for every occurrence of a variable. Implement a method <code>bind</code> that accepts both a variable name (a <code>String</code>) and a value for that variable (a <code>Double</code>), and substitutes the value for all occurrences of the variable within the <code>Expression</code>.</p>
         
         <h2 id="simplifying-expressions" class="section">Simplifying Expressions<a class="anchor-link right" href="#simplifying-expressions"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>After binding a variable to a value, we&#39;ll usually end up with a lot of constant expressions: multiplications or additions that involve only literals. We saw that in the example above where binding <code>x</code> to <code>1</code> in \( ax + 2x + 8 \) left us with \( (a \times 1) + (2 \times 1) + 8 \), when idealy we would want just \( a + 2 + 8 \) or even just \( a + 10 \).</p>
+        <p>After binding a variable to a value we&#39;ll usually end up with a lot of constant expressions: multiplications or additions that involve only literals. We saw that in the example above where binding \(x\) to \(1\) in \( ax + 2x + 8 \) left us with \( (a \times 1) + (2 \times 1) + 8 \). Idealy we would want just \( a + 2 + 8 \) or even just \( a + 10 \).</p>
         <p>To do this we want to implement a method to <em>simplify</em> expressions. This, like binding a variable, is an <code>Expression</code> to <code>Expression</code> transform. Simplification is as complex a problem as we care to make it. In this instance we&#39;re going to keep it very simple: we just want to simplify additions and multiplications of literals. So if we have \( x + (1 + 2) \) we should end up \( x + 3 \), but if we have \( (x + 1) + 2 \) we won&#39;t make any change.</p>
         <p>Using our very simple approach to simplification means it may be possible to simplify an expression a multiple times. For example, if we have the expression \( (1 + 2) + 3 \), the first simplification should give us \( 3 + 3 \), which we can then simplify again to reach \( 6 \). Once we have reached \( 6 \) no further simplifications are possible.</p>
-        <p>Our simple simplification algorithm misses many opportunities for simplification. For example, it won&#39;t simplify \( (3 + x) + 5 \) to \( x + 8 \). However it does have one very nice property. There only two possible results: we make a shorter expression or we make no change. This means our simplification is guaranteed to eventually reach a point where no further simplification can occur. In formal terms we can say simplification is <em>terminating</em>, and that the simplification method has a <em>fixed point</em>. (A fixed point of a function \( f \) is a value \( x \) such that \(f(x) = x \)).</p>
+        <p>Our simple simplification algorithm misses many opportunities for simplification. For example, it won&#39;t simplify \( (3 + x) + 5 \) to \( x + 8 \). However it does have one very nice property, which is that performing simplification either returns a simpler, shorter, expression or we make no change and the result is the expression we started with. This means our simplification is guaranteed to eventually reach a point where no further simplification can occur. In formal terms we can say simplification is <em>terminating</em>, and that the simplification method has a <em>fixed point</em>. (A fixed point of a function \( f \) is a value \( x \) such that \(f(x) = x \). For example \(sin(0) = 0\), so \(0\) is a fixed point of \(sin\))</p>
         <p>Now go ahead an implement <code>simplify</code>. You may choose to implement the basic simplification we described above, or to iterate the basic algorithm until you reach a fixed point.</p>
         
         <h2 id="finishing-up" class="section">Finishing Up<a class="anchor-link right" href="#finishing-up"><i class="icofont-laika">&#xef71;</i></a></h2>
         <p>With all the above in place we have everything we need to differentiate an expression and calculate the gradient at a particular point. This in turn means we can implement gradient descent.</p>
         
         <h2 id="extension" class="section">Extension<a class="anchor-link right" href="#extension"><i class="icofont-laika">&#xef71;</i></a></h2>
+        
+        <h2 id="context" class="section">Context<a class="anchor-link right" href="#context"><i class="icofont-laika">&#xef71;</i></a></h2>
+        <p>In <a href="numerical-differentiation.html">numerical differentiation</a> we represented mathematical functions as Scala functions. In this section we&#39;re representing mathematical functions as Scala data structures. This is an example of a general implementation strategy called <em>reification</em>. The abstract meaning of reification is to turn something abstract into something concrete. The concrete meaning, in our case, is to turn functions (or equivalently, methods) into data structures. Reification connects the functional programming world to the object oriented world. We&#39;ll see more of this in the future.</p>
 
         <hr style="margin-top: 30px"/>
         <footer style="font-size: 90%; text-align: center">
