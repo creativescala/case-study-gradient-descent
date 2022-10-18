@@ -39,4 +39,8 @@ object Data {
   /** Example data set for f(x) = 75 sin(x) */
   val sineData =
     create(40, -6.0, 6.0, 5.0)(x => 75 * Math.sin(x))
+
+  /** Example data set for f(x) = 0.25 x^3 */
+  val cubicData =
+    create(40, -6.0, 6.0, 5.0)(x => 0.25 * Math.pow(x, 3.0))
 }
