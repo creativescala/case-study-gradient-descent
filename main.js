@@ -1,4 +1,4 @@
-let Sine;
+let Sine,Cubic;
 (function(){
 'use strict';
 var $linkingInfo = Object.freeze({
@@ -9303,6 +9303,99 @@ function $m_Lfs2_internal_ScopedResource$() {
   };
   return $n_Lfs2_internal_ScopedResource$
 }
+/** @constructor */
+function $c_Lgradientdescent_examples_Cubic$() {
+  this.Lgradientdescent_examples_Cubic$__f_basicCubic = null;
+  this.Lgradientdescent_examples_Cubic$__f_trueCubic = null;
+  this.Lgradientdescent_examples_Cubic$__f_data = null;
+  $n_Lgradientdescent_examples_Cubic$ = this;
+  this.Lgradientdescent_examples_Cubic$__f_basicCubic = new $c_sjsr_AnonFunction1(((a) => {
+    var a$1 = $uD(a);
+    return new $c_sjsr_AnonFunction1(((x) => {
+      var x$1 = $uD(x);
+      return (a$1 * $uD(Math.pow(x$1, 3.0)))
+    }))
+  }));
+  this.Lgradientdescent_examples_Cubic$__f_trueCubic = $as_F1(this.Lgradientdescent_examples_Cubic$__f_basicCubic.apply__O__O(0.33));
+  var b = $m_sci_IndexedSeq$().newBuilder__scm_Builder();
+  var it = new $c_sci_RangeIterator(1, 1, 40, false);
+  while (it.sci_RangeIterator__f__hasNext) {
+    it.next__I();
+    var x$2 = $m_s_util_Random$().between__D__D__D((-6.0), 6.0);
+    var $$x1 = $uD(this.Lgradientdescent_examples_Cubic$__f_trueCubic.apply__O__O(x$2));
+    var this$6 = $m_s_util_Random$();
+    var y = ($$x1 + (5.0 * this$6.s_util_Random__f_self.nextGaussian__D()));
+    $m_Ldoodle_core_Point$();
+    var x$3 = (50.0 * x$2);
+    var elem = new $c_Ldoodle_core_Point$Cartesian(x$3, y);
+    b.addOne__O__scm_Growable(elem)
+  };
+  this.Lgradientdescent_examples_Cubic$__f_data = $as_sci_IndexedSeq(b.result__O())
+}
+$c_Lgradientdescent_examples_Cubic$.prototype = new $h_O();
+$c_Lgradientdescent_examples_Cubic$.prototype.constructor = $c_Lgradientdescent_examples_Cubic$;
+/** @constructor */
+function $h_Lgradientdescent_examples_Cubic$() {
+  /*<skip>*/
+}
+$h_Lgradientdescent_examples_Cubic$.prototype = $c_Lgradientdescent_examples_Cubic$.prototype;
+$c_Lgradientdescent_examples_Cubic$.prototype.basicPlot__F1__Ldoodle_algebra_Picture = (function(f) {
+  return $m_Lgradientdescent_utils_Plot$().apply__F1__D__D__F1__Ldoodle_algebra_Picture(f, (-6.0), 6.0, $m_Lgradientdescent_utils_Plot$().linearInterpolation__D__D__F1(50.0, 0.5))
+});
+$c_Lgradientdescent_examples_Cubic$.prototype.dataPlot__sci_Seq__Ldoodle_algebra_Picture = (function(data) {
+  var this$6 = $m_Ldoodle_syntax_package$all$();
+  var t = data.map__F1__O(new $c_sjsr_AnonFunction1(((pt) => {
+    var pt$1 = $as_Ldoodle_core_Point(pt);
+    var this$5 = $m_Ldoodle_syntax_package$all$();
+    var this$4 = $m_Ldoodle_syntax_package$all$();
+    var this$3 = $m_Ldoodle_syntax_package$all$();
+    var this$2 = $m_Ldoodle_svg_package$Picture$();
+    var picture = $f_Ldoodle_algebra_ShapeConstructor__circle__D__Ldoodle_algebra_Picture(this$2, 5.0);
+    var picture$1 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$3, picture).fillColor__Ldoodle_core_Color__Ldoodle_algebra_Picture($m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_blue);
+    var picture$2 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$4, picture$1).noStroke__Ldoodle_algebra_Picture();
+    return new $c_Ldoodle_syntax_LayoutSyntax$LayoutPictureOps(this$5, picture$2).at__Ldoodle_core_Point__Ldoodle_algebra_Picture(pt$1)
+  })));
+  return new $c_Ldoodle_syntax_TraverseSyntax$TraverseOps(this$6, t).allOn__Lcats_Traverse__Ldoodle_algebra_Picture(($m_Lcats_UnorderedFoldable$(), $as_Lcats_Traverse($m_Lcats_instances_package$seq$().Lcats_instances_package$seq$__f_catsStdInstancesForSeq)))
+});
+$c_Lgradientdescent_examples_Cubic$.prototype.drawCubicPlot__T__V = (function(id) {
+  var frame = $m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_Frame.apply__T__Ldoodle_svg_effect_Frame(id).size__D__D__Ldoodle_svg_effect_Frame(640.0, 240.0);
+  var this$7 = $m_Ldoodle_explore_laminar_Explore$().Ldoodle_explore_laminar_Explore$__f_explorer;
+  $m_Ldoodle_explore_laminar_Explore$();
+  $m_Ldoodle_explore_generic_IntComponent$();
+  $m_Ldoodle_explore_generic_IntComponent$();
+  var range = $m_s_None$();
+  var component = new $c_Ldoodle_explore_generic_IntComponent("a", range, 0).within__I__I__Ldoodle_explore_generic_IntComponent((-100), 100).withDefault__I__Ldoodle_explore_generic_IntComponent(0);
+  var render = new $c_sjsr_AnonFunction1(((a) => {
+    var a$1 = $uI(a);
+    var this$5 = $m_Ldoodle_syntax_package$all$();
+    var picture = this.dataPlot__sci_Seq__Ldoodle_algebra_Picture(this.Lgradientdescent_examples_Cubic$__f_data);
+    return new $c_Ldoodle_syntax_LayoutSyntax$LayoutPictureOps(this$5, picture).on__Ldoodle_algebra_Picture__Lcats_kernel_Semigroup__Ldoodle_algebra_Picture(this.basicPlot__F1__Ldoodle_algebra_Picture($as_F1(this.Lgradientdescent_examples_Cubic$__f_basicCubic.apply__O__O((a$1 / 100.0)))), $m_Lcats_kernel_instances_unit_package$().Lcats_kernel_instances_unit_package$__f_catsKernelStdAlgebraForUnit)
+  }));
+  var a$2 = $m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_svgAnimationRenderer;
+  var r = $m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_svgRenderer;
+  this$7.explore__Ldoodle_explore_generic_BaseComponent__Ldoodle_svg_effect_Frame__F1__Ldoodle_interact_effect_AnimationRenderer__Ldoodle_effect_Renderer__V(component, frame, render, a$2, r)
+});
+$c_Lgradientdescent_examples_Cubic$.prototype.$js$exported$meth$drawCubicPlot__T__O = (function(id) {
+  this.drawCubicPlot__T__V(id)
+});
+$c_Lgradientdescent_examples_Cubic$.prototype.drawCubicPlot = (function(arg) {
+  var prep0 = $as_T(arg);
+  return this.$js$exported$meth$drawCubicPlot__T__O(prep0)
+});
+var $d_Lgradientdescent_examples_Cubic$ = new $TypeData().initClass({
+  Lgradientdescent_examples_Cubic$: 0
+}, false, "gradientdescent.examples.Cubic$", {
+  Lgradientdescent_examples_Cubic$: 1,
+  O: 1
+});
+$c_Lgradientdescent_examples_Cubic$.prototype.$classData = $d_Lgradientdescent_examples_Cubic$;
+var $n_Lgradientdescent_examples_Cubic$;
+function $m_Lgradientdescent_examples_Cubic$() {
+  if ((!$n_Lgradientdescent_examples_Cubic$)) {
+    $n_Lgradientdescent_examples_Cubic$ = new $c_Lgradientdescent_examples_Cubic$()
+  };
+  return $n_Lgradientdescent_examples_Cubic$
+}
 function $p_Lgradientdescent_examples_Sine$__gradient$1__F1__D__D($thiz, f$2, h) {
   return (($uD(f$2.apply__O__O(0.0)) + $uD(f$2.apply__O__O(h))) / h)
 }
@@ -9515,10 +9608,6 @@ $c_Lgradientdescent_examples_Sine$.prototype.$js$exported$meth$drawLossPlot__T__
 $c_Lgradientdescent_examples_Sine$.prototype.$js$exported$meth$drawNumericalDifferentiationPlot__T__O = (function(id) {
   this.drawNumericalDifferentiationPlot__T__V(id)
 });
-$c_Lgradientdescent_examples_Sine$.prototype.drawErrorPlot = (function(arg) {
-  var prep0 = $as_T(arg);
-  return this.$js$exported$meth$drawErrorPlot__T__O(prep0)
-});
 $c_Lgradientdescent_examples_Sine$.prototype.drawLossPlot = (function(arg) {
   var prep0 = $as_T(arg);
   return this.$js$exported$meth$drawLossPlot__T__O(prep0)
@@ -9526,6 +9615,10 @@ $c_Lgradientdescent_examples_Sine$.prototype.drawLossPlot = (function(arg) {
 $c_Lgradientdescent_examples_Sine$.prototype.drawNumericalDifferentiationPlot = (function(arg) {
   var prep0 = $as_T(arg);
   return this.$js$exported$meth$drawNumericalDifferentiationPlot__T__O(prep0)
+});
+$c_Lgradientdescent_examples_Sine$.prototype.drawErrorPlot = (function(arg) {
+  var prep0 = $as_T(arg);
+  return this.$js$exported$meth$drawErrorPlot__T__O(prep0)
 });
 $c_Lgradientdescent_examples_Sine$.prototype.drawBasicPlot = (function(arg) {
   var prep0 = $as_T(arg);
@@ -86881,5 +86974,6 @@ function $m_Lcats_implicits$() {
 $L0 = new $c_RTLong(0, 0);
 $d_J.zero = $L0;
 Sine = $m_Lgradientdescent_examples_Sine$();
+Cubic = $m_Lgradientdescent_examples_Cubic$();
 }).call(this);
 //# sourceMappingURL=main.js.map
