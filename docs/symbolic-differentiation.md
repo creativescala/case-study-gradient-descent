@@ -55,19 +55,13 @@ Now we're ready to implement symbolic differentiation. We need:
 
 ### Representing Expressions
 
-We're going to work with fairly simple expressions, like
-
-$$ x^2 + 4 $$
-
-and
-
-$$ ax + 2x + 8 $$
+We're going to work with fairly simple expressions, like \\( x^2 + 4 \\) and \\( ax + 2x + 8 \\).
 
 These expressions consist of
 
-- numbers, like `2` and `8`;
-- variables, like `a` and `x`;
-- additions and multiplication.
+- numbers, like \\(2\\) and \\(8\\);
+- variables, like \\(a\\) and \\(x\\);
+- addition and multiplication.
 
 We're going to represent expressions as follows. An `Expression` is one of:
 
@@ -78,34 +72,32 @@ We're going to represent expressions as follows. An `Expression` is one of:
 
 By now you should know how to represent this structure in code, so go ahead and implement it. There is a skeleton in `Expression.scala` to get you started.
 
-In [numerical differentiation](numerical-differentiation.md) we represented mathematical functions as Scala functions. In this section we're representing mathematical functions as Scala data structures. This is an example of a general implementation strategy called *reification*. The abstract meaning of reification is to turn something abstract into something concrete. The concrete meaning, in our case, is to turn functions (or equivalently, methods) into data structures. Reification connects the functional programming world to the object oriented world. We'll see more of this in the future.
-
 
 ## Differentiating Expressions
 
-With a representation of expressions we can go ahead and implement differentiation. Implement the method `differentiate` on `Expression`. This is perhaps the most complex task here, so you might choose to tackle the problems below before you get to differentiation.
+With a representation of expressions we can go ahead and implement differentiation. Implement the method `differentiate` on `Expression`. This is perhaps the most complex task here, so you might choose to tackle the tasks below before returning to differentiation.
 
 
 ## Binding Variables
 
-Our expressions contains variables, such as `a` and `x` in \\( ax + 2x + 8 \\). When a variable hasn't taken on a particular value we call it a *free variable*. It's free in that it can take on any value.
+Our expressions contains variables, such as \\(a\\) and \\(x\\) in \\( ax + 2x + 8 \\). When a variable hasn't taken on a particular value we call it a *free variable*. It's free in that it can take on any value.
 
-We need to be able to give values to variables. For example, we might want to say that `x` is `1` in \\( ax + 2x + 8 \\). We'll want to do this when we come to evaluate the derivative at a particular point. Variables that have taken on a fixed value are called *bound variables*, and hence we say we bind a variable to a value.
+We need to be able to give values to variables. For example, when evaluating a derivative at a particular point we might want to say that \\(x\\) is \\(1\\) in \\( 8x + 8 \\). Variables that have taken on a fixed value are called *bound variables*, and hence we say we bind a variable to a value.
 
-Note that binding a variable to a value in an expression still leaves us with an expression, not just a number as you may expect. Considering binding `x` to `1` in \\( ax + 2x + 8 \\). We're left with \\( (a \times 1) + (2 \times 1) + 8 \\).
+Note that binding a variable to a value in an expression still leaves us with an expression, not necessarily a number as you may expect. Considering binding \\(x\\) to \\(1\\) in \\( ax + 2x + 8 \\). We're left with \\( (a \times 1) + (2 \times 1) + 8 \\).
 
-Implement a method `bind` that accepts both a variable name (a `String`) and a value for that variable (a `Double`), and substitutes the value for all occurrences of the variable within the `Expression`.
+Binding is a form of substitution. We substitute a value for every occurrence of a variable. Implement a method `bind` that accepts both a variable name (a `String`) and a value for that variable (a `Double`), and substitutes the value for all occurrences of the variable within the `Expression`.
 
 
 ## Simplifying Expressions
 
-After binding a variable to a value, we'll usually end up with a lot of constant expressions: multiplications or additions that involve only literals. We saw that in the example above where binding `x` to `1` in \\( ax + 2x + 8 \\) left us with \\( (a \times 1) + (2 \times 1) + 8 \\), when idealy we would want just \\( a + 2 + 8 \\) or even just \\( a + 10 \\).
+After binding a variable to a value we'll usually end up with a lot of constant expressions: multiplications or additions that involve only literals. We saw that in the example above where binding \\(x\\) to \\(1\\) in \\( ax + 2x + 8 \\) left us with \\( (a \times 1) + (2 \times 1) + 8 \\). Idealy we would want just \\( a + 2 + 8 \\) or even just \\( a + 10 \\).
 
 To do this we want to implement a method to *simplify* expressions. This, like binding a variable, is an `Expression` to `Expression` transform. Simplification is as complex a problem as we care to make it. In this instance we're going to keep it very simple: we just want to simplify additions and multiplications of literals. So if we have \\( x + (1 + 2) \\) we should end up \\( x + 3 \\), but if we have \\( (x + 1) + 2 \\) we won't make any change.
 
 Using our very simple approach to simplification means it may be possible to simplify an expression a multiple times. For example, if we have the expression \\( (1 + 2) + 3 \\), the first simplification should give us \\( 3 + 3 \\), which we can then simplify again to reach \\( 6 \\). Once we have reached \\( 6 \\) no further simplifications are possible.
 
-Our simple simplification algorithm misses many opportunities for simplification. For example, it won't simplify \\( (3 + x) + 5 \\) to \\( x + 8 \\). However it does have one very nice property. There only two possible results: we make a shorter expression or we make no change. This means our simplification is guaranteed to eventually reach a point where no further simplification can occur. In formal terms we can say simplification is *terminating*, and that the simplification method has a *fixed point*. (A fixed point of a function \\( f \\) is a value \\( x \\) such that \\(f(x) = x \\)).
+Our simple simplification algorithm misses many opportunities for simplification. For example, it won't simplify \\( (3 + x) + 5 \\) to \\( x + 8 \\). However it does have one very nice property, which is that performing simplification either returns a simpler, shorter, expression or we make no change and the result is the expression we started with. This means our simplification is guaranteed to eventually reach a point where no further simplification can occur. In formal terms we can say simplification is *terminating*, and that the simplification method has a *fixed point*. (A fixed point of a function \\( f \\) is a value \\( x \\) such that \\(f(x) = x \\). For example \\(sin(0) = 0\\), so \\(0\\) is a fixed point of \\(sin\\))
 
 Now go ahead an implement `simplify`. You may choose to implement the basic simplification we described above, or to iterate the basic algorithm until you reach a fixed point.
 
@@ -116,3 +108,8 @@ With all the above in place we have everything we need to differentiate an expre
 
 
 ## Extension
+
+
+## Context
+
+In [numerical differentiation](numerical-differentiation.md) we represented mathematical functions as Scala functions. In this section we're representing mathematical functions as Scala data structures. This is an example of a general implementation strategy called *reification*. The abstract meaning of reification is to turn something abstract into something concrete. The concrete meaning, in our case, is to turn functions (or equivalently, methods) into data structures. Reification connects the functional programming world to the object oriented world. We'll see more of this in the future.
