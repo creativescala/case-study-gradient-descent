@@ -110,10 +110,10 @@
         </ul>
         
         <h2 id="gradient-descent-for-function-fitting" class="section">Gradient Descent for Function Fitting<a class="anchor-link right" href="#gradient-descent-for-function-fitting"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>At the time of writing (September 2022), <a href="https://stablediffusionweb.com/">Stable Diffusion</a> is one of the newest, and best, text-to-image programs. Give it a try! Enter some text and see what image yous can get it to produce. It&#39;s certainly impressive, though the results are still sometimes a little bit odd.</p>
-        <p>At it&#39;s core, Stable Diffusion and similar programs such as Midjourney, are functions. Remember the core idea of a function is that you put something and get something back. In this case you put in text and get back an image. </p>
+        <p>At the time of writing (September 2022), <a href="https://stablediffusionweb.com/">Stable Diffusion</a> is one of the newest, and best, text-to-image programs. Give it a try! Enter some text and see what image you can get it to produce. It&#39;s certainly impressive, though the results are sometimes a little bit odd.</p>
+        <p>At it&#39;s core, Stable Diffusion and similar programs such as Midjourney, are functions. Remember the core idea of a function is that you put something in and get something back. In this case you put in text and get back an image. </p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">stableDiffusion</span><span>(</span><span class="identifier">prompt</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">Image</span><span> = ??? </span><span class="comment">// Magic goes here</span></code></pre>
-        <p>What makes these functions particularly interesting is that parts of the function are learned from data. The data consists of example of text and images associated with them. The general shape of the function is fixed but many parts of it, called weights, are adjusted so that, given input, the output becomes closer to that in data used for learning.</p>
+        <p>What makes these functions particularly interesting is that parts of the function are learned from data. The data consists of examples of text and images associated with them. The general shape of the function is fixed but many parts of it, called weights, are adjusted so that, given input, the output becomes closer to that in the data used for learning.</p>
         <p>An example will help make this clearer. Consider the function below. We&#39;ll call this function the <em>model</em>.</p>
         <p>$$f(x, a) = a \sin(x)$$</p>
         <p>In Scala we&#39;d write</p>
@@ -124,7 +124,7 @@
           <li><code>a</code>, which is the amplitude (height) of the sine wave.</li>
         </ol>
         <p>(Note that I&#39;m defining Scala methods but using the term function. In mathematics we usually only deal with functions, but in Scala most of the time it&#39;s more idiomatic to write methods.)</p>
-        <p>We can see the effect of changinge <code>a</code> in the demonstration below.</p>
+        <p>We can see the effect of changing <code>a</code> in the demonstration below.</p>
         <div id="draw-basic-plot"></div>
         <script>Sine.drawBasicPlot("draw-basic-plot")</script>
         <p>Now we&#39;re going to assume we have some data, and our task will be to find the value of <code>a</code> that gives the function that best fits the data. We&#39;re going to make this concrete in just a moment, but a bit more terminology before we move on:</p>
@@ -169,7 +169,7 @@
           <li>Find the gradient of the loss with respect to the parameter <code>a</code>. This tells us how changes in <code>a</code> relate to changes in loss.</li>
           <li>Move <code>a</code> in the direction that reduces the loss.</li>
         </ol>
-        <p>To recap, our goal is to make the loss as small as possible. In technical jargon we&#39;d say we&#39;re minimizing the loss function. We&#39;re going to do this by calculating the gradient of the loss function with respect to <code>a</code>, and then move <code>a</code> a small amount in the direction that reduces the loss. We then repeat this process, until we can&#39;t reduce the loss any more or we get bored.</p>
+        <p>To recap, our goal is to make the loss as small as possible. In technical jargon we say we&#39;re minimizing the loss function. We&#39;re going to do this by calculating the gradient of the loss function with respect to <code>a</code>, and then move <code>a</code> a small amount in the direction that reduces the loss. We then repeat this process, until we can&#39;t reduce the loss any more or we get bored.</p>
         <p>Notice at this point I&#39;m not giving details. As you&#39;ve probably guessed, you&#39;re going to implement this and our first approach will be numerical differentiation.</p>
 
         <hr style="margin-top: 30px"/>
