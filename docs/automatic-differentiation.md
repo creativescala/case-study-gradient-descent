@@ -8,16 +8,14 @@ $$ gradient \approx \frac{f(x + h) - f(x)}{h} $$
 
 We can work with this symbolically to calculate derivates. Let's try \\(f(x) = x^2 \\). We know from the section on symbolic differentiation that \\(\frac{df(x)}{dx} = 2x \\). Let's see what happens when we substitute \\(f(x) = x^2 \\) into the definition of the gradient above.
 
-$$
-\begin{align}
-\frac{df(x)}{dx} & = \frac{f(x + h) - f(x)}{h} \\
-& = \frac{(x + h)^2 - x^2}{h} \\
-& = \frac{x^2 + 2xh + h^2 - x^2}{h} \\
-& = \frac{2xh + h^2}{h} \\
-& = \frac{h(2x + h)}{h} \\
-& = 2x + h
-\end{align}
-$$
+$$\begin{align}
+\frac{df(x)}{dx} & = \frac{f(x + h) - f(x)}{h} \\\\
+                 & = \frac{(x + h)^2 - x^2}{h} \\\\
+                 & = \frac{x^2 + 2xh + h^2 - x^2}{h} \\\\
+                 & = \frac{2xh + h^2}{h} \\\\
+                 & = \frac{h(2x + h)}{h} \\\\
+                 & = 2x + h \\\\
+\end{align}$$
 
 Now if we make \\(h\\) really really small we can just ignore it and end up with 
 
