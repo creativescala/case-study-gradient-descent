@@ -10,7 +10,7 @@ we can symbolically differentiate it to obtain the derivative, itself a function
 
 $$ \frac{df(x)}{dx} = 8x + 8 $$
 
-Note that the derivative of a function is a function, in this case with a single parameter \\( x \\).
+Note that the derivative of a function is a function, in this case with a single variable \\( x \\). (A little note on terminology: in programming circles we usualy talk about functions having parameters but in introductory calculus we usually talk about functions having variables. In this section I'm adopting calculus terminology and talking about variables when I'd usually talk about parameters.) 
 
 To compute the derivative we can apply the following rules:
 
@@ -43,7 +43,9 @@ The sum rule tells us we can separately compute the derivatives of \\( 4x^2 \\),
 
 Summing them all together gives us \\( 8x + 8 \\) as expected.
 
-Note that we don't really need the power rule! \\( x^2 \\) is the same as \\( x * x \\), and we can correctly calculate the derivative using the product rule. It's a useful shortcut, but we're going to work without in our code below.
+There is one final thing we need to know about differentiating functions with multiple variables, such \\( ax^2 + 8x \\). When we differentiate with respect to one variable, such as \\(x\\), we treat any other variables as constants. So the derivative with respect to \\(x\\) of \\(ax^2 + 8x\\) is \\(2ax + 8 \\), and the derivate with respect to \\(a\\) is \\(x^2\\).
+
+Note that we don't really need the power rule! \\( x^2 \\) is the same as \\( x * x \\), and we can correctly calculate the derivative using the product rule. It's a useful shortcut, but we're going to work without the power rule in our code below.
 
 ## Implementation 
 
@@ -101,12 +103,14 @@ Our simple simplification algorithm misses many opportunities for simplification
 
 Now go ahead an implement `simplify`. You may choose to implement the basic simplification we described above, or to iterate the basic algorithm until you reach a fixed point.
 
+Once you've implemented simplification, you may want to extend your algorithm to handle more cases. A good next step is to simplify expressions involving multiplication by \\(1\\) or addition by \\(0\\).
+
 
 ## Gradient Descent
 
-With all the above in place we have everything we need to differentiate an expression and calculate the gradient at a particular point. This in turn means we can implement gradient descent.
+With all the above in place we have everything we need to differentiate an expression and calculate the gradient at a particular point. This in turn means we can implement gradient descent. (You might want to skip this as we're going over concepts we've already covered in the section on numerical differentiation.)
 
-We don't have the \\(\sin\\) function (and it's derivative, \\(\\cos\\)) in `Expression`. You could add it, if you wanted, but it's simpler to use a different function that we can represent in `Expression`. For example, we could use a cubic function \\(f(x, a) = ax^3 \\). There is cubic data in `Data.scala`. The example below shows 40 points randomly sampled from a cubic function, with added noise, and plots it against a cubic for which you can vary the parameter \\(a\\).
+We don't have the \\(\sin\\) function (and it's derivative, \\(\\cos\\)) in `Expression`. You could add it, if you wanted, but it's simpler to use a different function that we can represent in `Expression`. For example, we could use a cubic function \\(f(x, a) = ax^3 \\). There is cubic data in `Data.scala`. The example below shows 40 points randomly sampled from a cubic function, with added noise, and plots it against a cubic for which you can vary the variable \\(a\\).
 
 @:doodle(draw-cubic-plot, Cubic.drawCubicPlot)
 
