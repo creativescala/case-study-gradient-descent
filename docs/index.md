@@ -11,15 +11,15 @@ This case study looks at gradient descent, and the application of gradient desce
 
 ## Gradient Descent for Function Fitting
 
-At the time of writing (September 2022), [Stable Diffusion](https://stablediffusionweb.com/) is one of the newest, and best, text-to-image programs. Give it a try! Enter some text and see what image yous can get it to produce. It's certainly impressive, though the results are still sometimes a little bit odd.
+At the time of writing (September 2022), [Stable Diffusion](https://stablediffusionweb.com/) is one of the newest, and best, text-to-image programs. Give it a try! Enter some text and see what image you can get it to produce. It's certainly impressive, though the results are sometimes a little bit odd.
 
-At it's core, Stable Diffusion and similar programs such as Midjourney, are functions. Remember the core idea of a function is that you put something and get something back. In this case you put in text and get back an image. 
+At it's core, Stable Diffusion and similar programs such as Midjourney, are functions. Remember the core idea of a function is that you put something in and get something back. In this case you put in text and get back an image. 
 
 ```scala
 def stableDiffusion(prompt: String): Image = ??? // Magic goes here
 ```
 
-What makes these functions particularly interesting is that parts of the function are learned from data. The data consists of example of text and images associated with them. The general shape of the function is fixed but many parts of it, called weights, are adjusted so that, given input, the output becomes closer to that in data used for learning.
+What makes these functions particularly interesting is that parts of the function are learned from data. The data consists of examples of text and images associated with them. The general shape of the function is fixed but many parts of it, called weights, are adjusted so that, given input, the output becomes closer to that in the data used for learning.
 
 An example will help make this clearer. Consider the function below. We'll call this function the *model*.
 
@@ -38,7 +38,7 @@ This is a method with two parameters:
 
 (Note that I'm defining Scala methods but using the term function. In mathematics we usually only deal with functions, but in Scala most of the time it's more idiomatic to write methods.)
 
-We can see the effect of changinge `a` in the demonstration below.
+We can see the effect of changing `a` in the demonstration below.
 
 @:doodle(draw-basic-plot, Sine.drawBasicPlot)
 
@@ -101,6 +101,6 @@ Now the final piece of the puzzle is to come up with an algorithm to adjust the 
 2. Move `a` in the direction that reduces the loss.
 
 
-To recap, our goal is to make the loss as small as possible. In technical jargon we'd say we're minimizing the loss function. We're going to do this by calculating the gradient of the loss function with respect to `a`, and then move `a` a small amount in the direction that reduces the loss. We then repeat this process, until we can't reduce the loss any more or we get bored.
+To recap, our goal is to make the loss as small as possible. In technical jargon we say we're minimizing the loss function. We're going to do this by calculating the gradient of the loss function with respect to `a`, and then move `a` a small amount in the direction that reduces the loss. We then repeat this process, until we can't reduce the loss any more or we get bored.
 
 Notice at this point I'm not giving details. As you've probably guessed, you're going to implement this and our first approach will be numerical differentiation.
