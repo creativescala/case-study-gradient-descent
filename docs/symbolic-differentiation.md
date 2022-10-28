@@ -80,7 +80,7 @@ With a representation of expressions we can go ahead and implement differentiati
 
 ## Binding Variables
 
-Our expressions contains variables, such as \\(a\\) and \\(x\\) in \\( ax + 2x + 8 \\). When a variable hasn't taken on a particular value we call it a *free variable*. It's free in that it can take on any value.
+Our expressions contain variables, such as \\(a\\) and \\(x\\) in \\( ax + 2x + 8 \\). When a variable hasn't taken on a particular value we call it a *free variable*. It's free in that it can take on any value.
 
 We need to be able to give values to variables. For example, when evaluating a derivative at a particular point we might want to say that \\(x\\) is \\(1\\) in \\( 8x + 8 \\). Variables that have taken on a fixed value are called *bound variables*, and hence we say we bind a variable to a value.
 
@@ -127,7 +127,7 @@ If we have \\( (3 + x) + 2 \\), and our goal is \\( x + 5 \\), we can use the fo
 If we have \\( 2 (3 + x) + x \\), we may want to simplify to \\( 3x + 6 \\). To achieve this we can:
 
 1. multiply out to arrive at \\( 6 + 2x + x \\); and
-2. simplify to 6 + 3x.
+2. simplify to \\(6 + 3x)\\.
 
 The above examples made use of rules known as associativity, commutivity, and distributivity. They are:
 
