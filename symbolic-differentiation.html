@@ -168,7 +168,7 @@
         <p>With a representation of expressions we can go ahead and implement differentiation. Implement the method <code>differentiate</code> on <code>Expression</code>. This is perhaps the most complex task here, so you might choose to tackle the tasks below before returning to differentiation.</p>
         
         <h2 id="binding-variables" class="section">Binding Variables<a class="anchor-link right" href="#binding-variables"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>Our expressions contains variables, such as \(a\) and \(x\) in \( ax + 2x + 8 \). When a variable hasn&#39;t taken on a particular value we call it a <em>free variable</em>. It&#39;s free in that it can take on any value.</p>
+        <p>Our expressions contain variables, such as \(a\) and \(x\) in \( ax + 2x + 8 \). When a variable hasn&#39;t taken on a particular value we call it a <em>free variable</em>. It&#39;s free in that it can take on any value.</p>
         <p>We need to be able to give values to variables. For example, when evaluating a derivative at a particular point we might want to say that \(x\) is \(1\) in \( 8x + 8 \). Variables that have taken on a fixed value are called <em>bound variables</em>, and hence we say we bind a variable to a value.</p>
         <p>Note that binding a variable to a value in an expression still leaves us with an expression, not necessarily a number as you may expect. Considering binding \(x\) to \(1\) in \( ax + 2x + 8 \). We&#39;re left with \( (a \times 1) + (2 \times 1) + 8 \).</p>
         <p>Binding is a form of substitution. We substitute a value for every occurrence of a variable. Implement a method <code>bind</code> that accepts both a variable name (a <code>String</code>) and a value for that variable (a <code>Double</code>), and substitutes the value for all occurrences of the variable within the <code>Expression</code>.</p>
@@ -198,7 +198,7 @@
         <p>If we have \( 2 (3 + x) + x \), we may want to simplify to \( 3x + 6 \). To achieve this we can:</p>
         <ol class="arabic">
           <li>multiply out to arrive at \( 6 + 2x + x \); and</li>
-          <li>simplify to 6 + 3x.</li>
+          <li>simplify to \(6 + 3x)\.</li>
         </ol>
         <p>The above examples made use of rules known as associativity, commutivity, and distributivity. They are:</p>
         <ol class="arabic">
