@@ -27,7 +27,7 @@ Let's implement numerical differentiation. Now you might think that you should i
 - the step `h`; and
 - the point `x` at which we're differentiating.
 
-Instead, however, I want you to implement a method with following signature:
+Instead, however, I want you to implement a method the with following signature:
 
 ```scala
 def differentiate(h: Double)(f: Double => Double): Double => Double
@@ -56,14 +56,16 @@ we can curry it to obtain
 val curriedSum: Double => Double => Double = x => y => x + y
 ```
 
-This is especially useful when parameter vary at different rates. For example, the data we're using doesn't change at any time, whereas we've constantly the parameter `a` to try to find the best value. I don't want to write any more as this is the main challenge here: implement a curried form of `loss` so that we can use it with `differentiate`.
+We can repeat this process for functions of any number of arguments.
+
+This is especially useful when parameter vary at different rates. For example, the data we're using doesn't change at any time, whereas we're constantly adjusting the parameter `a` to try to find the best value. I don't want to write any more as this is the main challenge here: implement a curried form of `loss` so that we can use it with `differentiate`.
 
 There is a stub in `Loss.scala` that you can work with.
 
 
 ### Gradient Descent
 
-Now we're ready to put it all together and implement gradient descent. We're going to start by implementing a method that performs a single iteration of gradient descent. This method with take in the current value of the parameter we're optimizing, and the function we're optimizing, and return an updated value for the parameter. See the `iterate` method on `GradientDescent.scala`.
+Now we're ready to put it all together and implement gradient descent. We're going to start by implementing a method that performs a single iteration of gradient descent. This method will take in the current value of the parameter we're optimizing, and the function we're optimizing, and return an updated value for the parameter. See the `iterate` method on `GradientDescent.scala`.
 
 In the body of the method we want to:
 
