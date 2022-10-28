@@ -120,7 +120,7 @@
           <li>the step <code>h</code>; and</li>
           <li>the point <code>x</code> at which we&#39;re differentiating.</li>
         </ul>
-        <p>Instead, however, I want you to implement a method with following signature:</p>
+        <p>Instead, however, I want you to implement a method the with following signature:</p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">differentiate</span><span>(</span><span class="identifier">h</span><span>: </span><span class="type-name">Double</span><span>)(</span><span class="identifier">f</span><span>: </span><span class="type-name">Double</span><span> =&gt; </span><span class="type-name">Double</span><span>): </span><span class="type-name">Double</span><span> =&gt; </span><span class="type-name">Double</span></code></pre>
         <p>So the method is taking a function, and returns a function. The returned function takes in a point <code>x</code> and returns an approximation of the gradient at that point.</p>
         <p>This is how differentiation is treated in mathematics: the derivative of a function is itself a function. If you&#39;ve studied calculus, this is what the \(\frac{d}{dx}\) operator is doing.</p>
@@ -132,11 +132,12 @@
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">sum</span><span>: (</span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span> = (</span><span class="identifier">x</span><span>, </span><span class="identifier">y</span><span>) =&gt; </span><span class="identifier">x</span><span> + </span><span class="identifier">y</span></code></pre>
         <p>we can curry it to obtain</p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">curriedSum</span><span>: </span><span class="type-name">Double</span><span> =&gt; </span><span class="type-name">Double</span><span> =&gt; </span><span class="type-name">Double</span><span> = </span><span class="identifier">x</span><span> =&gt; </span><span class="identifier">y</span><span> =&gt; </span><span class="identifier">x</span><span> + </span><span class="identifier">y</span></code></pre>
-        <p>This is especially useful when parameter vary at different rates. For example, the data we&#39;re using doesn&#39;t change at any time, whereas we&#39;ve constantly the parameter <code>a</code> to try to find the best value. I don&#39;t want to write any more as this is the main challenge here: implement a curried form of <code>loss</code> so that we can use it with <code>differentiate</code>.</p>
+        <p>We can repeat this process for functions of any number of arguments.</p>
+        <p>This is especially useful when parameter vary at different rates. For example, the data we&#39;re using doesn&#39;t change at any time, whereas we&#39;re constantly adjusting the parameter <code>a</code> to try to find the best value. I don&#39;t want to write any more as this is the main challenge here: implement a curried form of <code>loss</code> so that we can use it with <code>differentiate</code>.</p>
         <p>There is a stub in <code>Loss.scala</code> that you can work with.</p>
         
         <h3 id="gradient-descent" class="section">Gradient Descent<a class="anchor-link right" href="#gradient-descent"><i class="icofont-laika">&#xef71;</i></a></h3>
-        <p>Now we&#39;re ready to put it all together and implement gradient descent. We&#39;re going to start by implementing a method that performs a single iteration of gradient descent. This method with take in the current value of the parameter we&#39;re optimizing, and the function we&#39;re optimizing, and return an updated value for the parameter. See the <code>iterate</code> method on <code>GradientDescent.scala</code>.</p>
+        <p>Now we&#39;re ready to put it all together and implement gradient descent. We&#39;re going to start by implementing a method that performs a single iteration of gradient descent. This method will take in the current value of the parameter we&#39;re optimizing, and the function we&#39;re optimizing, and return an updated value for the parameter. See the <code>iterate</code> method on <code>GradientDescent.scala</code>.</p>
         <p>In the body of the method we want to:</p>
         <ol class="arabic">
           <li>Calculate the gradient of the function at the value of the parameter, using the numerical differentiation method we have already implemented.</li>
