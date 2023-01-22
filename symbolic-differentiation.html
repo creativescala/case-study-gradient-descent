@@ -1,231 +1,157 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
+<!doctype html>
+<html lang="">
+
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Laika 0.18.1 + Helium Theme" />
+    <meta name="generator" content="Laika 0.19.0" />
     <title>Symbolic Differentiation</title>
     
-    <meta name="author" content="Noel Welsh"/>
     
+    <meta name="description" content="docs" />
     
-    <meta name="description" content="docs"/>
-    
-    
-    <link rel="icon" sizes="32x32" type="image/png" href="https://typelevel.org/img/favicon.png"/>
-    
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css">
-    
-    <link rel="stylesheet" type="text/css" href="helium/icofont.min.css" />
-    <link rel="stylesheet" type="text/css" href="helium/laika-helium.css" />
-    <link rel="stylesheet" type="text/css" href="site/styles.css" />
-    <script src="helium/laika-helium.js"></script>
-    <script src="main.js"></script>
-    <script src="main.js"></script>
-    <script src="helium/laika-helium.js"></script>
-    
-    
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script> /* for avoiding page load transitions */ </script>
-  </head>
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="creative-scala.css" />
+    <script> /* for avoiding page load transitions */</script>
+</head>
 
-  <body>
-
-    <header id="top-bar">
-
-      <div class="row">
-        <a id="nav-icon">
-          <i class="icofont-laika" title="Navigation">&#xefa2;</i>
-        </a>
-        
-      </div>
-
-      <a class="icon-link" href="https://creativescala.org"><i class="icofont-laika" title="Home">&#xef47;</i></a>
-
-      <span class="row links"><a class="icon-link svg-link" href="https://github.com/creativescala/case-study-gradient-descent"><span title="Source Code"><svg class="svg-icon" width="100%" height="100%" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-  <g class="svg-shape">
-    <path d="M49.995,1c-27.609,-0 -49.995,22.386 -49.995,50.002c-0,22.09 14.325,40.83 34.194,47.444c2.501,0.458 3.413,-1.086 3.413,-2.412c0,-1.185 -0.043,-4.331 -0.067,-8.503c-13.908,3.021 -16.843,-6.704 -16.843,-6.704c-2.274,-5.773 -5.552,-7.311 -5.552,-7.311c-4.54,-3.103 0.344,-3.042 0.344,-3.042c5.018,0.356 7.658,5.154 7.658,5.154c4.46,7.64 11.704,5.433 14.552,4.156c0.454,-3.232 1.744,-5.436 3.174,-6.685c-11.102,-1.262 -22.775,-5.553 -22.775,-24.713c-0,-5.457 1.949,-9.92 5.147,-13.416c-0.516,-1.265 -2.231,-6.348 0.488,-13.233c0,0 4.199,-1.344 13.751,5.126c3.988,-1.108 8.266,-1.663 12.518,-1.682c4.245,0.019 8.523,0.574 12.517,1.682c9.546,-6.47 13.736,-5.126 13.736,-5.126c2.728,6.885 1.013,11.968 0.497,13.233c3.204,3.496 5.141,7.959 5.141,13.416c0,19.209 -11.691,23.436 -22.83,24.673c1.795,1.544 3.394,4.595 3.394,9.26c0,6.682 -0.061,12.076 -0.061,13.715c0,1.338 0.899,2.894 3.438,2.406c19.853,-6.627 34.166,-25.354 34.166,-47.438c-0,-27.616 -22.389,-50.002 -50.005,-50.002"/>
-  </g>
-</svg></span></a></span>
-
-    </header>
-
+<body>
+    <nav id="topbar"><p><a href="numerical-differentiation.html">←</a></p>
+<p><a href="https://creativescala.github.io/case-study-parser/index.html">Case Study: Machine Learning by Gradient Descent</a></p>
+<p><a href="automatic-differentiation.html">→</a></p></nav>
     <nav id="sidebar">
-
-      <div class="row">
-        <a class="icon-link svg-link" href="https://github.com/creativescala/case-study-gradient-descent"><span title="Source Code"><svg class="svg-icon" width="100%" height="100%" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-  <g class="svg-shape">
-    <path d="M49.995,1c-27.609,-0 -49.995,22.386 -49.995,50.002c-0,22.09 14.325,40.83 34.194,47.444c2.501,0.458 3.413,-1.086 3.413,-2.412c0,-1.185 -0.043,-4.331 -0.067,-8.503c-13.908,3.021 -16.843,-6.704 -16.843,-6.704c-2.274,-5.773 -5.552,-7.311 -5.552,-7.311c-4.54,-3.103 0.344,-3.042 0.344,-3.042c5.018,0.356 7.658,5.154 7.658,5.154c4.46,7.64 11.704,5.433 14.552,4.156c0.454,-3.232 1.744,-5.436 3.174,-6.685c-11.102,-1.262 -22.775,-5.553 -22.775,-24.713c-0,-5.457 1.949,-9.92 5.147,-13.416c-0.516,-1.265 -2.231,-6.348 0.488,-13.233c0,0 4.199,-1.344 13.751,5.126c3.988,-1.108 8.266,-1.663 12.518,-1.682c4.245,0.019 8.523,0.574 12.517,1.682c9.546,-6.47 13.736,-5.126 13.736,-5.126c2.728,6.885 1.013,11.968 0.497,13.233c3.204,3.496 5.141,7.959 5.141,13.416c0,19.209 -11.691,23.436 -22.83,24.673c1.795,1.544 3.394,4.595 3.394,9.26c0,6.682 -0.061,12.076 -0.061,13.715c0,1.338 0.899,2.894 3.438,2.406c19.853,-6.627 34.166,-25.354 34.166,-47.438c-0,-27.616 -22.389,-50.002 -50.005,-50.002"/>
-  </g>
-</svg></span></a>
-      </div>
-
-      <ul class="nav-list">
-        <li class="level1"><a href="index.html">Case Study: Machine Learning by Gradient Descent</a></li>
-        <li class="level1"><a href="numerical-differentiation.html">Numerical Differentiation</a></li>
-        <li class="level1 active"><a href="#">Symbolic Differentiation</a></li>
-        <li class="level1"><a href="automatic-differentiation.html">Automatic Differentiation</a></li>
-      </ul>
-
-      <ul class="nav-list">
-        <li class="level1 nav-header">Related Projects</li>
-        
-          <li class="level2"><a href="https://creativescala.org/doodle">Doodle</a></li>
-        
-          <li class="level2"><a href="https://creativescala.github.io/doodle-svg">Doodle SVG</a></li>
-        
-          <li class="level2"><a href="https://creativescala.org">Creative Scala</a></li>
-        
-      </ul>
-
+        <ul class="nav-list">
+          <li class="level1"><a href="index.html">Case Study: Machine Learning by Gradient Descent</a></li>
+          <li class="level1"><a href="numerical-differentiation.html">Numerical Differentiation</a></li>
+          <li class="level1 active"><a href="#">Symbolic Differentiation</a></li>
+          <li class="level1"><a href="automatic-differentiation.html">Automatic Differentiation</a></li>
+        </ul>
     </nav>
 
-    <div id="container">
-
-      <nav id="page-nav">
-        <p class="header"><a href="#">Symbolic Differentiation</a></p>
-
-        <ul class="nav-list">
-          <li class="level1"><a href="#implementation">Implementation</a></li>
-          <li class="level2"><a href="#representing-expressions">Representing Expressions</a></li>
-          <li class="level1"><a href="#differentiating-expressions">Differentiating Expressions</a></li>
-          <li class="level1"><a href="#binding-variables">Binding Variables</a></li>
-          <li class="level1"><a href="#simplifying-expressions">Simplifying Expressions</a></li>
-          <li class="level1"><a href="#gradient-descent">Gradient Descent</a></li>
-          <li class="level1"><a href="#complex-simplification">Complex Simplification</a></li>
-          <li class="level1"><a href="#summary-and-context">Summary and Context</a></li>
-        </ul>
-
-        <p class="footer"></p>
-      </nav>
-
-      <main class="content">
-
-        <h1 id="symbolic-differentiation" class="title">Symbolic Differentiation</h1>
-        <p>Symbolic differentiation is the second differentiation technique we&#39;ll look at. This is the technique you&#39;ll have learned if you have studied calculus. </p>
-        <p>In symbolic differentiation we work directly on the expression that represents the function of interest, creating a new expression that represents the derivative of the function. For example, if we have a function</p>
-        <p>$$ f(x) = 4x^2 + 8x + 16 $$</p>
-        <p>we can symbolically differentiate it to obtain the derivative, itself a function and written as \( \frac{df(x)}{dx} \)</p>
-        <p>$$ \frac{df(x)}{dx} = 8x + 8 $$</p>
-        <p>Note that the derivative of a function is a function, in this case with a single variable \( x \). (A little note on terminology: in programming circles we usualy talk about functions having parameters but in introductory calculus we usually talk about functions having variables. In this section I&#39;m adopting calculus terminology and talking about variables when I&#39;d usually talk about parameters.) </p>
-        <p>To compute the derivative we can apply the following rules:</p>
-        <ul>
-          <li><strong>The power rule:</strong> the derivative of \( x \) to the power of \( n \) is \(x \) to the power of \( n - 1 \) multiplied by \( n \). </li>
-        </ul>
-        <p>$$ \textrm{If} \; f(x) = x^n \; \textrm{then} \; \frac{df(x)}{dx} = nx^{n-1} $$</p>
-        <ul>
-          <li><strong>The constant rule:</strong> the derivative of a constant is zero. </li>
-        </ul>
-        <p>$$ \textrm{If}\;  f(x) = k \; \textrm{then}\; \frac{df(x)}{dx} = 0 $$</p>
-        <ul>
-          <li><strong>The sum rule:</strong> the derivative of the sum of two functions is the sum of the derivatives.</li>
-        </ul>
-        <p>$$ \textrm{If}\; f(x) = g(x) + h(x) \; \textrm{then}\; \frac{df(x)}{dx} = \frac{dg(x)}{dx} + \frac{dh(x)}{dx} $$</p>
-        <ul>
-          <li><strong>The product rule:</strong> The derivative of the product of two functions is the derivative of the first multiplied by the second plus the derivative of the second multiplied by the first.</li>
-        </ul>
-        <p>$$ \textrm{If}\; f(x) = g(x)h(x) \; \textrm{then}\; \frac{df(x)}{dx} = \frac{dg(x)}{dx}h(x) + g(x)\frac{dh(x)}{dx} $$</p>
-        <p>We can apply these rules to calculate the derivative of</p>
-        <p>$$ f(x) = 4x^2 + 8x + 16 $$</p>
-        <p>The sum rule tells us we can separately compute the derivatives of \( 4x^2 \), \( 8x \) and \( 16 \) and then add together the results. Going from fromt to back:</p>
-        <ul>
-          <li>The power rule tells us the derivative of \(x^2 \) is \( 2x \). The product rule tells us the derivative of \( 4x^2 \) is \( 0x^2 + 4(2x) \), which is \( 8x \).</li>
-          <li>Applying the same reasoning as above tells us the derivative of \( 8x \) is \( 0x + 8 \), which is \( 8 \).</li>
-          <li>The constant rule tells us the derivative of \( 16 \) is \( 0 \)</li>
-        </ul>
-        <p>Summing them all together gives us \( 8x + 8 \) as expected.</p>
-        <p>There is one final thing we need to know about differentiating functions with multiple variables, such \( ax^2 + 8x \). When we differentiate with respect to one variable, such as \(x\), we treat any other variables as constants. So the derivative with respect to \(x\) of \(ax^2 + 8x\) is \(2ax + 8 \), and the derivate with respect to \(a\) is \(x^2\).</p>
-        <p>Note that we don&#39;t really need the power rule! \( x^2 \) is the same as \( x * x \), and we can correctly calculate the derivative using the product rule. It&#39;s a useful shortcut, but we&#39;re going to work without the power rule in our code below.</p>
-        
-        <h2 id="implementation" class="section">Implementation<a class="anchor-link right" href="#implementation"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>Now we&#39;re ready to implement symbolic differentiation. We need:</p>
-        <ol class="arabic">
-          <li>a representation of expressions that we can manipulate; and</li>
-          <li>a way to implement the rules of differentiation.</li>
-        </ol>
-        
-        <h3 id="representing-expressions" class="section">Representing Expressions<a class="anchor-link right" href="#representing-expressions"><i class="icofont-laika">&#xef71;</i></a></h3>
-        <p>We&#39;re going to work with fairly simple expressions, like \( x^2 + 4 \) and \( ax + 2x + 8 \).</p>
-        <p>These expressions consist of</p>
-        <ul>
-          <li>numbers, like \(2\) and \(8\);</li>
-          <li>variables, like \(a\) and \(x\);</li>
-          <li>addition and multiplication.</li>
-        </ul>
-        <p>We&#39;re going to represent expressions as follows. An <code>Expression</code> is one of:</p>
-        <ul>
-          <li>A literal number, containing a <code>Double</code> value.</li>
-          <li>A variable, containing a <code>String</code> name, which represents a variable such as \( x \) or \( a \) in our function. </li>
-          <li>The addition of two <code>Expressions</code>.</li>
-          <li>The multiplication of two <code>Expressions</code>.</li>
-        </ul>
-        <p>By now you should know how to represent this structure in code, so go ahead and implement it. There is a skeleton in <code>Expression.scala</code> to get you started.</p>
-        
-        <h2 id="differentiating-expressions" class="section">Differentiating Expressions<a class="anchor-link right" href="#differentiating-expressions"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>With a representation of expressions we can go ahead and implement differentiation. Implement the method <code>differentiate</code> on <code>Expression</code>. This is perhaps the most complex task here, so you might choose to tackle the tasks below before returning to differentiation.</p>
-        
-        <h2 id="binding-variables" class="section">Binding Variables<a class="anchor-link right" href="#binding-variables"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>Our expressions contain variables, such as \(a\) and \(x\) in \( ax + 2x + 8 \). When a variable hasn&#39;t taken on a particular value we call it a <em>free variable</em>. It&#39;s free in that it can take on any value.</p>
-        <p>We need to be able to give values to variables. For example, when evaluating a derivative at a particular point we might want to say that \(x\) is \(1\) in \( 8x + 8 \). Variables that have taken on a fixed value are called <em>bound variables</em>, and hence we say we bind a variable to a value.</p>
-        <p>Note that binding a variable to a value in an expression still leaves us with an expression, not necessarily a number as you may expect. Considering binding \(x\) to \(1\) in \( ax + 2x + 8 \). We&#39;re left with \( (a \times 1) + (2 \times 1) + 8 \).</p>
-        <p>Binding is a form of substitution. We substitute a value for every occurrence of a variable. Implement a method <code>bind</code> that accepts both a variable name (a <code>String</code>) and a value for that variable (a <code>Double</code>), and substitutes the value for all occurrences of the variable within the <code>Expression</code>.</p>
-        
-        <h2 id="simplifying-expressions" class="section">Simplifying Expressions<a class="anchor-link right" href="#simplifying-expressions"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>After binding a variable to a value we&#39;ll usually end up with a lot of constant expressions: multiplications or additions that involve only literals. We saw that in the example above where binding \(x\) to \(1\) in \( ax + 2x + 8 \) left us with \( (a \times 1) + (2 \times 1) + 8 \). Idealy we would want just \( a + 2 + 8 \) or even just \( a + 10 \).</p>
-        <p>To do this we want to implement a method to <em>simplify</em> expressions. This, like binding a variable, is an <code>Expression</code> to <code>Expression</code> transform. Simplification is as complex a problem as we care to make it. In this instance we&#39;re going to keep it very simple: we just want to simplify additions and multiplications of literals. So if we have \( x + (1 + 2) \) we should end up \( x + 3 \), but if we have \( (x + 1) + 2 \) we won&#39;t make any change.</p>
-        <p>Using our very simple approach to simplification means it may be possible to simplify an expression a multiple times. For example, if we have the expression \( (1 + 2) + 3 \), the first simplification should give us \( 3 + 3 \), which we can then simplify again to reach \( 6 \). Once we have reached \( 6 \) no further simplifications are possible.</p>
-        <p>Our simple simplification algorithm misses many opportunities for simplification. For example, it won&#39;t simplify \( (3 + x) + 5 \) to \( x + 8 \). However it does have one very nice property, which is that performing simplification either returns a simpler, shorter, expression or we make no change and the result is the expression we started with. This means our simplification is guaranteed to eventually reach a point where no further simplification can occur. In formal terms we can say repeated application of simplification always converges to a <em>fixed point</em>. A fixed point of a function \( f \) is a value \( x \) such that \(f(x) = x \). For example \(\sin(0) = 0\), so \(0\) is a fixed point of \(\sin\).</p>
-        <p>Now go ahead an implement <code>simplify</code>. You may choose to implement the basic simplification we described above, or to iterate the basic algorithm until you reach a fixed point.</p>
-        <p>Once you&#39;ve implemented simplification, you may want to extend your algorithm to handle more cases. A good next step is to simplify expressions involving multiplication by \(1\) or addition by \(0\).</p>
-        
-        <h2 id="gradient-descent" class="section">Gradient Descent<a class="anchor-link right" href="#gradient-descent"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>With all the above in place we have everything we need to differentiate an expression and calculate the gradient at a particular point. This in turn means we can implement gradient descent. (You might want to skip this as we&#39;re going over concepts we&#39;ve already covered in the section on numerical differentiation.)</p>
-        <p>We don&#39;t have the \(\sin\) function (and it&#39;s derivative, \(\cos\)) in <code>Expression</code>. You could add it, if you wanted, but it&#39;s simpler to use a different function that we can represent in <code>Expression</code>. For example, we could use a cubic function \(f(x, a) = ax^3 \). There is cubic data in <code>Data.scala</code>. The example below shows 40 points randomly sampled from a cubic function, with added noise, and plots it against a cubic for which you can vary the variable \(a\).</p>
-        <div id="draw-cubic-plot"></div>
-        <script>Cubic.drawCubicPlot("draw-cubic-plot")</script>
-        <p>It can also be interesting to try gradient descent on the \(\sin\) data, where the model is cubic. Here the model cannot make a good approximation of the data, but gradient descent will still find something.</p>
-        
-        <h2 id="complex-simplification" class="section">Complex Simplification<a class="anchor-link right" href="#complex-simplification"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>As an extension, you could look at more complex rules for simplification. These rules allow more simplifications to occur, at the cost of turning the problem into one of searching amongst multiple possible solutions. Let&#39;s look at a few examples to see what patterns emerge.</p>
-        <p>If we have \( (x + 3) + 2 \) we may want to simplify it to \( x + 5 \). To get there we need an intermediate step, which is to rewrite \( (x + 3) + 2 \) to \( x + (3 + 2) \).</p>
-        <p>If we have \( (3 + x) + 2 \), and our goal is \( x + 5 \), we can use the following two transformations:</p>
-        <ol class="arabic">
-          <li>transform \( (3 + x) + 2 \) to \( (x + 3) + 2 \); and</li>
-          <li>transform \( (x + 3) + 2 \) to \( x + (3 + 2) \).</li>
-        </ol>
-        <p>If we have \( 2 (3 + x) + x \), we may want to simplify to \( 3x + 6 \). To achieve this we can:</p>
-        <ol class="arabic">
-          <li>multiply out to arrive at \( 6 + 2x + x \); and</li>
-          <li>simplify to \(6 + 3x)\.</li>
-        </ol>
-        <p>The above examples made use of rules known as associativity, commutivity, and distributivity. They are:</p>
-        <ol class="arabic">
-          <li><em>Associativity</em>: \( (x + y) + z = x + (y + z) \), and similarly for expressions involving multiplication.</li>
-          <li><em>Commutivity</em>: \( x + y = y + x \), and similarly for expressions involving multiplication.</li>
-          <li><em>Distributivity</em>: \( a (x + y) = ax + ay \).</li>
-        </ol>
-        <p>We can use these rules to generate new expressions that we can then attempt to simplify, and we can keep the result that is the shortest. For example, if we have an expression \( x + y \), we can use commutivity to create \( y + x \). We can then simplify both \( x + y \) and \( y + x \) and see which result is shorter.</p>
-        
-        <h2 id="summary-and-context" class="section">Summary and Context<a class="anchor-link right" href="#summary-and-context"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>There is a lot going on in this part of the case study. Here are some the main ideas, and connections to other areas in computer science.</p>
-        <p>The main programming tools we&#39;re using are algebraic data types and structural recursion. You&#39;ll probably have seen some pattern matches that go a bit beyond what you might have seen before. Learning a bit more about what you can do with pattern matching is a good exercise; it&#39;s a powerful tool!</p>
-        <p>Moving beyond pattern matching, the idea of manipulating a data structure that represents a program (in our case, an arithmetic expression) is a very powerful one. The key idea of a compiler, like the Scala compiler, is to represent programs as a data structure, and then manipulate that data structure to achieve various goals so as improving performance (which is equivalent to simplification) or producing a different kind of program (such as compiling Scala code into JVM bytecode.) Working compilers are a lot more complex than <code>Expression</code>, but the core ideas are exactly the same.</p>
-        <p>We can also view <code>Expression</code> as a <em>rewrite system</em>. Rewrite systems consist of rules that match input and convert them into output. A simple example of a rewrite is the power rule for differentiation. Recall, it is</p>
-        <p>$$ \textrm{If} \; f(x) = x^n \; \textrm{then} \; \frac{df(x)}{dx} = nx^{n-1} $$</p>
-        <p>We can view this as a rewrite. It says that whenever the input is \(x^n\) we write \(nx^{n-1}\) as the output.</p>
-        <p>Rewrite rules are closely connected to the theory of programing languages, and to programs that reason about symbolic systems, such as computer algebra systems that help people do mathematics.</p>
-
-        <hr style="margin-top: 30px"/>
-        <footer style="font-size: 90%; text-align: center">
-          Doodle Explore is a <a href="https://creativescala.org/">Creative Scala</a> project.</footer>
-
-      </main>
+    <div id="content">
+        <main class="content">
+            <h1 id="symbolic-differentiation" class="title">Symbolic Differentiation</h1>
+            <p>Symbolic differentiation is the second differentiation technique we&#39;ll look at. This is the technique you&#39;ll have learned if you have studied calculus. </p>
+            <p>In symbolic differentiation we work directly on the expression that represents the function of interest, creating a new expression that represents the derivative of the function. For example, if we have a function</p>
+            <p>$$ f(x) = 4x^2 + 8x + 16 $$</p>
+            <p>we can symbolically differentiate it to obtain the derivative, itself a function and written as \( \frac{df(x)}{dx} \)</p>
+            <p>$$ \frac{df(x)}{dx} = 8x + 8 $$</p>
+            <p>Note that the derivative of a function is a function, in this case with a single variable \( x \). (A little note on terminology: in programming circles we usualy talk about functions having parameters but in introductory calculus we usually talk about functions having variables. In this section I&#39;m adopting calculus terminology and talking about variables when I&#39;d usually talk about parameters.) </p>
+            <p>To compute the derivative we can apply the following rules:</p>
+            <ul>
+              <li><strong>The power rule:</strong> the derivative of \( x \) to the power of \( n \) is \(x \) to the power of \( n - 1 \) multiplied by \( n \). </li>
+            </ul>
+            <p>$$ \textrm{If} \; f(x) = x^n \; \textrm{then} \; \frac{df(x)}{dx} = nx^{n-1} $$</p>
+            <ul>
+              <li><strong>The constant rule:</strong> the derivative of a constant is zero. </li>
+            </ul>
+            <p>$$ \textrm{If}\;  f(x) = k \; \textrm{then}\; \frac{df(x)}{dx} = 0 $$</p>
+            <ul>
+              <li><strong>The sum rule:</strong> the derivative of the sum of two functions is the sum of the derivatives.</li>
+            </ul>
+            <p>$$ \textrm{If}\; f(x) = g(x) + h(x) \; \textrm{then}\; \frac{df(x)}{dx} = \frac{dg(x)}{dx} + \frac{dh(x)}{dx} $$</p>
+            <ul>
+              <li><strong>The product rule:</strong> The derivative of the product of two functions is the derivative of the first multiplied by the second plus the derivative of the second multiplied by the first.</li>
+            </ul>
+            <p>$$ \textrm{If}\; f(x) = g(x)h(x) \; \textrm{then}\; \frac{df(x)}{dx} = \frac{dg(x)}{dx}h(x) + g(x)\frac{dh(x)}{dx} $$</p>
+            <p>We can apply these rules to calculate the derivative of</p>
+            <p>$$ f(x) = 4x^2 + 8x + 16 $$</p>
+            <p>The sum rule tells us we can separately compute the derivatives of \( 4x^2 \), \( 8x \) and \( 16 \) and then add together the results. Going from fromt to back:</p>
+            <ul>
+              <li>The power rule tells us the derivative of \(x^2 \) is \( 2x \). The product rule tells us the derivative of \( 4x^2 \) is \( 0x^2 + 4(2x) \), which is \( 8x \).</li>
+              <li>Applying the same reasoning as above tells us the derivative of \( 8x \) is \( 0x + 8 \), which is \( 8 \).</li>
+              <li>The constant rule tells us the derivative of \( 16 \) is \( 0 \)</li>
+            </ul>
+            <p>Summing them all together gives us \( 8x + 8 \) as expected.</p>
+            <p>There is one final thing we need to know about differentiating functions with multiple variables, such \( ax^2 + 8x \). When we differentiate with respect to one variable, such as \(x\), we treat any other variables as constants. So the derivative with respect to \(x\) of \(ax^2 + 8x\) is \(2ax + 8 \), and the derivate with respect to \(a\) is \(x^2\).</p>
+            <p>Note that we don&#39;t really need the power rule! \( x^2 \) is the same as \( x * x \), and we can correctly calculate the derivative using the product rule. It&#39;s a useful shortcut, but we&#39;re going to work without the power rule in our code below.</p>
+            
+            <h2 id="implementation" class="section">Implementation</h2>
+            <p>Now we&#39;re ready to implement symbolic differentiation. We need:</p>
+            <ol class="arabic">
+              <li>a representation of expressions that we can manipulate; and</li>
+              <li>a way to implement the rules of differentiation.</li>
+            </ol>
+            
+            <h3 id="representing-expressions" class="section">Representing Expressions</h3>
+            <p>We&#39;re going to work with fairly simple expressions, like \( x^2 + 4 \) and \( ax + 2x + 8 \).</p>
+            <p>These expressions consist of</p>
+            <ul>
+              <li>numbers, like \(2\) and \(8\);</li>
+              <li>variables, like \(a\) and \(x\);</li>
+              <li>addition and multiplication.</li>
+            </ul>
+            <p>We&#39;re going to represent expressions as follows. An <code>Expression</code> is one of:</p>
+            <ul>
+              <li>A literal number, containing a <code>Double</code> value.</li>
+              <li>A variable, containing a <code>String</code> name, which represents a variable such as \( x \) or \( a \) in our function. </li>
+              <li>The addition of two <code>Expressions</code>.</li>
+              <li>The multiplication of two <code>Expressions</code>.</li>
+            </ul>
+            <p>By now you should know how to represent this structure in code, so go ahead and implement it. There is a skeleton in <code>Expression.scala</code> to get you started.</p>
+            
+            <h2 id="differentiating-expressions" class="section">Differentiating Expressions</h2>
+            <p>With a representation of expressions we can go ahead and implement differentiation. Implement the method <code>differentiate</code> on <code>Expression</code>. This is perhaps the most complex task here, so you might choose to tackle the tasks below before returning to differentiation.</p>
+            
+            <h2 id="binding-variables" class="section">Binding Variables</h2>
+            <p>Our expressions contain variables, such as \(a\) and \(x\) in \( ax + 2x + 8 \). When a variable hasn&#39;t taken on a particular value we call it a <em>free variable</em>. It&#39;s free in that it can take on any value.</p>
+            <p>We need to be able to give values to variables. For example, when evaluating a derivative at a particular point we might want to say that \(x\) is \(1\) in \( 8x + 8 \). Variables that have taken on a fixed value are called <em>bound variables</em>, and hence we say we bind a variable to a value.</p>
+            <p>Note that binding a variable to a value in an expression still leaves us with an expression, not necessarily a number as you may expect. Considering binding \(x\) to \(1\) in \( ax + 2x + 8 \). We&#39;re left with \( (a \times 1) + (2 \times 1) + 8 \).</p>
+            <p>Binding is a form of substitution. We substitute a value for every occurrence of a variable. Implement a method <code>bind</code> that accepts both a variable name (a <code>String</code>) and a value for that variable (a <code>Double</code>), and substitutes the value for all occurrences of the variable within the <code>Expression</code>.</p>
+            
+            <h2 id="simplifying-expressions" class="section">Simplifying Expressions</h2>
+            <p>After binding a variable to a value we&#39;ll usually end up with a lot of constant expressions: multiplications or additions that involve only literals. We saw that in the example above where binding \(x\) to \(1\) in \( ax + 2x + 8 \) left us with \( (a \times 1) + (2 \times 1) + 8 \). Idealy we would want just \( a + 2 + 8 \) or even just \( a + 10 \).</p>
+            <p>To do this we want to implement a method to <em>simplify</em> expressions. This, like binding a variable, is an <code>Expression</code> to <code>Expression</code> transform. Simplification is as complex a problem as we care to make it. In this instance we&#39;re going to keep it very simple: we just want to simplify additions and multiplications of literals. So if we have \( x + (1 + 2) \) we should end up \( x + 3 \), but if we have \( (x + 1) + 2 \) we won&#39;t make any change.</p>
+            <p>Using our very simple approach to simplification means it may be possible to simplify an expression a multiple times. For example, if we have the expression \( (1 + 2) + 3 \), the first simplification should give us \( 3 + 3 \), which we can then simplify again to reach \( 6 \). Once we have reached \( 6 \) no further simplifications are possible.</p>
+            <p>Our simple simplification algorithm misses many opportunities for simplification. For example, it won&#39;t simplify \( (3 + x) + 5 \) to \( x + 8 \). However it does have one very nice property, which is that performing simplification either returns a simpler, shorter, expression or we make no change and the result is the expression we started with. This means our simplification is guaranteed to eventually reach a point where no further simplification can occur. In formal terms we can say repeated application of simplification always converges to a <em>fixed point</em>. A fixed point of a function \( f \) is a value \( x \) such that \(f(x) = x \). For example \(\sin(0) = 0\), so \(0\) is a fixed point of \(\sin\).</p>
+            <p>Now go ahead an implement <code>simplify</code>. You may choose to implement the basic simplification we described above, or to iterate the basic algorithm until you reach a fixed point.</p>
+            <p>Once you&#39;ve implemented simplification, you may want to extend your algorithm to handle more cases. A good next step is to simplify expressions involving multiplication by \(1\) or addition by \(0\).</p>
+            
+            <h2 id="gradient-descent" class="section">Gradient Descent</h2>
+            <p>With all the above in place we have everything we need to differentiate an expression and calculate the gradient at a particular point. This in turn means we can implement gradient descent. (You might want to skip this as we&#39;re going over concepts we&#39;ve already covered in the section on numerical differentiation.)</p>
+            <p>We don&#39;t have the \(\sin\) function (and it&#39;s derivative, \(\cos\)) in <code>Expression</code>. You could add it, if you wanted, but it&#39;s simpler to use a different function that we can represent in <code>Expression</code>. For example, we could use a cubic function \(f(x, a) = ax^3 \). There is cubic data in <code>Data.scala</code>. The example below shows 40 points randomly sampled from a cubic function, with added noise, and plots it against a cubic for which you can vary the variable \(a\).</p>
+            <div id="draw-cubic-plot"></div>
+            <script>Cubic.drawCubicPlot("draw-cubic-plot")</script>
+            <p>It can also be interesting to try gradient descent on the \(\sin\) data, where the model is cubic. Here the model cannot make a good approximation of the data, but gradient descent will still find something.</p>
+            
+            <h2 id="complex-simplification" class="section">Complex Simplification</h2>
+            <p>As an extension, you could look at more complex rules for simplification. These rules allow more simplifications to occur, at the cost of turning the problem into one of searching amongst multiple possible solutions. Let&#39;s look at a few examples to see what patterns emerge.</p>
+            <p>If we have \( (x + 3) + 2 \) we may want to simplify it to \( x + 5 \). To get there we need an intermediate step, which is to rewrite \( (x + 3) + 2 \) to \( x + (3 + 2) \).</p>
+            <p>If we have \( (3 + x) + 2 \), and our goal is \( x + 5 \), we can use the following two transformations:</p>
+            <ol class="arabic">
+              <li>transform \( (3 + x) + 2 \) to \( (x + 3) + 2 \); and</li>
+              <li>transform \( (x + 3) + 2 \) to \( x + (3 + 2) \).</li>
+            </ol>
+            <p>If we have \( 2 (3 + x) + x \), we may want to simplify to \( 3x + 6 \). To achieve this we can:</p>
+            <ol class="arabic">
+              <li>multiply out to arrive at \( 6 + 2x + x \); and</li>
+              <li>simplify to \(6 + 3x)\.</li>
+            </ol>
+            <p>The above examples made use of rules known as associativity, commutivity, and distributivity. They are:</p>
+            <ol class="arabic">
+              <li><em>Associativity</em>: \( (x + y) + z = x + (y + z) \), and similarly for expressions involving multiplication.</li>
+              <li><em>Commutivity</em>: \( x + y = y + x \), and similarly for expressions involving multiplication.</li>
+              <li><em>Distributivity</em>: \( a (x + y) = ax + ay \).</li>
+            </ol>
+            <p>We can use these rules to generate new expressions that we can then attempt to simplify, and we can keep the result that is the shortest. For example, if we have an expression \( x + y \), we can use commutivity to create \( y + x \). We can then simplify both \( x + y \) and \( y + x \) and see which result is shorter.</p>
+            
+            <h2 id="summary-and-context" class="section">Summary and Context</h2>
+            <p>There is a lot going on in this part of the case study. Here are some the main ideas, and connections to other areas in computer science.</p>
+            <p>The main programming tools we&#39;re using are algebraic data types and structural recursion. You&#39;ll probably have seen some pattern matches that go a bit beyond what you might have seen before. Learning a bit more about what you can do with pattern matching is a good exercise; it&#39;s a powerful tool!</p>
+            <p>Moving beyond pattern matching, the idea of manipulating a data structure that represents a program (in our case, an arithmetic expression) is a very powerful one. The key idea of a compiler, like the Scala compiler, is to represent programs as a data structure, and then manipulate that data structure to achieve various goals so as improving performance (which is equivalent to simplification) or producing a different kind of program (such as compiling Scala code into JVM bytecode.) Working compilers are a lot more complex than <code>Expression</code>, but the core ideas are exactly the same.</p>
+            <p>We can also view <code>Expression</code> as a <em>rewrite system</em>. Rewrite systems consist of rules that match input and convert them into output. A simple example of a rewrite is the power rule for differentiation. Recall, it is</p>
+            <p>$$ \textrm{If} \; f(x) = x^n \; \textrm{then} \; \frac{df(x)}{dx} = nx^{n-1} $$</p>
+            <p>We can view this as a rewrite. It says that whenever the input is \(x^n\) we write \(nx^{n-1}\) as the output.</p>
+            <p>Rewrite rules are closely connected to the theory of programing languages, and to programs that reason about symbolic systems, such as computer algebra systems that help people do mathematics.</p>
+            <p class="nextPage"><a href="automatic-differentiation.html">Automatic Differentiation→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
 
     </div>
-  </body>
+</body>
+
 </html>

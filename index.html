@@ -1,184 +1,116 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
+<!doctype html>
+<html lang="">
+
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Laika 0.18.1 + Helium Theme" />
+    <meta name="generator" content="Laika 0.19.0" />
     <title>Case Study: Machine Learning by Gradient Descent</title>
     
-    <meta name="author" content="Noel Welsh"/>
     
+    <meta name="description" content="docs" />
     
-    <meta name="description" content="docs"/>
-    
-    
-    <link rel="icon" sizes="32x32" type="image/png" href="https://typelevel.org/img/favicon.png"/>
-    
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css">
-    
-    <link rel="stylesheet" type="text/css" href="helium/icofont.min.css" />
-    <link rel="stylesheet" type="text/css" href="helium/laika-helium.css" />
-    <link rel="stylesheet" type="text/css" href="site/styles.css" />
-    <script src="helium/laika-helium.js"></script>
-    <script src="main.js"></script>
-    <script src="main.js"></script>
-    <script src="helium/laika-helium.js"></script>
-    
-    
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script> /* for avoiding page load transitions */ </script>
-  </head>
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="creative-scala.css" />
+    <script> /* for avoiding page load transitions */</script>
+</head>
 
-  <body>
-
-    <header id="top-bar">
-
-      <div class="row">
-        <a id="nav-icon">
-          <i class="icofont-laika" title="Navigation">&#xefa2;</i>
-        </a>
-        
-      </div>
-
-      <a class="icon-link" href="https://creativescala.org"><i class="icofont-laika" title="Home">&#xef47;</i></a>
-
-      <span class="row links"><a class="icon-link svg-link" href="https://github.com/creativescala/case-study-gradient-descent"><span title="Source Code"><svg class="svg-icon" width="100%" height="100%" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-  <g class="svg-shape">
-    <path d="M49.995,1c-27.609,-0 -49.995,22.386 -49.995,50.002c-0,22.09 14.325,40.83 34.194,47.444c2.501,0.458 3.413,-1.086 3.413,-2.412c0,-1.185 -0.043,-4.331 -0.067,-8.503c-13.908,3.021 -16.843,-6.704 -16.843,-6.704c-2.274,-5.773 -5.552,-7.311 -5.552,-7.311c-4.54,-3.103 0.344,-3.042 0.344,-3.042c5.018,0.356 7.658,5.154 7.658,5.154c4.46,7.64 11.704,5.433 14.552,4.156c0.454,-3.232 1.744,-5.436 3.174,-6.685c-11.102,-1.262 -22.775,-5.553 -22.775,-24.713c-0,-5.457 1.949,-9.92 5.147,-13.416c-0.516,-1.265 -2.231,-6.348 0.488,-13.233c0,0 4.199,-1.344 13.751,5.126c3.988,-1.108 8.266,-1.663 12.518,-1.682c4.245,0.019 8.523,0.574 12.517,1.682c9.546,-6.47 13.736,-5.126 13.736,-5.126c2.728,6.885 1.013,11.968 0.497,13.233c3.204,3.496 5.141,7.959 5.141,13.416c0,19.209 -11.691,23.436 -22.83,24.673c1.795,1.544 3.394,4.595 3.394,9.26c0,6.682 -0.061,12.076 -0.061,13.715c0,1.338 0.899,2.894 3.438,2.406c19.853,-6.627 34.166,-25.354 34.166,-47.438c-0,-27.616 -22.389,-50.002 -50.005,-50.002"/>
-  </g>
-</svg></span></a></span>
-
-    </header>
-
+<body>
+    <nav id="topbar"><p></p>
+<p><a href="https://creativescala.github.io/case-study-parser/index.html">Case Study: Machine Learning by Gradient Descent</a></p>
+<p><a href="numerical-differentiation.html">→</a></p></nav>
     <nav id="sidebar">
-
-      <div class="row">
-        <a class="icon-link svg-link" href="https://github.com/creativescala/case-study-gradient-descent"><span title="Source Code"><svg class="svg-icon" width="100%" height="100%" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-  <g class="svg-shape">
-    <path d="M49.995,1c-27.609,-0 -49.995,22.386 -49.995,50.002c-0,22.09 14.325,40.83 34.194,47.444c2.501,0.458 3.413,-1.086 3.413,-2.412c0,-1.185 -0.043,-4.331 -0.067,-8.503c-13.908,3.021 -16.843,-6.704 -16.843,-6.704c-2.274,-5.773 -5.552,-7.311 -5.552,-7.311c-4.54,-3.103 0.344,-3.042 0.344,-3.042c5.018,0.356 7.658,5.154 7.658,5.154c4.46,7.64 11.704,5.433 14.552,4.156c0.454,-3.232 1.744,-5.436 3.174,-6.685c-11.102,-1.262 -22.775,-5.553 -22.775,-24.713c-0,-5.457 1.949,-9.92 5.147,-13.416c-0.516,-1.265 -2.231,-6.348 0.488,-13.233c0,0 4.199,-1.344 13.751,5.126c3.988,-1.108 8.266,-1.663 12.518,-1.682c4.245,0.019 8.523,0.574 12.517,1.682c9.546,-6.47 13.736,-5.126 13.736,-5.126c2.728,6.885 1.013,11.968 0.497,13.233c3.204,3.496 5.141,7.959 5.141,13.416c0,19.209 -11.691,23.436 -22.83,24.673c1.795,1.544 3.394,4.595 3.394,9.26c0,6.682 -0.061,12.076 -0.061,13.715c0,1.338 0.899,2.894 3.438,2.406c19.853,-6.627 34.166,-25.354 34.166,-47.438c-0,-27.616 -22.389,-50.002 -50.005,-50.002"/>
-  </g>
-</svg></span></a>
-      </div>
-
-      <ul class="nav-list">
-        <li class="level1 active"><a href="#">Case Study: Machine Learning by Gradient Descent</a></li>
-        <li class="level1"><a href="numerical-differentiation.html">Numerical Differentiation</a></li>
-        <li class="level1"><a href="symbolic-differentiation.html">Symbolic Differentiation</a></li>
-        <li class="level1"><a href="automatic-differentiation.html">Automatic Differentiation</a></li>
-      </ul>
-
-      <ul class="nav-list">
-        <li class="level1 nav-header">Related Projects</li>
-        
-          <li class="level2"><a href="https://creativescala.org/doodle">Doodle</a></li>
-        
-          <li class="level2"><a href="https://creativescala.github.io/doodle-svg">Doodle SVG</a></li>
-        
-          <li class="level2"><a href="https://creativescala.org">Creative Scala</a></li>
-        
-      </ul>
-
+        <ul class="nav-list">
+          <li class="level1 active"><a href="#">Case Study: Machine Learning by Gradient Descent</a></li>
+          <li class="level1"><a href="numerical-differentiation.html">Numerical Differentiation</a></li>
+          <li class="level1"><a href="symbolic-differentiation.html">Symbolic Differentiation</a></li>
+          <li class="level1"><a href="automatic-differentiation.html">Automatic Differentiation</a></li>
+        </ul>
     </nav>
 
-    <div id="container">
-
-      <nav id="page-nav">
-        <p class="header"><a href="#">Case Study: Machine Learning by Gradient Descent</a></p>
-
-        <ul class="nav-list">
-          <li class="level1"><a href="#introduction">Introduction</a></li>
-          <li class="level1"><a href="#gradient-descent-for-function-fitting">Gradient Descent for Function Fitting</a></li>
-        </ul>
-
-        <p class="footer"></p>
-      </nav>
-
-      <main class="content">
-
-        <h1 id="case-study-machine-learning-by-gradient-descent" class="title">Case Study: Machine Learning by Gradient Descent</h1>
-        
-        <h2 id="introduction" class="section">Introduction<a class="anchor-link right" href="#introduction"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>This case study looks at gradient descent, and the application of gradient descent to machine learning. We look at gradient descent from a programming, rather than mathematical, perspective. We&#39;ll start with a simple example that describes the problem we&#39;re trying to solve and how gradient descent can be used to solve it. We&#39;ll then look at three methods to compute gradients, the core of the problem:</p>
-        <ul>
-          <li>numerical differentiation;</li>
-          <li>symbolic differentiation; and</li>
-          <li>automatic differentiation.</li>
-        </ul>
-        
-        <h2 id="gradient-descent-for-function-fitting" class="section">Gradient Descent for Function Fitting<a class="anchor-link right" href="#gradient-descent-for-function-fitting"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>At the time of writing (September 2022), <a href="https://stablediffusionweb.com/">Stable Diffusion</a> is one of the newest, and best, text-to-image programs. Give it a try! Enter some text and see what image you can get it to produce. It&#39;s certainly impressive, though the results are sometimes a little bit odd.</p>
-        <p>At it&#39;s core, Stable Diffusion and similar programs such as Midjourney, are functions. Remember the core idea of a function is that you put something in and get something back. In this case you put in text and get back an image. </p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">stableDiffusion</span><span>(</span><span class="identifier">prompt</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">Image</span><span> = ??? </span><span class="comment">// Magic goes here</span></code></pre>
-        <p>What makes these functions particularly interesting is that parts of the function are learned from data. The data consists of examples of text and images associated with them. The general shape of the function is fixed but many parts of it, called weights, are adjusted so that, given input, the output becomes closer to that in the data used for learning.</p>
-        <p>An example will help make this clearer. Consider the function below. We&#39;ll call this function the <em>model</em>.</p>
-        <p>$$f(x, a) = a \sin(x)$$</p>
-        <p>In Scala we&#39;d write</p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">f</span><span>(</span><span class="identifier">x</span><span>: </span><span class="type-name">Double</span><span>, </span><span class="identifier">a</span><span>: </span><span class="type-name">Double</span><span>): </span><span class="type-name">Double</span><span> = </span><span class="identifier">a</span><span> * </span><span class="type-name">Math</span><span>.</span><span class="identifier">sin</span><span>(</span><span class="identifier">x</span><span>)</span></code></pre>
-        <p>This is a method with two parameters:</p>
-        <ol class="arabic">
-          <li><code>x</code>, which is the usual <code>x</code> value; and</li>
-          <li><code>a</code>, which is the amplitude (height) of the sine wave.</li>
-        </ol>
-        <p>(Note that I&#39;m defining Scala methods but using the term function. In mathematics we usually only deal with functions, but in Scala most of the time it&#39;s more idiomatic to write methods.)</p>
-        <p>We can see the effect of changing <code>a</code> in the demonstration below.</p>
-        <div id="draw-basic-plot"></div>
-        <script>Sine.drawBasicPlot("draw-basic-plot")</script>
-        <p>Now we&#39;re going to assume we have some data, and our task will be to find the value of <code>a</code> that gives the function that best fits the data. We&#39;re going to make this concrete in just a moment, but a bit more terminology before we move on:</p>
-        <ul>
-          <li>the parameter <code>x</code> is the <em>input parameter</em>; and</li>
-          <li>the parameter <code>a</code> is the <em>weight</em> or <em>learned parameter</em>.</li>
-        </ul>
-        <p>Back to the problem. Let&#39;s assume we have some <em>training data</em>, shown as the blue points below. We want to find a function that fits the data. This, informally, means that we want a function that is close to the data points. If we have a data point with an <code>x</code> and <code>y</code> value we want <code>f(x)</code> to be close to <code>y</code>. In our case, we&#39;re going to assume that the model will be a good fit for the data if we can just find the right value of the learned parameter. So our task reduces to finding the value of the learned parameter that gives the best fit to the data. You can try this yourself in the example below.</p>
-        <div id="draw-error-plot"></div>
-        <script>Sine.drawErrorPlot("draw-error-plot")</script>
-        <p>So our task is to find the value of the learned parameter that gives a good fit to the data. To do this we need to</p>
-        <ol class="arabic">
-          <li>formalize what we mean by a good fit; and</li>
-          <li>define an algorithm that finds a value for the learned parameter that gives a good fit.</li>
-        </ol>
-        <p>We&#39;ll tackle each in turn. </p>
-        <p>To quantify how good a choice we&#39;ve made for <code>a</code>, we will use the sum of the square of the distance between the function output and the <code>y</code> value of each data point in our data set. We&#39;ll call this quantity the <em>loss</em>, and the <em>loss function</em> the function that calculates the loss given a choice of <code>a</code>. </p>
-        <p>This will become clearer with some code. For a single data point we can calculate the loss as</p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">pointLoss</span><span>(</span><span class="identifier">a</span><span>: </span><span class="type-name">Double</span><span>, </span><span class="identifier">point</span><span>: </span><span class="type-name">Point</span><span>)(</span><span class="identifier">model</span><span>: (</span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span>): </span><span class="type-name">Double</span><span> = {
+    <div id="content">
+        <main class="content">
+            <h1 id="case-study-machine-learning-by-gradient-descent" class="title">Case Study: Machine Learning by Gradient Descent</h1>
+            
+            <h2 id="introduction" class="section">Introduction</h2>
+            <p>This case study looks at gradient descent, and the application of gradient descent to machine learning. We look at gradient descent from a programming, rather than mathematical, perspective. We&#39;ll start with a simple example that describes the problem we&#39;re trying to solve and how gradient descent can be used to solve it. We&#39;ll then look at three methods to compute gradients, the core of the problem:</p>
+            <ul>
+              <li>numerical differentiation;</li>
+              <li>symbolic differentiation; and</li>
+              <li>automatic differentiation.</li>
+            </ul>
+            
+            <h2 id="gradient-descent-for-function-fitting" class="section">Gradient Descent for Function Fitting</h2>
+            <p>At the time of writing (September 2022), <a href="https://stablediffusionweb.com/">Stable Diffusion</a> is one of the newest, and best, text-to-image programs. Give it a try! Enter some text and see what image you can get it to produce. It&#39;s certainly impressive, though the results are sometimes a little bit odd.</p>
+            <p>At it&#39;s core, Stable Diffusion and similar programs such as Midjourney, are functions. Remember the core idea of a function is that you put something in and get something back. In this case you put in text and get back an image. </p>
+            <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">stableDiffusion</span><span>(</span><span class="identifier">prompt</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">Image</span><span> = ??? </span><span class="comment">// Magic goes here</span></code></pre>
+            <p>What makes these functions particularly interesting is that parts of the function are learned from data. The data consists of examples of text and images associated with them. The general shape of the function is fixed but many parts of it, called weights, are adjusted so that, given input, the output becomes closer to that in the data used for learning.</p>
+            <p>An example will help make this clearer. Consider the function below. We&#39;ll call this function the <em>model</em>.</p>
+            <p>$$f(x, a) = a \sin(x)$$</p>
+            <p>In Scala we&#39;d write</p>
+            <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">f</span><span>(</span><span class="identifier">x</span><span>: </span><span class="type-name">Double</span><span>, </span><span class="identifier">a</span><span>: </span><span class="type-name">Double</span><span>): </span><span class="type-name">Double</span><span> = </span><span class="identifier">a</span><span> * </span><span class="type-name">Math</span><span>.</span><span class="identifier">sin</span><span>(</span><span class="identifier">x</span><span>)</span></code></pre>
+            <p>This is a method with two parameters:</p>
+            <ol class="arabic">
+              <li><code>x</code>, which is the usual <code>x</code> value; and</li>
+              <li><code>a</code>, which is the amplitude (height) of the sine wave.</li>
+            </ol>
+            <p>(Note that I&#39;m defining Scala methods but using the term function. In mathematics we usually only deal with functions, but in Scala most of the time it&#39;s more idiomatic to write methods.)</p>
+            <p>We can see the effect of changing <code>a</code> in the demonstration below.</p>
+            <div id="draw-basic-plot"></div>
+            <script>Sine.drawBasicPlot("draw-basic-plot")</script>
+            <p>Now we&#39;re going to assume we have some data, and our task will be to find the value of <code>a</code> that gives the function that best fits the data. We&#39;re going to make this concrete in just a moment, but a bit more terminology before we move on:</p>
+            <ul>
+              <li>the parameter <code>x</code> is the <em>input parameter</em>; and</li>
+              <li>the parameter <code>a</code> is the <em>weight</em> or <em>learned parameter</em>.</li>
+            </ul>
+            <p>Back to the problem. Let&#39;s assume we have some <em>training data</em>, shown as the blue points below. We want to find a function that fits the data. This, informally, means that we want a function that is close to the data points. If we have a data point with an <code>x</code> and <code>y</code> value we want <code>f(x)</code> to be close to <code>y</code>. In our case, we&#39;re going to assume that the model will be a good fit for the data if we can just find the right value of the learned parameter. So our task reduces to finding the value of the learned parameter that gives the best fit to the data. You can try this yourself in the example below.</p>
+            <div id="draw-error-plot"></div>
+            <script>Sine.drawErrorPlot("draw-error-plot")</script>
+            <p>So our task is to find the value of the learned parameter that gives a good fit to the data. To do this we need to</p>
+            <ol class="arabic">
+              <li>formalize what we mean by a good fit; and</li>
+              <li>define an algorithm that finds a value for the learned parameter that gives a good fit.</li>
+            </ol>
+            <p>We&#39;ll tackle each in turn. </p>
+            <p>To quantify how good a choice we&#39;ve made for <code>a</code>, we will use the sum of the square of the distance between the function output and the <code>y</code> value of each data point in our data set. We&#39;ll call this quantity the <em>loss</em>, and the <em>loss function</em> the function that calculates the loss given a choice of <code>a</code>. </p>
+            <p>This will become clearer with some code. For a single data point we can calculate the loss as</p>
+            <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">pointLoss</span><span>(</span><span class="identifier">a</span><span>: </span><span class="type-name">Double</span><span>, </span><span class="identifier">point</span><span>: </span><span class="type-name">Point</span><span>)(</span><span class="identifier">model</span><span>: (</span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span>): </span><span class="type-name">Double</span><span> = {
   </span><span class="keyword">val</span><span> </span><span class="identifier">error</span><span> = </span><span class="identifier">f</span><span>(</span><span class="identifier">point</span><span>.</span><span class="identifier">x</span><span>, </span><span class="identifier">a</span><span>) - </span><span class="identifier">point</span><span>.</span><span class="identifier">y</span><span>
   </span><span class="identifier">error</span><span> * </span><span class="identifier">error</span><span>
 }</span></code></pre>
-        <p>In mathematical notation we write</p>
-        <p>$$pointLoss(a, point, model) = || model(point.x, a) - point.y ||^2$$</p>
-        <p>Now to calculate the full loss we sum over all the data.</p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">loss</span><span>(</span><span class="identifier">a</span><span>: </span><span class="type-name">Double</span><span>, </span><span class="identifier">data</span><span>: </span><span class="type-name">List</span><span>[</span><span class="type-name">Data</span><span>])(</span><span class="identifier">model</span><span>: (</span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span>): </span><span class="type-name">Double</span><span> = {
+            <p>In mathematical notation we write</p>
+            <p>$$pointLoss(a, point, model) = || model(point.x, a) - point.y ||^2$$</p>
+            <p>Now to calculate the full loss we sum over all the data.</p>
+            <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">loss</span><span>(</span><span class="identifier">a</span><span>: </span><span class="type-name">Double</span><span>, </span><span class="identifier">data</span><span>: </span><span class="type-name">List</span><span>[</span><span class="type-name">Data</span><span>])(</span><span class="identifier">model</span><span>: (</span><span class="type-name">Double</span><span>, </span><span class="type-name">Double</span><span>) =&gt; </span><span class="type-name">Double</span><span>): </span><span class="type-name">Double</span><span> = {
   </span><span class="identifier">data</span><span>.</span><span class="identifier">map</span><span>(</span><span class="identifier">pt</span><span> =&gt; </span><span class="identifier">pointLoss</span><span>(</span><span class="identifier">a</span><span>, </span><span class="identifier">pt</span><span>)(</span><span class="identifier">model</span><span>)).</span><span class="identifier">sum</span><span>
 }</span></code></pre>
-        <p>In mathematical notation</p>
-        <p>$$ loss(a, data, model) = \sum_{pt \in data}pointLoss(a, pt, model)$$</p>
-        <p>The demo below allows you to adjust <code>a</code> and see how the the loss changes for some randomly choosen data. You should note that you can increase and decrease the loss by changing <code>a</code>.</p>
-        <div id="draw-loss-plot"></div>
-        <script>Sine.drawLossPlot("draw-loss-plot")</script>
-        <p>So we have:</p>
-        <ul>
-          <li>some <em>training data</em> that gives us example inputs and outputs;</li>
-          <li>a model with a parameter (<code>a</code>) that we want to learn in response to the data; and</li>
-          <li>a way of measuring the quality of our current choice of parameter via the loss.</li>
-        </ul>
-        <p>Now the final piece of the puzzle is to come up with an algorithm to adjust the parameter to reduce the loss. This gets us to gradient descent. The <em>gradient</em> of a function is just a fancy word for the function&#39;s slope. The basic idea of gradient descent is:</p>
-        <ol class="arabic">
-          <li>Find the gradient of the loss with respect to the parameter <code>a</code>. This tells us how changes in <code>a</code> relate to changes in loss.</li>
-          <li>Move <code>a</code> in the direction that reduces the loss.</li>
-        </ol>
-        <p>To recap, our goal is to make the loss as small as possible. In technical jargon we say we&#39;re minimizing the loss function. We&#39;re going to do this by calculating the gradient of the loss function with respect to <code>a</code>, and then move <code>a</code> a small amount in the direction that reduces the loss. We then repeat this process, until we can&#39;t reduce the loss any more or we get bored.</p>
-        <p>Notice at this point I&#39;m not giving details. As you&#39;ve probably guessed, you&#39;re going to implement this and our first approach will be numerical differentiation.</p>
-
-        <hr style="margin-top: 30px"/>
-        <footer style="font-size: 90%; text-align: center">
-          Doodle Explore is a <a href="https://creativescala.org/">Creative Scala</a> project.</footer>
-
-      </main>
+            <p>In mathematical notation</p>
+            <p>$$ loss(a, data, model) = \sum_{pt \in data}pointLoss(a, pt, model)$$</p>
+            <p>The demo below allows you to adjust <code>a</code> and see how the the loss changes for some randomly choosen data. You should note that you can increase and decrease the loss by changing <code>a</code>.</p>
+            <div id="draw-loss-plot"></div>
+            <script>Sine.drawLossPlot("draw-loss-plot")</script>
+            <p>So we have:</p>
+            <ul>
+              <li>some <em>training data</em> that gives us example inputs and outputs;</li>
+              <li>a model with a parameter (<code>a</code>) that we want to learn in response to the data; and</li>
+              <li>a way of measuring the quality of our current choice of parameter via the loss.</li>
+            </ul>
+            <p>Now the final piece of the puzzle is to come up with an algorithm to adjust the parameter to reduce the loss. This gets us to gradient descent. The <em>gradient</em> of a function is just a fancy word for the function&#39;s slope. The basic idea of gradient descent is:</p>
+            <ol class="arabic">
+              <li>Find the gradient of the loss with respect to the parameter <code>a</code>. This tells us how changes in <code>a</code> relate to changes in loss.</li>
+              <li>Move <code>a</code> in the direction that reduces the loss.</li>
+            </ol>
+            <p>To recap, our goal is to make the loss as small as possible. In technical jargon we say we&#39;re minimizing the loss function. We&#39;re going to do this by calculating the gradient of the loss function with respect to <code>a</code>, and then move <code>a</code> a small amount in the direction that reduces the loss. We then repeat this process, until we can&#39;t reduce the loss any more or we get bored.</p>
+            <p>Notice at this point I&#39;m not giving details. As you&#39;ve probably guessed, you&#39;re going to implement this and our first approach will be numerical differentiation.</p>
+            <p class="nextPage"><a href="numerical-differentiation.html">Numerical Differentiation→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
 
     </div>
-  </body>
+</body>
+
 </html>
