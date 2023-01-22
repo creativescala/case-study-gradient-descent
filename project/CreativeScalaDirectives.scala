@@ -131,9 +131,68 @@ object CreativeScalaDirectives extends DirectiveRegistry {
       (attribute(0).as[String]).map { (key) => Text(s"Table $key") }
     }
 
+  val compactNavBar: Templates.Directive =
+    Templates.create("compactNavBar") {
+      import Templates.dsl._
+
+      val leftArrow = "←"
+      val rightArrow = "→"
+
+      cursor.map { cursor =>
+        val previous =
+          cursor.flattenedSiblings.previousDocument
+            .map(c => SpanLink(Seq(Text(leftArrow)), InternalTarget(c.path)))
+            .getOrElse(Text(""))
+        val next = cursor.flattenedSiblings.nextDocument
+          .map(c => SpanLink(Seq(Text(rightArrow)), InternalTarget(c.path)))
+          .getOrElse(Text(""))
+        val root = cursor.root.target
+        val home =
+          (root.title)
+            .map { title =>
+              cursor.config
+                .get[String]("parsers.baseUrl")
+                .fold(
+                  error => Text(s"Invalid base URL: $error"),
+                  baseURL => SpanLink(Seq(title), ExternalTarget(s"$baseURL"))
+                )
+            }
+            .getOrElse(Text("Missing root title"))
+
+        TemplateElement(
+          BlockSequence(
+            Seq(Paragraph(previous), Paragraph(home), Paragraph(next))
+          )
+        )
+      }
+    }
+
+  val nextPage: Templates.Directive =
+    Templates.create("nextPage") {
+      import Templates.dsl._
+
+      val rightArrow = "→"
+
+      cursor.map { cursor =>
+        val next = cursor.flattenedSiblings.nextDocument
+
+        val title = next.flatMap(c => c.target.title)
+        val path = next.map(c => c.path)
+
+        val link =
+          (title, path).mapN { (t, p) =>
+            Paragraph(
+              SpanLink(Seq(t, Text(rightArrow)), InternalTarget(p))
+            ).withStyle("nextPage")
+          }
+
+        TemplateElement(link.getOrElse(Text("")))
+      }
+    }
+
   val spanDirectives = Seq(fref, fnref, tref)
   val blockDirectives =
     Seq(divWithId, doodle, figure, footnote, script, solution)
-  val templateDirectives = Seq()
+  val templateDirectives = Seq(compactNavBar, nextPage)
   val linkDirectives = Seq()
 }

@@ -33,10 +33,11 @@ object Animation {
     ??? // Create the loss function here, given f and data above
 
   def animation(initial: Double, iterations: Int): Transducer[Picture[Unit]] = {
+    val gd = GradientDescent(0.01)(???)
     Transducer
       .fromList(List.range(0, iterations))
       .scanLeft(initial) { (a, _) =>
-        val updatedX = GradientDescent.iterate(a)(loss)
+        val updatedX = gd.iterate(a)(loss)
         updatedX
       }
       .map { a =>

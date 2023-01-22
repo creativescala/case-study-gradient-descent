@@ -21,7 +21,7 @@ final case class GradientDescent(learningRate: Double)(df: Double => Double) {
   /** Perform one iteration of gradient descent, using numerical
     * differentiation.
     */
-  def iterate(a: Double): Double =
+  def iterate(a: Double)(loss: Double => Double): Double =
     ???
 
   def gradientDescent(start: Double, iterations: Int): Double =

@@ -1,12 +1,7 @@
 import scala.sys.process._
-import laika.ast.LengthUnit._
-import laika.ast._
-import laika.helium.Helium
-import laika.helium.config.Favicon
-import laika.helium.config.HeliumIcon
-import laika.helium.config.IconLink
-import laika.helium.config.ImageLink
-import TypelevelGitHubPlugin._
+import laika.rewrite.link.LinkConfig
+import laika.rewrite.link.ApiLinks
+import laika.theme.Theme
 
 val scala3 = "3.1.3"
 
@@ -54,77 +49,43 @@ lazy val examples = project
     )
   )
 
+lazy val css = taskKey[Unit]("Build the CSS")
+
 // The website
 lazy val docs = project
   .in(file("site"))
-  .enablePlugins(TypelevelSitePlugin)
   .settings(
-    tlSiteRelatedProjects := Seq(
-      ("Doodle", url("https://creativescala.org/doodle")),
-      ("Doodle SVG", url("https://creativescala.github.io/doodle-svg")),
-      ("Creative Scala", url("https://creativescala.org"))
-    ),
-    laikaExtensions += CreativeScalaDirectives,
-    tlSiteHeliumConfig := {
-      Helium.defaults.site
-        .metadata(
-          title = Some("Doodle Explore"),
-          authors = developers.value.map(_.name),
-          language = Some("en"),
-          version = Some(version.value.toString)
-        )
-        .site
-        .layout(
-          contentWidth = px(860),
-          navigationWidth = px(275),
-          topBarHeight = px(50),
-          defaultBlockSpacing = px(10),
-          defaultLineHeight = 1.5,
-          anchorPlacement = laika.helium.config.AnchorPlacement.Right
-        )
-        .site
-        .darkMode
-        .disabled
-        .site
-        .favIcons(
-          Favicon.external(
-            "https://typelevel.org/img/favicon.png",
-            "32x32",
-            "image/png"
-          )
-        )
-        .site
-        .topNavigationBar(
-          homeLink = IconLink.external(
-            "https://creativescala.org",
-            HeliumIcon.home
-          ),
-          navLinks = tlSiteApiUrl.value.toList.map { url =>
-            IconLink.external(
-              url.toString,
-              HeliumIcon.api,
-              options = Styles("svg-link")
-            )
-          } ++ List(
-            IconLink.external(
-              scmInfo.value
-                .fold("https://github.com/creativescala")(_.browseUrl.toString),
-              HeliumIcon.github,
-              options = Styles("svg-link")
-            )
-            // IconLink.external("https://discord.gg/XF3CXcMzqD", HeliumIcon.chat),
-            // IconLink.external("https://twitter.com/typelevel", HeliumIcon.twitter)
-          )
-        )
+    mdocIn := file("docs/pages"),
+    css := {
+      val src = file("docs/css")
+      val dest1 = mdocOut.value
+      val dest2 = (laikaSite / target).value
+      val cmd1 =
+        s"npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest1.toString}/creative-scala.css"
+      val cmd2 =
+        s"npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest2.toString}/creative-scala.css"
+      cmd1 !
+
+      cmd2 !
     },
-    Laika / sourceDirectories +=
-      (examples / Compile / fastOptJS / artifactPath).value
-        .getParentFile() / s"${(examples / moduleName).value}-fastopt",
+    Laika / sourceDirectories += file("docs/templates"),
+    laikaTheme := Theme.empty,
+    laikaExtensions ++= Seq(
+      laika.markdown.github.GitHubFlavor,
+      laika.parse.code.SyntaxHighlighting,
+      CreativeScalaDirectives
+    ),
+    laikaConfig := LaikaConfig.defaults.withConfigValue(
+      "parsers.baseUrl",
+      "https://creativescala.github.io/case-study-parser/index.html"
+    ),
     tlSite := Def
       .sequential(
-        (examples / Compile / fastOptJS),
         mdoc.toTask(""),
+        css,
         laikaSite
       )
       .value
   )
+  .enablePlugins(TypelevelSitePlugin)
+  .dependsOn(code)
