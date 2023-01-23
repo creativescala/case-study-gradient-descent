@@ -69,6 +69,9 @@ lazy val docs = project
       cmd2 !
     },
     Laika / sourceDirectories += file("docs/templates"),
+    Laika / sourceDirectories +=
+      (examples / Compile / fastOptJS / artifactPath).value
+        .getParentFile() / s"${(examples / moduleName).value}-fastopt",
     laikaTheme := Theme.empty,
     laikaExtensions ++= Seq(
       laika.markdown.github.GitHubFlavor,
@@ -77,10 +80,11 @@ lazy val docs = project
     ),
     laikaConfig := LaikaConfig.defaults.withConfigValue(
       "parsers.baseUrl",
-      "https://creativescala.github.io/case-study-parser/index.html"
+      "https://creativescala.github.io/case-study-gradient-descent/index.html"
     ),
     tlSite := Def
       .sequential(
+        (examples / Compile / fastOptJS),
         mdoc.toTask(""),
         css,
         laikaSite
