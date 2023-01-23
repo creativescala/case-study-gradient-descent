@@ -78,10 +78,11 @@ lazy val docs = project
       laika.parse.code.SyntaxHighlighting,
       CreativeScalaDirectives
     ),
-    laikaConfig := LaikaConfig.defaults.withConfigValue(
-      "parsers.baseUrl",
-      "https://creativescala.github.io/case-study-gradient-descent/index.html"
-    ),
+    laikaConfig := LaikaConfig.defaults
+      .withConfigValue(
+        "parsers.baseUrl",
+        "https://creativescala.github.io/case-study-gradient-descent/index.html"
+      ),
     tlSite := Def
       .sequential(
         (examples / Compile / fastOptJS),
