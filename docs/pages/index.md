@@ -64,7 +64,7 @@ This will become clearer with some code. For a single data point we can calculat
 
 ```scala
 def pointLoss(a: Double, point: Point)(model: (Double, Double) => Double): Double = {
-  val error = f(point.x, a) - point.y
+  val error = model(point.x, a) - point.y
   error * error
 }
 ```
