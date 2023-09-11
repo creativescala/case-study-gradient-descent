@@ -20,7 +20,7 @@ ThisBuild / tlSonatypeUseLegacyHost := true
 ThisBuild / tlSitePublishBranch := Some("main")
 
 ThisBuild / crossScalaVersions := List(scala3)
-ThisBuild / scalaVersion := crossScalaVersions.value.head
+ThisBuild / scalaVersion := (ThisBuild / crossScalaVersions).value.head
 ThisBuild / useSuperShell := false
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
