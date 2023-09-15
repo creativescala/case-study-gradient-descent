@@ -3,7 +3,7 @@ import laika.rewrite.link.LinkConfig
 import laika.rewrite.link.ApiLinks
 import laika.theme.Theme
 
-val scala3 = "3.1.3"
+val scala3 = "3.3.1"
 
 ThisBuild / tlBaseVersion := "0.1" // your current series x.y
 ThisBuild / organization := "org.creativescala"
